@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -16,9 +17,10 @@ export default function Navbar() {
 
   const navLinks = [
     { href: "#home", label: "Home" },
+    { href: "#crisis", label: "Marriage Crisis" },
     { href: "#program", label: "Program" },
     { href: "#founders", label: "Founders" },
-    { href: "#couples", label: "For Couples" },
+    { href: "#admissions", label: "Admissions" },
     { href: "#testimonials", label: "Testimonials" },
     { href: "#contact", label: "Contact" },
   ];
@@ -34,12 +36,15 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <a href="#home" className="flex items-center space-x-2">
-            <div className={`text-2xl font-bold transition-colors ${
-              isScrolled ? "text-plum" : "text-white"
-            }`}>
-              SMCC
-            </div>
+          <a href="#home" className="flex items-center">
+            <Image
+              src="/logo.png"
+              alt="SMCC"
+              width={180}
+              height={60}
+              className="w-32 md:w-40 h-auto"
+              priority
+            />
           </a>
 
           {/* Desktop Navigation */}
@@ -56,10 +61,10 @@ export default function Navbar() {
               </a>
             ))}
             <a
-              href="#enroll"
+              href="#admissions"
               className="bg-gold hover:bg-gold/90 text-charcoal font-semibold px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105"
             >
-              Enroll
+              Apply 2026
             </a>
           </div>
 
@@ -98,11 +103,11 @@ export default function Navbar() {
                 </a>
               ))}
               <a
-                href="#enroll"
+                href="#admissions"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="bg-gold hover:bg-gold/90 text-charcoal font-semibold px-6 py-3 rounded-lg text-center transition-colors mt-2"
               >
-                Enroll
+                Apply 2026
               </a>
             </div>
           </div>

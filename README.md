@@ -77,4 +77,4 @@ The project uses `output: "standalone"` in next.config.js for optimized Node.js 
 
 ## Support
 
-Contact: info@smcc.solutions
+Contact via application form on website.

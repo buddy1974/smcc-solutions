@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CTA from "@/components/CTA";
@@ -8,7 +9,7 @@ export default function Home() {
       <Navbar />
       <main>
         {/* Hero Section */}
-        <section className="relative bg-gradient-to-br from-plum to-plum/90 text-white pt-32 pb-20 px-4">
+        <section id="home" className="relative bg-gradient-to-br from-plum to-plum/90 text-white pt-32 pb-20 px-4">
           <div className="max-w-6xl mx-auto text-center">
             <div className="inline-block mb-6 px-6 py-2 bg-gold/20 backdrop-blur-sm rounded-full border border-gold/30">
               <span className="text-gold font-semibold text-sm tracking-wide">
@@ -16,26 +17,517 @@ export default function Home() {
               </span>
             </div>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-              Restoring Marriages.<br />
-              Equipping Counselors.<br />
-              Transforming Generations.
+              Training Marriage Counselors. Restoring Families. Transforming Nations.
             </h1>
             <p className="text-xl md:text-2xl mb-12 text-blush/90 max-w-3xl mx-auto">
-              School of Marriage Counseling & Coaching (SMCC) — Yaoundé, Cameroon.
+              SMCC is a faith-based, skill-driven institution equipping marriage counselors and coaches with practical frameworks, biblical foundations, and professional integrity.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="#enroll"
+                href="/thank-you"
                 className="inline-block bg-gold hover:bg-gold/90 text-charcoal font-semibold px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-xl"
               >
-                Enroll Now
+                Apply 2026
               </a>
               <a
                 href="#program"
                 className="inline-block bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 border border-white/30"
               >
-                Learn More
+                Request Information
               </a>
+            </div>
+          </div>
+        </section>
+
+        {/* Credibility Strip */}
+        <section className="py-12 px-4 bg-white/80">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+              <div className="flex flex-col items-center justify-center">
+                <p className="text-charcoal font-semibold text-base md:text-lg">
+                  Founded in Yaoundé, Cameroon
+                </p>
+              </div>
+              <div className="flex flex-col items-center justify-center">
+                <p className="text-charcoal font-semibold text-base md:text-lg">
+                  Faith-Based & Skill-Driven
+                </p>
+              </div>
+              <div className="flex flex-col items-center justify-center">
+                <p className="text-charcoal font-semibold text-base md:text-lg">
+                  Certificate of Completion Awarded
+                </p>
+              </div>
+              <div className="flex flex-col items-center justify-center">
+                <p className="text-charcoal font-semibold text-base md:text-lg">
+                  Cohort-Based 12-Week Intensive
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Our Founders Section */}
+        <section id="founders" className="py-20 px-4 bg-white">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-5xl md:text-6xl font-bold text-center text-plum tracking-tight mb-6">
+              Our Founders
+            </h2>
+            <p className="text-lg md:text-xl text-center text-charcoal/70 max-w-3xl mx-auto mb-16">
+              SMCC is led by visionary leaders whose work bridges ministry, education, and global leadership.
+            </p>
+
+            <div className="grid md:grid-cols-2 gap-12 items-start mb-12">
+              {/* LEFT COLUMN - Image */}
+              <div>
+                <Image
+                  src="/founders.jpg"
+                  alt="Founders of SMCC"
+                  width={600}
+                  height={400}
+                  className="rounded-xl shadow-lg w-full object-cover"
+                />
+              </div>
+
+              {/* RIGHT COLUMN - Profiles */}
+              <div className="space-y-8">
+                {/* Profile 1 */}
+                <div>
+                  <h3 className="text-3xl font-bold text-plum mb-2">
+                    Delphine Nforgwei
+                  </h3>
+                  <p className="text-lg italic text-charcoal/60 mb-4">
+                    Pastor • Women&apos;s Impact Coach • Relationship Educator
+                  </p>
+                  <p className="text-charcoal/80 leading-relaxed">
+                    Founder of SMCC and Blossom Life Academy, Delphine is a passionate leader of the E-Woman Conference and a dedicated advocate for women&apos;s leadership and marital transformation. She hosts international Zoom cohorts, empowering women across continents to lead with purpose and build thriving marriages.
+                  </p>
+                </div>
+
+                {/* Divider */}
+                <div className="border-t border-charcoal/10 my-6"></div>
+
+                {/* Profile 2 */}
+                <div>
+                  <h3 className="text-3xl font-bold text-plum mb-2">
+                    Rogers Nforgwei
+                  </h3>
+                  <p className="text-lg italic text-charcoal/60 mb-4">
+                    Pastor • Education Strategist • Business Development Leader
+                  </p>
+                  <p className="text-charcoal/80 leading-relaxed">
+                    With executive education from Harvard Business School Online and a distinguished career as former Business Development Manager (Africa) at Cambridge University Press, Rogers brings academic rigor to ministry. As Founder of NMI Education and President of DRIMP Foundation, he integrates strategic excellence with spiritual depth.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Shared Vision Block */}
+            <div className="bg-blush/30 rounded-xl p-8 md:p-10 mt-12">
+              <h3 className="text-2xl md:text-3xl font-bold text-plum text-center mb-6">
+                Our Shared Vision
+              </h3>
+              <ul className="space-y-3 max-w-2xl mx-auto">
+                <li className="flex items-start">
+                  <span className="text-gold font-bold mr-3">•</span>
+                  <span className="text-charcoal/80 text-lg">Impacted Marriages. Flourishing Nations.</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-gold font-bold mr-3">•</span>
+                  <span className="text-charcoal/80 text-lg">Academic Rigor Meets Ministry</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-gold font-bold mr-3">•</span>
+                  <span className="text-charcoal/80 text-lg">Spiritual & Practical Empowerment</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-gold font-bold mr-3">•</span>
+                  <span className="text-charcoal/80 text-lg">Global Digital Accessibility</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* Books & Resources Section */}
+        <section id="resources" className="py-20 px-4 bg-charcoal/5">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold text-center text-plum mb-6">
+              Books & Resources
+            </h2>
+            <p className="text-lg md:text-xl text-center text-charcoal/70 max-w-3xl mx-auto mb-12">
+              Delphine Nforgwei has authored several books on marriage, relationships, and women&apos;s empowerment, available globally through Amazon and her official bookstore.
+            </p>
+
+            {/* Book Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 mb-12">
+              {/* Book 1 */}
+              <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition overflow-hidden text-center">
+                <img
+                  src="https://m.media-amazon.com/images/I/71xLVGhZRaL._SY522_.jpg"
+                  alt="The Blossom Code"
+                  className="w-full h-72 object-cover"
+                />
+                <div className="p-4">
+                  <h3 className="font-bold text-lg text-plum mb-2">The Blossom Code</h3>
+                  <p className="text-sm text-charcoal/70 mb-4">Unlocking a flourishing life and thriving relationships through biblical principles.</p>
+                  <a
+                    href="https://www.amazon.com/Blossom-Code-Delphine-Nforgwei/dp/B0DFSY9D7Y"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gold hover:text-gold/80 font-semibold text-sm"
+                  >
+                    View on Amazon →
+                  </a>
+                </div>
+              </div>
+
+              {/* Book 2 */}
+              <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition overflow-hidden text-center">
+                <img
+                  src="https://m.media-amazon.com/images/I/71o+ymT5L5L._SY522_.jpg"
+                  alt="Uprooting Thorns From Your Marriage"
+                  className="w-full h-72 object-cover"
+                />
+                <div className="p-4">
+                  <h3 className="font-bold text-lg text-plum mb-2">Uprooting Thorns From Your Marriage</h3>
+                  <p className="text-sm text-charcoal/70 mb-4">Healing wounds and restoring joy in your covenant relationship.</p>
+                  <a
+                    href="https://www.amazon.com/Uprooting-Thorns-Your-Marriage-Relationship/dp/B0D6JB7J6K"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gold hover:text-gold/80 font-semibold text-sm"
+                  >
+                    View on Amazon →
+                  </a>
+                </div>
+              </div>
+
+              {/* Book 3 */}
+              <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition overflow-hidden text-center">
+                <img
+                  src="https://m.media-amazon.com/images/I/71TaJZQp0dL._SY522_.jpg"
+                  alt="Your Kingdom Marriage"
+                  className="w-full h-72 object-cover"
+                />
+                <div className="p-4">
+                  <h3 className="font-bold text-lg text-plum mb-2">Your Kingdom Marriage</h3>
+                  <p className="text-sm text-charcoal/70 mb-4">Building a marriage that reflects God&apos;s kingdom on earth.</p>
+                  <a
+                    href="https://www.amazon.com/Your-Kingdom-Marriage-Delphine-Nforgwei/dp/B0CYL6RZHK"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gold hover:text-gold/80 font-semibold text-sm"
+                  >
+                    View on Amazon →
+                  </a>
+                </div>
+              </div>
+
+              {/* Book 4 */}
+              <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition overflow-hidden text-center">
+                <img
+                  src="https://m.media-amazon.com/images/I/71hEFQ8DKOL._SY522_.jpg"
+                  alt="The Divine Order"
+                  className="w-full h-72 object-cover"
+                />
+                <div className="p-4">
+                  <h3 className="font-bold text-lg text-plum mb-2">The Divine Order</h3>
+                  <p className="text-sm text-charcoal/70 mb-4">Restoring alignment with God&apos;s design for marriage and family.</p>
+                  <a
+                    href="https://www.amazon.com/Divine-Order-Delphine-Nforgwei/dp/B0CV6H3VJH"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gold hover:text-gold/80 font-semibold text-sm"
+                  >
+                    View on Amazon →
+                  </a>
+                </div>
+              </div>
+
+              {/* Book 5 */}
+              <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition overflow-hidden text-center">
+                <img
+                  src="https://m.media-amazon.com/images/I/71hf0K9xBAL._SY522_.jpg"
+                  alt="The Covenant Woman"
+                  className="w-full h-72 object-cover"
+                />
+                <div className="p-4">
+                  <h3 className="font-bold text-lg text-plum mb-2">The Covenant Woman</h3>
+                  <p className="text-sm text-charcoal/70 mb-4">Empowering women to walk in purpose, strength, and divine identity.</p>
+                  <a
+                    href="https://www.amazon.com/Covenant-Woman-Delphine-Nforgwei/dp/B0CQGN3FZK"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gold hover:text-gold/80 font-semibold text-sm"
+                  >
+                    View on Amazon →
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* CTA */}
+            <div className="text-center mt-12">
+              <p className="text-charcoal/70 mb-6">
+                Explore all publications and conference materials on Delphine&apos;s official website.
+              </p>
+              <a
+                href="https://delphine-nforgwei.com/books"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block bg-gold text-charcoal font-semibold px-8 py-4 rounded-lg shadow-lg hover:bg-gold/90 transition"
+              >
+                Visit Official Bookstore
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* Marriage Crisis Section */}
+        <section id="crisis" className="py-20 px-4 bg-charcoal/5">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold text-center text-plum mb-8">
+              The Marriage Crisis of Our Generation
+            </h2>
+            <p className="text-lg md:text-xl text-center text-charcoal/80 mb-16 max-w-3xl mx-auto">
+              Marriages are under pressure. Families are hurting. Many desire help but don&apos;t know where to turn.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+              <div className="text-center px-6">
+                <h3 className="text-2xl md:text-3xl font-bold text-plum mb-4">
+                  Broken Trust
+                </h3>
+                <p className="text-charcoal/70 leading-relaxed">
+                  Betrayal, emotional distance, and communication breakdown are tearing couples apart. The foundation of trust that marriage requires is crumbling in too many homes.
+                </p>
+              </div>
+              <div className="text-center px-6">
+                <h3 className="text-2xl md:text-3xl font-bold text-plum mb-4">
+                  Hurting Families
+                </h3>
+                <p className="text-charcoal/70 leading-relaxed">
+                  Children bear the weight of instability. Generational wounds are passed down. The ripple effect of broken marriages extends far beyond the couple.
+                </p>
+              </div>
+              <div className="text-center px-6">
+                <h3 className="text-2xl md:text-3xl font-bold text-plum mb-4">
+                  Unprepared Counselors
+                </h3>
+                <p className="text-charcoal/70 leading-relaxed">
+                  Passionate leaders want to help but lack structured training and proven tools. Good intentions alone cannot heal what is broken.
+                </p>
+              </div>
+            </div>
+            <p className="text-xl md:text-2xl font-bold text-center text-plum">
+              SMCC exists to bridge this gap.
+            </p>
+          </div>
+        </section>
+
+        {/* The Bigger Question Section */}
+        <section className="py-24 px-4 bg-blush/30">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-5xl md:text-6xl font-bold text-center text-plum mb-8">
+              The Bigger Question
+            </h2>
+            <p className="text-lg md:text-xl text-center text-charcoal/80 mb-16 max-w-3xl mx-auto leading-relaxed">
+              If marriage is the foundation of society, what happens when that foundation weakens? The crisis is not merely emotional — it is cultural, spiritual, and generational.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
+              {/* Left Column */}
+              <div>
+                <h3 className="text-3xl md:text-4xl font-bold text-plum mb-6">
+                  A Spiritual Mandate
+                </h3>
+                <p className="text-lg text-charcoal/80 leading-relaxed">
+                  We believe marriage was designed with divine intention. When biblical principles are misunderstood or neglected, families suffer. Restoration requires both spiritual clarity and practical competence.
+                </p>
+              </div>
+
+              {/* Right Column */}
+              <div>
+                <h3 className="text-3xl md:text-4xl font-bold text-plum mb-6">
+                  A Cultural Responsibility
+                </h3>
+                <p className="text-lg text-charcoal/80 leading-relaxed">
+                  A nation&apos;s future is shaped in its homes. Strong marriages create stable communities, responsible leadership, and generational legacy. The work of counseling is therefore not optional — it is strategic.
+                </p>
+              </div>
+            </div>
+
+            <p className="text-2xl md:text-3xl font-bold text-center text-plum">
+              SMCC exists at the intersection of faith, structure, and transformation.
+            </p>
+          </div>
+        </section>
+
+        {/* SMCC Framework Section */}
+        <section className="py-24 px-4 bg-white">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold text-center text-plum mb-6">
+              The SMCC Framework
+            </h2>
+            <p className="text-lg md:text-xl text-center text-charcoal/70 mb-20 max-w-3xl mx-auto">
+              A structured pathway to restore marriages and equip confident counselors.
+            </p>
+
+            <div className="space-y-16">
+              {/* Step 01 */}
+              <div className="flex flex-col md:flex-row gap-6 md:gap-12 items-start">
+                <div className="flex-shrink-0">
+                  <span className="text-6xl md:text-7xl font-bold text-gold">01</span>
+                </div>
+                <div className="flex-1 pt-2">
+                  <h3 className="text-3xl md:text-4xl font-bold text-plum mb-4">
+                    Alignment
+                  </h3>
+                  <p className="text-lg md:text-xl text-charcoal/70 leading-relaxed">
+                    Align relationships with divine purpose and shared vision.
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 02 */}
+              <div className="flex flex-col md:flex-row gap-6 md:gap-12 items-start">
+                <div className="flex-shrink-0">
+                  <span className="text-6xl md:text-7xl font-bold text-gold">02</span>
+                </div>
+                <div className="flex-1 pt-2">
+                  <h3 className="text-3xl md:text-4xl font-bold text-plum mb-4">
+                    Restoration
+                  </h3>
+                  <p className="text-lg md:text-xl text-charcoal/70 leading-relaxed">
+                    Heal broken trust, rebuild communication, and restore emotional intimacy.
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 03 */}
+              <div className="flex flex-col md:flex-row gap-6 md:gap-12 items-start">
+                <div className="flex-shrink-0">
+                  <span className="text-6xl md:text-7xl font-bold text-gold">03</span>
+                </div>
+                <div className="flex-1 pt-2">
+                  <h3 className="text-3xl md:text-4xl font-bold text-plum mb-4">
+                    Leadership
+                  </h3>
+                  <p className="text-lg md:text-xl text-charcoal/70 leading-relaxed">
+                    Equip counselors and coaches with ethical, practical, and biblically grounded frameworks.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Why Leaders Trust SMCC */}
+        <section className="py-24 px-4 bg-charcoal/5">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold text-center text-plum mb-6">
+              Why Leaders Trust SMCC
+            </h2>
+            <p className="text-lg md:text-xl text-center text-charcoal/70 mb-16 max-w-3xl mx-auto leading-relaxed">
+              SMCC is built on biblical conviction, structured methodology, and measurable transformation.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+              <div className="text-center">
+                <h3 className="text-2xl md:text-3xl font-bold text-plum mb-4">
+                  Faith-Centered
+                </h3>
+                <p className="text-charcoal/70 leading-relaxed">
+                  Every framework is grounded in biblical truth and spiritual accountability.
+                </p>
+              </div>
+
+              <div className="text-center">
+                <h3 className="text-2xl md:text-3xl font-bold text-plum mb-4">
+                  Structured Training
+                </h3>
+                <p className="text-charcoal/70 leading-relaxed">
+                  Not inspiration alone — but practical systems, case simulations, and proven counseling tools.
+                </p>
+              </div>
+
+              <div className="text-center">
+                <h3 className="text-2xl md:text-3xl font-bold text-plum mb-4">
+                  Professional Integrity
+                </h3>
+                <p className="text-charcoal/70 leading-relaxed">
+                  Certification, accountability, and excellence that builds long-term credibility.
+                </p>
+              </div>
+            </div>
+
+            <div className="border-t border-charcoal/10 my-8"></div>
+
+            <blockquote className="text-center">
+              <p className="text-2xl md:text-3xl italic text-plum/90 max-w-2xl mx-auto">
+                &ldquo;Strong marriages build strong nations.&rdquo;
+              </p>
+            </blockquote>
+          </div>
+        </section>
+
+        {/* Frequently Asked Questions */}
+        <section className="py-24 px-4 bg-white">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold text-center text-plum mb-16">
+              Frequently Asked Questions
+            </h2>
+
+            <div className="space-y-6">
+              {/* FAQ 1 */}
+              <div className="bg-white border border-charcoal/10 rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow">
+                <h3 className="text-xl md:text-2xl font-bold text-plum mb-3">
+                  Who can enroll in SMCC?
+                </h3>
+                <p className="text-charcoal/70 leading-relaxed">
+                  SMCC is open to pastors, ministry leaders, aspiring marriage counselors, coaches, and Christian professionals committed to restoring families.
+                </p>
+              </div>
+
+              {/* FAQ 2 */}
+              <div className="bg-white border border-charcoal/10 rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow">
+                <h3 className="text-xl md:text-2xl font-bold text-plum mb-3">
+                  What is the registration fee?
+                </h3>
+                <p className="text-charcoal/70 leading-relaxed">
+                  The registration fee for Cohort 2026 is 150,000 FCFA. Payment confirms your place in the cohort.
+                </p>
+              </div>
+
+              {/* FAQ 3 */}
+              <div className="bg-white border border-charcoal/10 rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow">
+                <h3 className="text-xl md:text-2xl font-bold text-plum mb-3">
+                  Is the training practical or theoretical?
+                </h3>
+                <p className="text-charcoal/70 leading-relaxed">
+                  SMCC combines biblical foundations with structured frameworks, case simulations, and practical counseling tools.
+                </p>
+              </div>
+
+              {/* FAQ 4 */}
+              <div className="bg-white border border-charcoal/10 rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow">
+                <h3 className="text-xl md:text-2xl font-bold text-plum mb-3">
+                  Will I receive certification?
+                </h3>
+                <p className="text-charcoal/70 leading-relaxed">
+                  Yes. Participants who complete the program requirements receive formal certification from SMCC.
+                </p>
+              </div>
+
+              {/* FAQ 5 */}
+              <div className="bg-white border border-charcoal/10 rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow">
+                <h3 className="text-xl md:text-2xl font-bold text-plum mb-3">
+                  How do I begin?
+                </h3>
+                <p className="text-charcoal/70 leading-relaxed">
+                  Click &ldquo;Start Your Application,&rdquo; complete the enrollment form, and follow the payment instructions provided.
+                </p>
+              </div>
             </div>
           </div>
         </section>
@@ -81,6 +573,130 @@ export default function Home() {
                 </p>
               </div>
             </div>
+
+            {/* Program Framework Block */}
+            <div className="mt-16">
+              <h3 className="text-3xl font-bold text-center text-plum mb-6">
+                Program Framework
+              </h3>
+              <p className="text-lg text-center text-charcoal/80 mb-12 max-w-3xl mx-auto">
+                Our curriculum combines biblical foundations with structured counseling methodology and supervised practical training.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <div>
+                  <h4 className="text-2xl font-bold text-plum mb-4">
+                    Biblical Foundations
+                  </h4>
+                  <p className="text-charcoal/80 leading-relaxed">
+                    Marriage theology, covenant principles, reconciliation models, and spiritual leadership within the family.
+                  </p>
+                </div>
+                <div>
+                  <h4 className="text-2xl font-bold text-plum mb-4">
+                    Counseling Methodology
+                  </h4>
+                  <p className="text-charcoal/80 leading-relaxed">
+                    Structured intake systems, assessment tools, communication repair frameworks, and conflict resolution models.
+                  </p>
+                </div>
+                <div>
+                  <h4 className="text-2xl font-bold text-plum mb-4">
+                    Practical Application
+                  </h4>
+                  <p className="text-charcoal/80 leading-relaxed">
+                    Case simulations, supervised practice, ethical standards, and real-world coaching implementation.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Program Structure */}
+        <section className="py-24 px-4 bg-white">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold text-plum text-center mb-16">
+              Program Structure
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+              <div className="bg-charcoal/5 p-8 rounded-xl shadow-sm">
+                <h3 className="text-2xl font-bold text-plum mb-4">
+                  Foundation Phase
+                </h3>
+                <p className="text-charcoal/80 leading-relaxed">
+                  Biblical theology of marriage, covenant principles, identity in Christ, and spiritual leadership within counseling contexts. Students develop a theological framework that anchors all practical intervention.
+                </p>
+              </div>
+
+              <div className="bg-charcoal/5 p-8 rounded-xl shadow-sm">
+                <h3 className="text-2xl font-bold text-plum mb-4">
+                  Practical Training Phase
+                </h3>
+                <p className="text-charcoal/80 leading-relaxed">
+                  Structured counseling frameworks, case simulations, communication diagnostics, conflict resolution systems, and intervention tools. Students learn to apply theory through guided practice and scenario-based training.
+                </p>
+              </div>
+
+              <div className="bg-charcoal/5 p-8 rounded-xl shadow-sm">
+                <h3 className="text-2xl font-bold text-plum mb-4">
+                  Supervised Application
+                </h3>
+                <p className="text-charcoal/80 leading-relaxed">
+                  Live case supervision with experienced mentors, guided feedback sessions, ethical practice standards, and structured evaluation. Students integrate learning into real-world counseling scenarios.
+                </p>
+              </div>
+            </div>
+
+            <p className="text-xl md:text-2xl font-semibold text-center text-plum mt-16">
+              Graduates leave equipped not only with knowledge — but with applied competence.
+            </p>
+          </div>
+        </section>
+
+        {/* Graduate Impact */}
+        <section className="py-28 px-4 bg-charcoal/5">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-4xl md:text-6xl font-bold text-plum text-center mb-20">
+              Graduate Impact
+            </h2>
+
+            <p className="text-lg text-charcoal/80 text-center max-w-3xl mx-auto mb-16">
+              Our graduates do not merely complete a course. They step into structured impact.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+              <div className="bg-white p-10 rounded-xl shadow-md text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                <h3 className="text-2xl font-bold text-plum mb-4">
+                  Marriage Restoration
+                </h3>
+                <p className="text-charcoal/80 leading-relaxed">
+                  SMCC-trained counselors apply evidence-based frameworks and biblical principles to rebuild broken trust, resolve entrenched conflict, and restore covenant alignment in measurable, sustained outcomes.
+                </p>
+              </div>
+
+              <div className="bg-white p-10 rounded-xl shadow-md text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                <h3 className="text-2xl font-bold text-plum mb-4">
+                  Church & Community Leadership
+                </h3>
+                <p className="text-charcoal/80 leading-relaxed">
+                  Our graduates establish structured counseling ministries within local churches, train lay leaders, and build sustainable support systems that bring professional-level family care to entire communities.
+                </p>
+              </div>
+
+              <div className="bg-white p-10 rounded-xl shadow-md text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                <h3 className="text-2xl font-bold text-plum mb-4">
+                  Generational Transformation
+                </h3>
+                <p className="text-charcoal/80 leading-relaxed">
+                  By strengthening the family unit at its foundation, SMCC graduates break cycles of relational dysfunction, create environments where children flourish, and establish legacy patterns of covenant faithfulness.
+                </p>
+              </div>
+            </div>
+
+            <p className="text-2xl font-semibold text-plum text-center mt-16">
+              Strong marriages build strong nations.
+            </p>
           </div>
         </section>
 
@@ -99,12 +715,452 @@ export default function Home() {
                 Registration opens soon. Be among the first to know when dates are announced.
               </p>
               <a
-                href="#enroll"
+                href="#admissions"
                 className="inline-block bg-gold hover:bg-gold/90 text-charcoal font-semibold px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105"
               >
-                Get Notified
+                Apply Now
               </a>
             </div>
+
+            {/* Certification & Investment Block */}
+            <div className="mt-16">
+              <h3 className="text-3xl font-bold text-center text-plum mb-6">
+                Certification & Investment
+              </h3>
+              <p className="text-lg text-center text-charcoal/80 mb-12 max-w-2xl mx-auto">
+                SMCC provides structured, professional training designed to equip you for real counseling impact. Certification is awarded upon successful completion of coursework and practical requirements.
+              </p>
+
+              <div className="bg-blush rounded-xl p-10 shadow-xl max-w-xl mx-auto text-center">
+                <p className="text-4xl font-bold text-plum mb-2">
+                  150,000 XAF
+                </p>
+                <p className="text-charcoal/70 text-sm">
+                  Registration fee: 50,000 XAF<br />
+                  Remaining balance payable before certification.
+                </p>
+
+                <div className="my-6 border-t border-charcoal/20"></div>
+
+                <ul className="text-charcoal/80 text-left space-y-2 mb-8">
+                  <li>• Full program access</li>
+                  <li>• Practical training & supervision</li>
+                  <li>• Official SMCC certification</li>
+                </ul>
+
+                <a
+                  href="#admissions"
+                  className="inline-block bg-gold hover:bg-gold/90 text-charcoal font-semibold px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-xl"
+                >
+                  Secure Your Seat
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Certification Program Structure */}
+        <section className="py-24 px-4 bg-white">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold text-center text-plum mb-6">
+              Certification Program Structure
+            </h2>
+            <p className="text-lg md:text-xl text-center text-charcoal/70 mb-16 max-w-3xl mx-auto">
+              A rigorous, practical, and spiritually grounded formation journey.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              {/* Module 1 */}
+              <div className="rounded-lg border border-charcoal/10 p-8">
+                <h3 className="text-2xl md:text-3xl font-bold text-plum mb-4">
+                  Foundations of Marriage Theology
+                </h3>
+                <p className="text-charcoal/70 leading-relaxed">
+                  Biblical worldview of covenant, identity, purpose, and divine alignment.
+                </p>
+              </div>
+
+              {/* Module 2 */}
+              <div className="rounded-lg border border-charcoal/10 p-8">
+                <h3 className="text-2xl md:text-3xl font-bold text-plum mb-4">
+                  Counseling Psychology & Emotional Intelligence
+                </h3>
+                <p className="text-charcoal/70 leading-relaxed">
+                  Trauma awareness, attachment patterns, communication systems, and emotional regulation.
+                </p>
+              </div>
+
+              {/* Module 3 */}
+              <div className="rounded-lg border border-charcoal/10 p-8">
+                <h3 className="text-2xl md:text-3xl font-bold text-plum mb-4">
+                  Conflict Resolution & Restoration Systems
+                </h3>
+                <p className="text-charcoal/70 leading-relaxed">
+                  Structured mediation frameworks, trust rebuilding models, reconciliation protocols.
+                </p>
+              </div>
+
+              {/* Module 4 */}
+              <div className="rounded-lg border border-charcoal/10 p-8">
+                <h3 className="text-2xl md:text-3xl font-bold text-plum mb-4">
+                  Coaching Practice & Ethics
+                </h3>
+                <p className="text-charcoal/70 leading-relaxed">
+                  Supervised sessions, case studies, ethical standards, and professional boundaries.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Leadership & Institutional Oversight */}
+        <section className="py-24 px-4 bg-charcoal/5">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold text-center text-plum mb-6">
+              Leadership & Institutional Oversight
+            </h2>
+            <p className="text-lg md:text-xl text-center text-charcoal/70 mb-16 max-w-3xl mx-auto">
+              Guided by experienced mentors, governed with integrity.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-16">
+              {/* Academic Direction */}
+              <div>
+                <h3 className="text-2xl md:text-3xl font-bold text-plum mb-6">
+                  Academic Direction
+                </h3>
+                <p className="text-lg text-charcoal/70 leading-relaxed">
+                  SMCC is led by seasoned marriage mentors, ministry leaders, and counseling practitioners committed to academic rigor and spiritual maturity. Our leadership brings decades of hands-on experience, theological depth, and a heart for seeing marriages restored and counselors equipped.
+                </p>
+              </div>
+
+              {/* Ethical Governance */}
+              <div>
+                <h3 className="text-2xl md:text-3xl font-bold text-plum mb-6">
+                  Ethical Governance
+                </h3>
+                <p className="text-lg text-charcoal/70 leading-relaxed">
+                  We are committed to structured supervision, accountability, biblical integrity, and professional standards. Every aspect of our program is designed to uphold ethical excellence, ensuring that graduates serve with both competence and character.
+                </p>
+              </div>
+            </div>
+
+            <p className="text-2xl md:text-3xl font-bold text-center text-plum">
+              SMCC is not an event. It is an institution.
+            </p>
+          </div>
+        </section>
+
+        {/* Program Investment Section */}
+        <section className="py-24 px-4 bg-white">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-4xl md:text-5xl font-bold text-plum mb-8">
+              Program Investment
+            </h2>
+
+            <p className="text-lg text-charcoal/80 mb-10 max-w-3xl mx-auto">
+              This immersive 12-week training program equips you with practical counseling
+              frameworks, biblical foundations, and professional integrity to restore marriages
+              and strengthen families.
+            </p>
+
+            <div className="bg-blush p-10 rounded-xl shadow-xl mb-8">
+              <p className="text-4xl font-bold text-plum mb-2">
+                CFA 150,000
+              </p>
+              <p className="text-charcoal/70">
+                One-time payment for full program access and certification.
+              </p>
+            </div>
+
+            <p className="text-charcoal/70 mb-8">
+              Limited seats available to ensure a focused and interactive cohort experience.
+            </p>
+
+            <a
+              href="https://buy.stripe.com/test_6oUdRa0pu12t2U7d1jgMw00"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-gold hover:bg-gold/90 text-charcoal font-semibold px-10 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-xl"
+            >
+              Secure Your Spot — Cohort 2026
+            </a>
+          </div>
+        </section>
+
+        {/* Application Section */}
+        <section id="admissions" className="py-24 px-4 bg-blush">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold text-center text-plum mb-8">
+              Application Form — Cohort 2026
+            </h2>
+
+            <p className="text-lg text-center text-charcoal/80 mb-12">
+              Complete the form below to begin your application. Our admissions team will review
+              and contact you with next steps.
+            </p>
+
+            <form className="space-y-6 bg-white p-10 rounded-xl shadow-xl">
+              <div>
+                <label className="block mb-2 font-semibold text-charcoal">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-plum"
+                  placeholder="Enter your full name"
+                />
+              </div>
+
+              <div>
+                <label className="block mb-2 font-semibold text-charcoal">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-plum"
+                  placeholder="Enter your email"
+                />
+              </div>
+
+              <div>
+                <label className="block mb-2 font-semibold text-charcoal">
+                  WhatsApp Number
+                </label>
+                <input
+                  type="tel"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-plum"
+                  placeholder="+237..."
+                />
+              </div>
+
+              <div>
+                <label className="block mb-2 font-semibold text-charcoal">
+                  What best describes you?
+                </label>
+                <select className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-plum">
+                  <option>Pastor / Church Leader</option>
+                  <option>Aspiring Counselor</option>
+                  <option>Relationship Coach</option>
+                  <option>Married Couple Seeking Growth</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block mb-2 font-semibold text-charcoal">
+                  Why do you want to join SMCC?
+                </label>
+                <textarea
+                  rows={4}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-plum"
+                  placeholder="Briefly describe your motivation"
+                />
+              </div>
+
+              <div className="text-center pt-6">
+                <button
+                  type="submit"
+                  className="bg-gold hover:bg-gold/90 text-charcoal font-semibold px-10 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-xl"
+                >
+                  Submit Application
+                </button>
+                <p className="text-charcoal/60 text-sm mt-4">
+                  Our admissions team will respond via email after submission.
+                </p>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        {/* Tuition & Investment */}
+        <section className="py-24 px-4 bg-charcoal/5">
+          <div className="max-w-5xl mx-auto text-center">
+            <h2 className="text-4xl md:text-5xl font-bold text-plum mb-10">
+              Tuition & Investment
+            </h2>
+            <p className="text-lg text-charcoal/80 max-w-3xl mx-auto mb-16">
+              Professional training requires structured investment. Our tuition reflects the depth, supervision, and certification standards of the program.
+            </p>
+
+            <div className="bg-white rounded-2xl shadow-xl p-12 max-w-xl mx-auto">
+              <p className="uppercase tracking-wide text-sm text-charcoal/60 mb-4">
+                Cohort 2026
+              </p>
+              <p className="text-5xl font-bold text-plum mb-4">
+                150,000 XAF
+              </p>
+              <p className="text-charcoal/70 mb-6">
+                One-time program fee
+              </p>
+
+              <div className="border-t border-charcoal/10 my-6"></div>
+
+              <ul className="space-y-3 text-charcoal/80 text-left mb-8">
+                <li>• Full curriculum access</li>
+                <li>• Training materials</li>
+                <li>• Supervised practical sessions</li>
+                <li>• Certification upon completion</li>
+              </ul>
+
+              <a
+                href="#admissions"
+                className="inline-block bg-gold hover:bg-gold/90 text-charcoal font-semibold px-10 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg mt-8"
+              >
+                Secure Your Seat
+              </a>
+            </div>
+
+            <p className="text-sm text-charcoal/60 mt-6">
+              Limited seats available. Early application recommended.
+            </p>
+          </div>
+        </section>
+
+        {/* Application Form */}
+        <section className="py-28 px-4 bg-white">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold text-plum text-center mb-8">
+              Start Your Application
+            </h2>
+
+            <p className="text-charcoal/80 text-center mb-16">
+              Complete the form below. Our admissions team will review your application and contact you via WhatsApp.
+            </p>
+
+            <form method="POST" action="#" autoComplete="off" className="space-y-6">
+              {/* Full Name */}
+              <div>
+                <label htmlFor="fullName" className="block text-charcoal font-semibold mb-2">
+                  Full Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="fullName"
+                  name="fullName"
+                  required
+                  className="w-full border border-charcoal/20 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-plum/40 transition"
+                  placeholder="Enter your full name"
+                />
+              </div>
+
+              {/* Email */}
+              <div>
+                <label htmlFor="email" className="block text-charcoal font-semibold mb-2">
+                  Email <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  className="w-full border border-charcoal/20 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-plum/40 transition"
+                  placeholder="your.email@example.com"
+                />
+              </div>
+
+              {/* Phone Number */}
+              <div>
+                <label htmlFor="phone" className="block text-charcoal font-semibold mb-2">
+                  Phone Number <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  required
+                  className="w-full border border-charcoal/20 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-plum/40 transition"
+                  placeholder="+237..."
+                />
+              </div>
+
+              {/* City / Country */}
+              <div>
+                <label htmlFor="location" className="block text-charcoal font-semibold mb-2">
+                  City / Country
+                </label>
+                <input
+                  type="text"
+                  id="location"
+                  name="location"
+                  className="w-full border border-charcoal/20 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-plum/40 transition"
+                  placeholder="e.g., Yaoundé, Cameroon"
+                />
+              </div>
+
+              {/* Occupation */}
+              <div>
+                <label htmlFor="occupation" className="block text-charcoal font-semibold mb-2">
+                  Occupation
+                </label>
+                <input
+                  type="text"
+                  id="occupation"
+                  name="occupation"
+                  className="w-full border border-charcoal/20 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-plum/40 transition"
+                  placeholder="e.g., Pastor, Counselor, Teacher"
+                />
+              </div>
+
+              {/* How did you hear about SMCC */}
+              <div>
+                <label htmlFor="referralSource" className="block text-charcoal font-semibold mb-2">
+                  How did you hear about SMCC?
+                </label>
+                <select
+                  id="referralSource"
+                  name="referralSource"
+                  className="w-full border border-charcoal/20 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-plum/40 transition"
+                >
+                  <option value="">Select an option</option>
+                  <option value="church">Church</option>
+                  <option value="social-media">Social Media</option>
+                  <option value="friend">Friend</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              {/* Why do you want to join */}
+              <div>
+                <label htmlFor="motivation" className="block text-charcoal font-semibold mb-2">
+                  Why do you want to join Cohort 2026?
+                </label>
+                <textarea
+                  id="motivation"
+                  name="motivation"
+                  rows={5}
+                  className="w-full border border-charcoal/20 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-plum/40 transition resize-none"
+                  placeholder="Share your motivation and goals..."
+                />
+              </div>
+
+              {/* Tuition Acknowledgment Checkbox */}
+              <div className="flex items-start gap-3">
+                <input
+                  type="checkbox"
+                  id="tuitionAcknowledgment"
+                  name="tuitionAcknowledgment"
+                  required
+                  className="mt-1 w-5 h-5 text-plum border-charcoal/20 rounded focus:ring-plum/40"
+                />
+                <label htmlFor="tuitionAcknowledgment" className="text-charcoal/80">
+                  I understand the tuition fee is 150,000 XAF and I am prepared to proceed.
+                </label>
+              </div>
+
+              {/* Divider */}
+              <hr className="my-8 border-charcoal/10" />
+
+              {/* Submit Button */}
+              <div className="text-center pt-6">
+                <button
+                  type="submit"
+                  className="bg-gold hover:bg-gold/90 text-charcoal font-semibold px-10 py-4 rounded-lg transition-all"
+                >
+                  Submit Application
+                </button>
+                <p className="text-sm text-charcoal/60 text-center mt-4">
+                  We will contact you directly via WhatsApp. Please ensure your number is correct.
+                </p>
+              </div>
+            </form>
           </div>
         </section>
 
@@ -115,7 +1171,7 @@ export default function Home() {
 
       {/* WhatsApp Floating Button */}
       <a
-        href="https://wa.me/237XXXXXXXXX"
+        href="https://wa.me/237671652744"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-24 md:bottom-8 right-4 md:right-8 z-40 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-110"
@@ -130,13 +1186,13 @@ export default function Home() {
       <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white border-t border-gray-200 shadow-2xl">
         <div className="flex">
           <a
-            href="#enroll"
+            href="#admissions"
             className="flex-1 bg-gold hover:bg-gold/90 text-charcoal font-semibold py-4 text-center transition-colors"
           >
-            Enroll Now
+            Apply 2026
           </a>
           <a
-            href="https://wa.me/237XXXXXXXXX"
+            href="https://wa.me/237671652744"
             target="_blank"
             rel="noopener noreferrer"
             className="flex-1 bg-green-500 hover:bg-green-600 text-white font-semibold py-4 text-center flex items-center justify-center gap-2 transition-colors"
