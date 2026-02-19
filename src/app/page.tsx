@@ -2,6 +2,10 @@ import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CTA from "@/components/CTA";
+import CohortSection from "@/components/CohortSection";
+import PillarsSection from "@/components/PillarsSection";
+import ApplicationForm from "@/components/ApplicationForm";
+import { COHORTS } from "@/data/programs";
 
 export default function Home() {
   return (
@@ -13,21 +17,24 @@ export default function Home() {
           <div className="max-w-6xl mx-auto text-center">
             <div className="inline-block mb-6 px-6 py-2 bg-gold/20 backdrop-blur-sm rounded-full border border-gold/30">
               <span className="text-gold font-semibold text-sm tracking-wide">
-                Cohort 2026 – Dates Announced Soon
+                Now Enrolling — Cohort I &middot; April 2026
               </span>
             </div>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-              Training Marriage Counselors. Restoring Families. Transforming Nations.
+              THE SCHOOL OF MARRIAGE COUNSELING &amp; COACHING
             </h1>
-            <p className="text-xl md:text-2xl mb-12 text-blush/90 max-w-3xl mx-auto">
-              SMCC is a faith-based, skill-driven institution equipping marriage counselors and coaches with practical frameworks, biblical foundations, and professional integrity.
+            <p className="text-xl md:text-2xl mb-4 text-blush/90 max-w-3xl mx-auto font-semibold">
+              Thriving Marriages. Rising Families. Peaceful Nations.
+            </p>
+            <p className="text-lg mb-12 text-blush/70 max-w-2xl mx-auto">
+              Marriage was designed for more than survival. SMCC equips counselors and coaches with the faith foundations, practical frameworks, and professional integrity to restore what was always meant to thrive.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="/thank-you"
+                href="#admissions"
                 className="inline-block bg-gold hover:bg-gold/90 text-charcoal font-semibold px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-xl"
               >
-                Apply 2026
+                Cohort I — Apply Now
               </a>
               <a
                 href="#program"
@@ -63,6 +70,80 @@ export default function Home() {
                   Cohort-Based 12-Week Intensive
                 </p>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Programs ─────────────────────────────────────────────────── */}
+        {/* Section header */}
+        <div className="bg-white pt-20 px-4">
+          <div className="max-w-6xl mx-auto">
+            <p className="text-xs font-bold tracking-[0.25em] uppercase mb-3" style={{ color: "#C9A227" }}>
+              Our Programs
+            </p>
+            <h2 className="font-playfair text-4xl md:text-5xl font-bold text-plum mb-4 leading-tight">
+              Training &amp; Transformation
+            </h2>
+            <div className="h-0.5 w-10" style={{ backgroundColor: "#C9A227" }} />
+          </div>
+        </div>
+
+        {/* Cohort 1 — active */}
+        <CohortSection program={COHORTS[0]} bg="white" />
+
+        {/* 7 Pillars of Elevation */}
+        <PillarsSection />
+
+        {/* Cohort pathway — future cohorts teaser */}
+        <section className="py-16 px-4 bg-blush">
+          <div className="max-w-5xl mx-auto">
+            <p className="text-xs font-bold tracking-[0.25em] uppercase mb-3 text-center" style={{ color: "#5B1A5D" }}>
+              Program Pathway
+            </p>
+            <h3 className="font-playfair text-2xl md:text-3xl font-bold text-plum text-center mb-2">
+              Foundation to Advanced Certification
+            </h3>
+            <p className="text-charcoal/55 text-center text-sm mb-10 max-w-xl mx-auto">
+              Cohorts 1&ndash;3 progress from foundational training through to full professional certification.
+              Complete one cohort to unlock the next.
+            </p>
+            <div className="grid md:grid-cols-3 gap-6">
+              {COHORTS.map((c) => (
+                <div
+                  key={c.id}
+                  className={`rounded-xl p-7 border transition-shadow duration-200 ${
+                    c.status === "enrolling"
+                      ? "bg-white shadow-lg border-plum/20 hover:shadow-xl"
+                      : "bg-white/60 border-charcoal/10"
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <span
+                      className="font-playfair text-4xl font-bold leading-none"
+                      style={{ color: c.status === "enrolling" ? "#5B1A5D" : "#5B1A5D", opacity: c.status === "enrolling" ? 1 : 0.25 }}
+                    >
+                      {String(c.cohortNumber).padStart(2, "0")}
+                    </span>
+                    {c.status === "enrolling" ? (
+                      <span className="text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full"
+                        style={{ backgroundColor: "#C9A227", color: "#121212" }}>
+                        Open
+                      </span>
+                    ) : (
+                      <span className="text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full bg-charcoal/10 text-charcoal/40">
+                        Soon
+                      </span>
+                    )}
+                  </div>
+                  <h4 className="font-playfair text-lg font-bold text-plum mb-1">{c.heading}</h4>
+                  <p className="text-charcoal/55 text-xs leading-relaxed">{c.subheading}</p>
+                  {c.status === "enrolling" && (
+                    <p className="text-xs font-semibold mt-3" style={{ color: "#C9A227" }}>
+                      {c.date} &middot; {c.phoneDisplay}
+                    </p>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -163,16 +244,18 @@ export default function Home() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 mb-12">
               {/* Book 1 */}
               <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition overflow-hidden text-center">
-                <img
-                  src="https://m.media-amazon.com/images/I/71xLVGhZRaL._SY522_.jpg"
-                  alt="The Blossom Code"
+                <Image
+                  src="/books/book-1.jpg"
+                  alt="L'Épouse VIP"
+                  width={300}
+                  height={288}
                   className="w-full h-72 object-cover"
                 />
                 <div className="p-4">
-                  <h3 className="font-bold text-lg text-plum mb-2">The Blossom Code</h3>
-                  <p className="text-sm text-charcoal/70 mb-4">Unlocking a flourishing life and thriving relationships through biblical principles.</p>
+                  <h3 className="font-bold text-lg text-plum mb-2">L&apos;Épouse VIP</h3>
+                  <p className="text-sm text-charcoal/70 mb-4">Sagesse divine pour l&apos;épouse du 21e siècle.</p>
                   <a
-                    href="https://www.amazon.com/Blossom-Code-Delphine-Nforgwei/dp/B0DFSY9D7Y"
+                    href="https://www.amazon.de/dp/B0DSWKLSW4"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-gold hover:text-gold/80 font-semibold text-sm"
@@ -184,16 +267,18 @@ export default function Home() {
 
               {/* Book 2 */}
               <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition overflow-hidden text-center">
-                <img
-                  src="https://m.media-amazon.com/images/I/71o+ymT5L5L._SY522_.jpg"
-                  alt="Uprooting Thorns From Your Marriage"
+                <Image
+                  src="/books/book-2.jpg"
+                  alt="My Bulletproof Marriage"
+                  width={300}
+                  height={288}
                   className="w-full h-72 object-cover"
                 />
                 <div className="p-4">
-                  <h3 className="font-bold text-lg text-plum mb-2">Uprooting Thorns From Your Marriage</h3>
-                  <p className="text-sm text-charcoal/70 mb-4">Healing wounds and restoring joy in your covenant relationship.</p>
+                  <h3 className="font-bold text-lg text-plum mb-2">My Bulletproof Marriage</h3>
+                  <p className="text-sm text-charcoal/70 mb-4">Practical strategies for building an unshakeable marriage.</p>
                   <a
-                    href="https://www.amazon.com/Uprooting-Thorns-Your-Marriage-Relationship/dp/B0D6JB7J6K"
+                    href="https://www.amazon.de/dp/B0DSJFWJPR"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-gold hover:text-gold/80 font-semibold text-sm"
@@ -205,16 +290,18 @@ export default function Home() {
 
               {/* Book 3 */}
               <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition overflow-hidden text-center">
-                <img
-                  src="https://m.media-amazon.com/images/I/71TaJZQp0dL._SY522_.jpg"
-                  alt="Your Kingdom Marriage"
+                <Image
+                  src="/books/book-3.jpg"
+                  alt="Everyday a Honeymoon"
+                  width={300}
+                  height={288}
                   className="w-full h-72 object-cover"
                 />
                 <div className="p-4">
-                  <h3 className="font-bold text-lg text-plum mb-2">Your Kingdom Marriage</h3>
-                  <p className="text-sm text-charcoal/70 mb-4">Building a marriage that reflects God&apos;s kingdom on earth.</p>
+                  <h3 className="font-bold text-lg text-plum mb-2">Everyday a Honeymoon</h3>
+                  <p className="text-sm text-charcoal/70 mb-4">Daily secrets to a stronger, happier marriage.</p>
                   <a
-                    href="https://www.amazon.com/Your-Kingdom-Marriage-Delphine-Nforgwei/dp/B0CYL6RZHK"
+                    href="https://www.amazon.de/dp/B0DSHX1T37"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-gold hover:text-gold/80 font-semibold text-sm"
@@ -226,16 +313,18 @@ export default function Home() {
 
               {/* Book 4 */}
               <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition overflow-hidden text-center">
-                <img
-                  src="https://m.media-amazon.com/images/I/71hEFQ8DKOL._SY522_.jpg"
-                  alt="The Divine Order"
+                <Image
+                  src="/books/book-4.jpg"
+                  alt="The Attraction Code"
+                  width={300}
+                  height={288}
                   className="w-full h-72 object-cover"
                 />
                 <div className="p-4">
-                  <h3 className="font-bold text-lg text-plum mb-2">The Divine Order</h3>
-                  <p className="text-sm text-charcoal/70 mb-4">Restoring alignment with God&apos;s design for marriage and family.</p>
+                  <h3 className="font-bold text-lg text-plum mb-2">The Attraction Code</h3>
+                  <p className="text-sm text-charcoal/70 mb-4">10 deep secrets to attract your dream partner.</p>
                   <a
-                    href="https://www.amazon.com/Divine-Order-Delphine-Nforgwei/dp/B0CV6H3VJH"
+                    href="https://www.amazon.de/dp/B0DSJFV8HN"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-gold hover:text-gold/80 font-semibold text-sm"
@@ -247,16 +336,18 @@ export default function Home() {
 
               {/* Book 5 */}
               <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition overflow-hidden text-center">
-                <img
-                  src="https://m.media-amazon.com/images/I/71hf0K9xBAL._SY522_.jpg"
-                  alt="The Covenant Woman"
+                <Image
+                  src="/books/book-5.jpg"
+                  alt="The VIP Wife"
+                  width={300}
+                  height={288}
                   className="w-full h-72 object-cover"
                 />
                 <div className="p-4">
-                  <h3 className="font-bold text-lg text-plum mb-2">The Covenant Woman</h3>
-                  <p className="text-sm text-charcoal/70 mb-4">Empowering women to walk in purpose, strength, and divine identity.</p>
+                  <h3 className="font-bold text-lg text-plum mb-2">The VIP Wife</h3>
+                  <p className="text-sm text-charcoal/70 mb-4">Godly wisdom for the 21st-century wife.</p>
                   <a
-                    href="https://www.amazon.com/Covenant-Woman-Delphine-Nforgwei/dp/B0CQGN3FZK"
+                    href="https://www.amazon.de/dp/B0DSVXJ7X8"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-gold hover:text-gold/80 font-semibold text-sm"
@@ -495,7 +586,7 @@ export default function Home() {
                   What is the registration fee?
                 </h3>
                 <p className="text-charcoal/70 leading-relaxed">
-                  The registration fee for Cohort 2026 is 150,000 FCFA. Payment confirms your place in the cohort.
+                  The investment for Cohort I is 50,000 FCFA per cohort. Payment instructions are provided by the admissions team after your application is reviewed.
                 </p>
               </div>
 
@@ -710,9 +801,9 @@ export default function Home() {
               Our intensive program combines theological depth, psychological insight, and practical application to prepare you for excellence in marriage counseling and coaching.
             </p>
             <div className="bg-gradient-to-br from-plum to-plum/90 text-white p-12 rounded-2xl shadow-2xl">
-              <h3 className="text-3xl font-bold mb-6">Cohort 2026</h3>
+              <h3 className="text-3xl font-bold mb-6">Cohort I — April 2026</h3>
               <p className="text-blush text-lg mb-8">
-                Registration opens soon. Be among the first to know when dates are announced.
+                Enrollment is now open. Apply today to secure your place in the inaugural cohort.
               </p>
               <a
                 href="#admissions"
@@ -733,11 +824,10 @@ export default function Home() {
 
               <div className="bg-blush rounded-xl p-10 shadow-xl max-w-xl mx-auto text-center">
                 <p className="text-4xl font-bold text-plum mb-2">
-                  150,000 XAF
+                  50,000 FCFA
                 </p>
                 <p className="text-charcoal/70 text-sm">
-                  Registration fee: 50,000 XAF<br />
-                  Remaining balance payable before certification.
+                  Investment per cohort. Payment instructions provided after application review.
                 </p>
 
                 <div className="my-6 border-t border-charcoal/20"></div>
@@ -864,10 +954,10 @@ export default function Home() {
 
             <div className="bg-blush p-10 rounded-xl shadow-xl mb-8">
               <p className="text-4xl font-bold text-plum mb-2">
-                CFA 150,000
+                50,000 FCFA
               </p>
               <p className="text-charcoal/70">
-                One-time payment for full program access and certification.
+                Investment per cohort. Payment instructions provided after application review.
               </p>
             </div>
 
@@ -876,100 +966,15 @@ export default function Home() {
             </p>
 
             <a
-              href="https://buy.stripe.com/test_6oUdRa0pu12t2U7d1jgMw00"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#admissions"
               className="inline-block bg-gold hover:bg-gold/90 text-charcoal font-semibold px-10 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-xl"
             >
-              Secure Your Spot — Cohort 2026
+              Apply Now — Cohort I
             </a>
           </div>
         </section>
 
         {/* Application Section */}
-        <section id="admissions" className="py-24 px-4 bg-blush">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-bold text-center text-plum mb-8">
-              Application Form — Cohort 2026
-            </h2>
-
-            <p className="text-lg text-center text-charcoal/80 mb-12">
-              Complete the form below to begin your application. Our admissions team will review
-              and contact you with next steps.
-            </p>
-
-            <form className="space-y-6 bg-white p-10 rounded-xl shadow-xl">
-              <div>
-                <label className="block mb-2 font-semibold text-charcoal">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-plum"
-                  placeholder="Enter your full name"
-                />
-              </div>
-
-              <div>
-                <label className="block mb-2 font-semibold text-charcoal">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-plum"
-                  placeholder="Enter your email"
-                />
-              </div>
-
-              <div>
-                <label className="block mb-2 font-semibold text-charcoal">
-                  WhatsApp Number
-                </label>
-                <input
-                  type="tel"
-                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-plum"
-                  placeholder="+237..."
-                />
-              </div>
-
-              <div>
-                <label className="block mb-2 font-semibold text-charcoal">
-                  What best describes you?
-                </label>
-                <select className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-plum">
-                  <option>Pastor / Church Leader</option>
-                  <option>Aspiring Counselor</option>
-                  <option>Relationship Coach</option>
-                  <option>Married Couple Seeking Growth</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block mb-2 font-semibold text-charcoal">
-                  Why do you want to join SMCC?
-                </label>
-                <textarea
-                  rows={4}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-plum"
-                  placeholder="Briefly describe your motivation"
-                />
-              </div>
-
-              <div className="text-center pt-6">
-                <button
-                  type="submit"
-                  className="bg-gold hover:bg-gold/90 text-charcoal font-semibold px-10 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-xl"
-                >
-                  Submit Application
-                </button>
-                <p className="text-charcoal/60 text-sm mt-4">
-                  Our admissions team will respond via email after submission.
-                </p>
-              </div>
-            </form>
-          </div>
-        </section>
-
         {/* Tuition & Investment */}
         <section className="py-24 px-4 bg-charcoal/5">
           <div className="max-w-5xl mx-auto text-center">
@@ -982,13 +987,13 @@ export default function Home() {
 
             <div className="bg-white rounded-2xl shadow-xl p-12 max-w-xl mx-auto">
               <p className="uppercase tracking-wide text-sm text-charcoal/60 mb-4">
-                Cohort 2026
+                Cohort I
               </p>
               <p className="text-5xl font-bold text-plum mb-4">
-                150,000 XAF
+                50,000 FCFA
               </p>
               <p className="text-charcoal/70 mb-6">
-                One-time program fee
+                Investment per cohort
               </p>
 
               <div className="border-t border-charcoal/10 my-6"></div>
@@ -1015,7 +1020,7 @@ export default function Home() {
         </section>
 
         {/* Application Form */}
-        <section className="py-28 px-4 bg-white">
+        <section id="admissions" className="py-28 px-4 bg-white">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold text-plum text-center mb-8">
               Start Your Application
@@ -1025,142 +1030,7 @@ export default function Home() {
               Complete the form below. Our admissions team will review your application and contact you via WhatsApp.
             </p>
 
-            <form method="POST" action="#" autoComplete="off" className="space-y-6">
-              {/* Full Name */}
-              <div>
-                <label htmlFor="fullName" className="block text-charcoal font-semibold mb-2">
-                  Full Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  id="fullName"
-                  name="fullName"
-                  required
-                  className="w-full border border-charcoal/20 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-plum/40 transition"
-                  placeholder="Enter your full name"
-                />
-              </div>
-
-              {/* Email */}
-              <div>
-                <label htmlFor="email" className="block text-charcoal font-semibold mb-2">
-                  Email <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  required
-                  className="w-full border border-charcoal/20 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-plum/40 transition"
-                  placeholder="your.email@example.com"
-                />
-              </div>
-
-              {/* Phone Number */}
-              <div>
-                <label htmlFor="phone" className="block text-charcoal font-semibold mb-2">
-                  Phone Number <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  required
-                  className="w-full border border-charcoal/20 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-plum/40 transition"
-                  placeholder="+237..."
-                />
-              </div>
-
-              {/* City / Country */}
-              <div>
-                <label htmlFor="location" className="block text-charcoal font-semibold mb-2">
-                  City / Country
-                </label>
-                <input
-                  type="text"
-                  id="location"
-                  name="location"
-                  className="w-full border border-charcoal/20 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-plum/40 transition"
-                  placeholder="e.g., Yaoundé, Cameroon"
-                />
-              </div>
-
-              {/* Occupation */}
-              <div>
-                <label htmlFor="occupation" className="block text-charcoal font-semibold mb-2">
-                  Occupation
-                </label>
-                <input
-                  type="text"
-                  id="occupation"
-                  name="occupation"
-                  className="w-full border border-charcoal/20 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-plum/40 transition"
-                  placeholder="e.g., Pastor, Counselor, Teacher"
-                />
-              </div>
-
-              {/* How did you hear about SMCC */}
-              <div>
-                <label htmlFor="referralSource" className="block text-charcoal font-semibold mb-2">
-                  How did you hear about SMCC?
-                </label>
-                <select
-                  id="referralSource"
-                  name="referralSource"
-                  className="w-full border border-charcoal/20 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-plum/40 transition"
-                >
-                  <option value="">Select an option</option>
-                  <option value="church">Church</option>
-                  <option value="social-media">Social Media</option>
-                  <option value="friend">Friend</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-
-              {/* Why do you want to join */}
-              <div>
-                <label htmlFor="motivation" className="block text-charcoal font-semibold mb-2">
-                  Why do you want to join Cohort 2026?
-                </label>
-                <textarea
-                  id="motivation"
-                  name="motivation"
-                  rows={5}
-                  className="w-full border border-charcoal/20 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-plum/40 transition resize-none"
-                  placeholder="Share your motivation and goals..."
-                />
-              </div>
-
-              {/* Tuition Acknowledgment Checkbox */}
-              <div className="flex items-start gap-3">
-                <input
-                  type="checkbox"
-                  id="tuitionAcknowledgment"
-                  name="tuitionAcknowledgment"
-                  required
-                  className="mt-1 w-5 h-5 text-plum border-charcoal/20 rounded focus:ring-plum/40"
-                />
-                <label htmlFor="tuitionAcknowledgment" className="text-charcoal/80">
-                  I understand the tuition fee is 150,000 XAF and I am prepared to proceed.
-                </label>
-              </div>
-
-              {/* Divider */}
-              <hr className="my-8 border-charcoal/10" />
-
-              {/* Submit Button */}
-              <div className="text-center pt-6">
-                <button
-                  type="submit"
-                  className="bg-gold hover:bg-gold/90 text-charcoal font-semibold px-10 py-4 rounded-lg transition-all"
-                >
-                  Submit Application
-                </button>
-                <p className="text-sm text-charcoal/60 text-center mt-4">
-                  We will contact you directly via WhatsApp. Please ensure your number is correct.
-                </p>
-              </div>
-            </form>
+            <ApplicationForm />
           </div>
         </section>
 
@@ -1171,7 +1041,7 @@ export default function Home() {
 
       {/* WhatsApp Floating Button */}
       <a
-        href="https://wa.me/237671652744"
+        href="https://wa.me/237671652144"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-24 md:bottom-8 right-4 md:right-8 z-40 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-110"
@@ -1189,10 +1059,10 @@ export default function Home() {
             href="#admissions"
             className="flex-1 bg-gold hover:bg-gold/90 text-charcoal font-semibold py-4 text-center transition-colors"
           >
-            Apply 2026
+            Cohort I &mdash; Apply Now
           </a>
           <a
-            href="https://wa.me/237671652744"
+            href="https://wa.me/237671652144"
             target="_blank"
             rel="noopener noreferrer"
             className="flex-1 bg-green-500 hover:bg-green-600 text-white font-semibold py-4 text-center flex items-center justify-center gap-2 transition-colors"

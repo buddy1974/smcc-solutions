@@ -17,7 +17,7 @@ export default function CTA() {
             Start Your Application
           </a>
           <a
-            href="https://wa.me/237671652744"
+            href="https://wa.me/237671652144"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block bg-transparent hover:bg-white/10 text-white font-semibold px-10 py-5 rounded-lg transition-all duration-300 border-2 border-white/30 hover:border-white/50"
@@ -27,7 +27,7 @@ export default function CTA() {
         </div>
 
         <p className="text-blush/70 text-sm">
-          Limited seats available for Cohort 2026.
+          Limited seats available for Cohort I &mdash; April 2026.
         </p>
       </div>
     </section>

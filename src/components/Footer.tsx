@@ -1,32 +1,59 @@
+import Image from "next/image";
+import { SMCC_PHONE_DISPLAY, SMCC_PHONE_WA } from "@/data/programs";
+
 export default function Footer() {
   return (
     <footer id="contact" className="bg-charcoal text-white py-12 px-4">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center space-y-6">
-          <div>
-            <h3 className="text-xl font-bold mb-3">
-              School of Marriage Counseling & Coaching (SMCC)
-            </h3>
-            <p className="text-white/80 mb-6">
-              Yaoundé, Cameroon
-            </p>
+
+        {/* Main footer row: logo left · info centre · badge right */}
+        <div className="flex flex-col md:flex-row items-center md:items-start gap-10 md:gap-0 justify-between">
+
+          {/* Left — SMCC wordmark logo */}
+          <div className="flex-shrink-0">
+            <Image
+              src="/logo.png"
+              alt="SMCC Logo"
+              width={120}
+              height={48}
+              className="h-auto"
+            />
           </div>
 
-          <div className="border-t border-white/10 pt-6">
+          {/* Centre — name, location, phone */}
+          <div className="text-center">
+            <h3 className="text-lg font-bold mb-1">
+              School of Marriage Counseling &amp; Coaching (SMCC)
+            </h3>
+            <p className="text-white/50 text-sm mb-4">Yaound&eacute;, Cameroon</p>
             <a
-              href="https://wa.me/237671652744"
+              href={`https://wa.me/${SMCC_PHONE_WA}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white/80 hover:text-gold transition-colors inline-block"
+              className="text-white/70 hover:text-gold transition-colors text-sm"
             >
-              +237 671 652 744
+              {SMCC_PHONE_DISPLAY}
             </a>
           </div>
+
+          {/* Right — footer brand image */}
+          <div className="flex-shrink-0">
+            <Image
+              src="/footer-logo.png"
+              alt="SMCC"
+              width={175}
+              height={175}
+              className="h-auto"
+            />
+          </div>
+
         </div>
 
-        <div className="border-t border-white/10 mt-8 pt-6 text-center text-white/60 text-sm">
-          <p>© 2026 SMCC. All rights reserved.</p>
+        {/* Bottom bar */}
+        <div className="border-t border-white/10 mt-10 pt-6 text-center text-white/35 text-xs">
+          <p>&copy; 2026 SMCC. All rights reserved.</p>
         </div>
+
       </div>
     </footer>
   );

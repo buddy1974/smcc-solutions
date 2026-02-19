@@ -21,7 +21,6 @@ export default function Navbar() {
     { href: "#program", label: "Program" },
     { href: "#founders", label: "Founders" },
     { href: "#admissions", label: "Admissions" },
-    { href: "#testimonials", label: "Testimonials" },
     { href: "#contact", label: "Contact" },
   ];
 
@@ -64,7 +63,7 @@ export default function Navbar() {
               href="#admissions"
               className="bg-gold hover:bg-gold/90 text-charcoal font-semibold px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105"
             >
-              Apply 2026
+              Cohort I — Apply Now
             </a>
           </div>
 
@@ -107,7 +106,7 @@ export default function Navbar() {
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="bg-gold hover:bg-gold/90 text-charcoal font-semibold px-6 py-3 rounded-lg text-center transition-colors mt-2"
               >
-                Apply 2026
+                Cohort I — Apply Now
               </a>
             </div>
           </div>
