@@ -50,8 +50,15 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-white/10 mt-10 pt-6 text-center text-white/35 text-xs">
+        <div className="border-t border-white/10 mt-10 pt-6 text-center text-white/35 text-xs space-y-3">
           <p>&copy; 2026 SMCC. All rights reserved.</p>
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+            <a href="/privacy-policy" className="hover:text-white/60 transition-colors">Privacy Policy</a>
+            <span aria-hidden="true">&middot;</span>
+            <a href="/terms" className="hover:text-white/60 transition-colors">Terms &amp; Conditions</a>
+            <span aria-hidden="true">&middot;</span>
+            <a href="/refund-policy" className="hover:text-white/60 transition-colors">Refund Policy</a>
+          </div>
         </div>
 
       </div>
