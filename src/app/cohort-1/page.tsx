@@ -4,9 +4,15 @@ import Footer from "@/components/Footer";
 import { ManualPaymentBlock } from "@/components/ApplicationForm";
 
 export const metadata: Metadata = {
-  title: "Cohort I — SMCC | Foundations for Faith-Based Family Restoration",
+  title: "Cohort I — SMCC Marriage Counseling Training",
   description:
-    "Join SMCC Cohort I and become a trained, certified marriage counselor and coach. Biblical foundations. Practical tools. Real transformation.",
+    "Enroll in the 12-week faith-based marriage counseling and coaching cohort. 50,000 FCFA investment. Global participants welcome.",
+  openGraph: {
+    title: "Cohort I — SMCC Marriage Counseling Training",
+    description:
+      "Enroll in the 12-week faith-based marriage counseling and coaching cohort. 50,000 FCFA investment. Global participants welcome.",
+    images: [{ url: "/founders.jpg", width: 1200, height: 630, alt: "SMCC Cohort I" }],
+  },
 };
 
 const modules = [

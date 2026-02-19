@@ -15,15 +15,40 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "SMCC | School of Marriage Counseling & Coaching",
-  description: "Restoring Marriages. Equipping Counselors. Transforming Generations. School of Marriage Counseling & Coaching (SMCC) — Yaoundé, Cameroon.",
-  keywords: ["marriage counseling", "coaching", "SMCC", "Cameroon", "Yaoundé", "marriage restoration"],
+  metadataBase: new URL("https://smcc.solutions"),
+  title: {
+    default: "School of Marriage Counseling & Coaching (SMCC)",
+    template: "%s — SMCC",
+  },
+  description:
+    "Faith-based marriage counseling and leadership training program. 12-week structured cohort designed to restore families and equip leaders globally.",
+  keywords: [
+    "Marriage Counseling Cameroon",
+    "Faith-based coaching",
+    "Marriage restoration program",
+    "Leadership training Africa",
+    "SMCC Cohort",
+    "marriage counseling training",
+    "Christian marriage coaching",
+    "Yaoundé Cameroon",
+  ],
   authors: [{ name: "SMCC" }],
   openGraph: {
-    title: "SMCC | School of Marriage Counseling & Coaching",
-    description: "Restoring Marriages. Equipping Counselors. Transforming Generations.",
+    title: "School of Marriage Counseling & Coaching",
+    description:
+      "Structured 12-week global marriage counseling training program. Restore families. Equip leaders.",
     type: "website",
     locale: "en_US",
+    images: [{ url: "/founders.jpg", width: 1200, height: 630, alt: "SMCC Founders" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "School of Marriage Counseling & Coaching (SMCC)",
+    description: "Faith-based 12-week marriage counseling training. Global cohort.",
+    images: ["/founders.jpg"],
+  },
+  alternates: {
+    canonical: "https://smcc.solutions",
   },
 };
 

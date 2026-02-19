@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+
+export const metadata: Metadata = {
+  title: "Testimonials — SMCC",
+  description:
+    "Real transformation stories from SMCC participants across multiple countries. Marriage restoration, leadership growth, and purpose alignment.",
+};
 
 const testimonials = [
   {

@@ -6,22 +6,11 @@ export default function Footer() {
     <footer id="contact" className="bg-charcoal text-white py-12 px-4">
       <div className="max-w-6xl mx-auto">
 
-        {/* Main footer row: logo left · info centre · badge right */}
+        {/* Main footer row: info left · badge right */}
         <div className="flex flex-col md:flex-row items-center md:items-start gap-10 md:gap-0 justify-between">
 
-          {/* Left — SMCC wordmark logo */}
-          <div className="flex-shrink-0">
-            <Image
-              src="/logo.png"
-              alt="SMCC Logo"
-              width={120}
-              height={48}
-              className="h-auto"
-            />
-          </div>
-
-          {/* Centre — name, location, phone */}
-          <div className="text-center">
+          {/* Left — name, location, phone */}
+          <div className="text-center md:text-left">
             <h3 className="text-lg font-bold mb-1">
               School of Marriage Counseling &amp; Coaching (SMCC)
             </h3>
