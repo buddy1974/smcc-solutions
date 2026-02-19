@@ -145,7 +145,7 @@ export default function AssessmentForm() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a
             href="/cohort-1"
-            className="inline-block bg-gold hover:bg-gold/90 text-charcoal font-semibold px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg text-center"
+            className="w-full sm:w-auto bg-gold hover:bg-gold/90 text-charcoal font-semibold px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg text-center"
           >
             Apply to Cohort I
           </a>
@@ -155,7 +155,7 @@ export default function AssessmentForm() {
               setResult(null);
               setAnswers(Array(5).fill(null));
             }}
-            className="inline-block bg-white hover:bg-charcoal/5 text-charcoal font-semibold px-8 py-4 rounded-lg transition-all duration-300 border border-charcoal/20 text-center"
+            className="w-full sm:w-auto bg-white hover:bg-charcoal/5 text-charcoal font-semibold px-8 py-4 rounded-lg transition-all duration-300 border border-charcoal/20 text-center"
           >
             Retake Assessment
           </button>
@@ -231,7 +231,7 @@ export default function AssessmentForm() {
         <button
           type="submit"
           disabled={!allAnswered || loading}
-          className="inline-block bg-gold hover:bg-gold/90 text-charcoal font-semibold px-10 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
+          className="w-full sm:w-auto bg-gold hover:bg-gold/90 text-charcoal font-semibold px-10 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
         >
           {loading ? "Generating Your Report…" : "Get My Personalised Report"}
         </button>

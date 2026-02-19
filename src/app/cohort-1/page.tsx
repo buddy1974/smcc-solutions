@@ -409,6 +409,35 @@ export default function CohortOnePage() {
               <div className="h-0.5 w-10 mx-auto mt-6" style={{ backgroundColor: "#C9A227" }} />
             </div>
 
+            {/* Enrollment Process */}
+            <div className="mb-14 rounded-xl bg-plum/5 border border-plum/10 p-8 max-w-2xl mx-auto">
+              <h3 className="font-playfair text-2xl font-bold text-plum mb-6 text-center">
+                Enrollment Process
+              </h3>
+              <ol className="space-y-4">
+                {[
+                  "Complete Application",
+                  "Secure Your Spot (50,000 FCFA)",
+                  "Receive Confirmation Email",
+                  "Join Cohort Orientation",
+                ].map((step, i) => (
+                  <li key={i} className="flex items-center gap-4">
+                    <span
+                      className="flex-shrink-0 w-8 h-8 rounded-full text-white text-sm font-bold flex items-center justify-center"
+                      style={{ backgroundColor: "#5B1A5D" }}
+                    >
+                      {i + 1}
+                    </span>
+                    <span className="text-charcoal/80 font-medium">{step}</span>
+                  </li>
+                ))}
+              </ol>
+              {/* International participants note */}
+              <p className="text-xs text-charcoal/50 text-center mt-6 pt-4 border-t border-charcoal/10">
+                Participants join from Cameroon, Nigeria, Canada, France, and the United States.
+              </p>
+            </div>
+
             <div className="grid md:grid-cols-2 gap-10 items-start">
 
               {/* Pricing card */}
@@ -600,7 +629,7 @@ export default function CohortOnePage() {
         href="https://wa.me/237671652144"
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-8 right-6 z-50 p-4 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-110"
+        className="fixed bottom-16 right-6 z-40 p-4 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-110"
         style={{ backgroundColor: "#25D366" }}
         aria-label="Contact us on WhatsApp"
       >

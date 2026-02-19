@@ -71,13 +71,13 @@ export default function TestimonialsPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="/cohort-1"
-                className="inline-block bg-gold hover:bg-gold/90 text-charcoal font-semibold px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-xl"
+                className="w-full sm:w-auto bg-gold hover:bg-gold/90 text-charcoal font-semibold px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-xl text-center"
               >
                 Apply Now
               </a>
               <a
                 href="/#contact"
-                className="inline-block bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 border border-white/30 hover:shadow-lg"
+                className="w-full sm:w-auto bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 border border-white/30 hover:shadow-lg text-center"
               >
                 Request Information
               </a>

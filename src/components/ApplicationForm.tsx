@@ -277,7 +277,7 @@ export default function ApplicationForm() {
         <button
           type="submit"
           disabled={loading}
-          className="bg-gold hover:bg-gold/90 disabled:opacity-60 disabled:cursor-not-allowed text-charcoal font-semibold px-12 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg inline-flex items-center gap-3"
+          className="bg-gold hover:bg-gold/90 disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100 text-charcoal font-semibold px-12 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg inline-flex items-center gap-3 w-full sm:w-auto justify-center"
         >
           {loading && (
             <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">

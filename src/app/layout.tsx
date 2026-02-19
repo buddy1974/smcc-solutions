@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
+import StickyBar from "@/components/StickyBar";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -61,6 +62,7 @@ export default function RootLayout({
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
       <body className="antialiased">
         {children}
+        <StickyBar />
       </body>
     </html>
   );
