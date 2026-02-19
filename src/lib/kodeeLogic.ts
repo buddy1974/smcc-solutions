@@ -35,6 +35,7 @@ const steps: Record<string, KodeeStep> = {
       { label: "Marriage Counseling Training", next: "marriage_q1" },
       { label: "Leadership Development", next: "leadership_q1" },
       { label: "I'm Not Sure", next: "not_sure" },
+      { label: "Speak to a Human Advisor", next: "human_escalation" },
     ],
   },
 
@@ -65,6 +66,12 @@ const steps: Record<string, KodeeStep> = {
       { label: "Helping couples", next: "rec_cohort_general" },
       { label: "Leadership growth", next: "rec_assessment" },
     ],
+  },
+
+  human_escalation: {
+    id: "human_escalation",
+    message:
+      "I'd be happy to connect you with a human advisor.\n\nYou can schedule a private advisory session at a time that works best for you below.",
   },
 
   rec_cohort_strong: {
@@ -115,6 +122,20 @@ const steps: Record<string, KodeeStep> = {
     },
   },
 };
+
+// Keywords that trigger human escalation from free-text input
+export const ESCALATION_KEYWORDS = [
+  "talk to someone",
+  "human",
+  "call me",
+  "advisor",
+  "speak to delphine",
+];
+
+export function isEscalationTrigger(text: string): boolean {
+  const lower = text.toLowerCase();
+  return ESCALATION_KEYWORDS.some((kw) => lower.includes(kw));
+}
 
 export function getStep(id: string): KodeeStep {
   return steps[id] ?? steps.welcome;
