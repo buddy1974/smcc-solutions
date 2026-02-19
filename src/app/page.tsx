@@ -5,12 +5,15 @@ import CTA from "@/components/CTA";
 import CohortSection from "@/components/CohortSection";
 import PillarsSection from "@/components/PillarsSection";
 import ApplicationForm from "@/components/ApplicationForm";
+import TrackedLink from "@/components/TrackedLink";
+import PageViewLogger from "@/components/PageViewLogger";
 import { COHORTS } from "@/data/programs";
 
 export default function Home() {
   return (
     <>
       <Navbar />
+      <PageViewLogger page="homepage" />
       <main>
         {/* Hero Section */}
         <section id="home" className="relative bg-gradient-to-br from-plum to-plum/90 text-white pt-32 pb-20 px-4">
@@ -30,12 +33,13 @@ export default function Home() {
               Marriage was designed for more than survival. SMCC equips counselors and coaches with the faith foundations, practical frameworks, and professional integrity to restore what was always meant to thrive.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
+              <TrackedLink
                 href="#admissions"
+                event="Apply_Click"
                 className="inline-block bg-gold hover:bg-gold/90 text-charcoal font-semibold px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-xl"
               >
                 Cohort I — Apply Now
-              </a>
+              </TrackedLink>
               <a
                 href="#program"
                 className="inline-block bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 border border-white/30"

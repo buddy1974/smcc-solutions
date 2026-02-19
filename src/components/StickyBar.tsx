@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { trackEvent } from "@/lib/track";
 
 export default function StickyBar() {
   const [dismissed, setDismissed] = useState(false);
@@ -21,6 +22,7 @@ export default function StickyBar() {
         <div className="flex items-center gap-3 flex-shrink-0">
           <a
             href="/cohort-1"
+            onClick={() => trackEvent("Apply_Click", { source: "sticky_bar" })}
             className="bg-gold hover:bg-gold/90 text-charcoal font-semibold px-5 py-2 rounded-lg text-sm transition-colors whitespace-nowrap"
             style={{ color: "#121212" }}
           >

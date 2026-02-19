@@ -33,6 +33,8 @@ export async function POST(req: NextRequest) {
       motivation,
     } = data;
 
+    const userAgent = req.headers.get("user-agent") ?? "Unknown";
+
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 587,
@@ -84,6 +86,10 @@ export async function POST(req: NextRequest) {
               <tr>
                 <td style="padding:10px 0;color:#777"><strong>Referral</strong></td>
                 <td style="padding:10px 0">${referralSource || "—"}</td>
+              </tr>
+              <tr style="background:#f5f5f5">
+                <td style="padding:10px 8px;color:#777"><strong>User Agent</strong></td>
+                <td style="padding:10px 8px;font-size:11px;color:#888;word-break:break-all">${userAgent}</td>
               </tr>
             </table>
 

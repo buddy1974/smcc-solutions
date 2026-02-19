@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import TrackedLink from "@/components/TrackedLink";
 
 export const metadata: Metadata = {
   title: "Testimonials — SMCC",
@@ -69,12 +70,13 @@ export default function TestimonialsPage() {
               Marriage restoration, leadership growth, and purpose alignment &mdash; across continents.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
+              <TrackedLink
                 href="/cohort-1"
+                event="Apply_Click"
                 className="w-full sm:w-auto bg-gold hover:bg-gold/90 text-charcoal font-semibold px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-xl text-center"
               >
                 Apply Now
-              </a>
+              </TrackedLink>
               <a
                 href="/#contact"
                 className="w-full sm:w-auto bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 border border-white/30 hover:shadow-lg text-center"
@@ -138,12 +140,13 @@ export default function TestimonialsPage() {
             <p className="text-xl text-blush/90 mb-10 max-w-2xl mx-auto">
               Join leaders from across the globe who are building stronger marriages and transforming communities.
             </p>
-            <a
+            <TrackedLink
               href="/cohort-1"
+              event="Apply_Click"
               className="inline-block bg-gold hover:bg-gold/90 text-charcoal font-semibold px-10 py-5 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-xl"
             >
               Join Cohort I
-            </a>
+            </TrackedLink>
           </div>
         </section>
       </main>
