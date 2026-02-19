@@ -21,6 +21,7 @@ export default function Navbar() {
     { href: "#program", label: "Program" },
     { href: "#founders", label: "Founders" },
     { href: "/testimonials", label: "Testimonials" },
+    { href: "/assessment", label: "Assessment" },
     { href: "#admissions", label: "Admissions" },
     { href: "#contact", label: "Contact" },
   ];
@@ -48,7 +49,7 @@ export default function Navbar() {
           </a>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-5">
             {navLinks.map((link) => (
               <a
                 key={link.href}

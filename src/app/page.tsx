@@ -1199,6 +1199,27 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Assessment Teaser */}
+        <section className="py-20 px-4 bg-plum text-white">
+          <div className="max-w-3xl mx-auto text-center">
+            <p className="text-xs font-bold tracking-[0.25em] uppercase mb-4 text-gold">
+              Free Tool
+            </p>
+            <h2 className="font-playfair text-4xl md:text-5xl font-bold mb-6 leading-tight">
+              Curious About Your Marriage Readiness?
+            </h2>
+            <p className="text-xl text-blush/80 mb-10 max-w-2xl mx-auto">
+              Five questions. A personalised report. A clear next step — grounded in faith and practical wisdom.
+            </p>
+            <a
+              href="/assessment"
+              className="inline-block bg-gold hover:bg-gold/90 text-charcoal font-semibold px-10 py-5 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-xl"
+            >
+              Take the Assessment
+            </a>
+          </div>
+        </section>
+
         {/* CTA Component */}
         <CTA />
       </main>
