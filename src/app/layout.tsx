@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import StickyBar from "@/components/StickyBar";
+import KodeeChat from "@/components/KodeeChat";
 import { Analytics } from "@vercel/analytics/react";
 
 const playfair = Playfair_Display({
@@ -64,6 +65,7 @@ export default function RootLayout({
       <body className="antialiased">
         {children}
         <StickyBar />
+        <KodeeChat />
         <Analytics />
       </body>
     </html>

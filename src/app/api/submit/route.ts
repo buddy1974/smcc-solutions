@@ -35,6 +35,29 @@ export async function POST(req: NextRequest) {
 
     const userAgent = req.headers.get("user-agent") ?? "Unknown";
 
+    // ── Applicant Scoring ─────────────────────────────────────────────────────
+    const name = fullName;
+    const reason = motivation ?? "";
+    const leadershipExperience = occupation ?? "";
+
+    let score = 0;
+    if (reason && reason.length > 150) score += 5;
+    if (leadershipExperience) score += 5;
+    if (program === "Advanced Track") score += 5;
+
+    let level = "Foundational";
+    if (score >= 10) level = "Leadership Track";
+    if (score >= 15) level = "Advanced Candidate";
+
+    console.log({
+      name,
+      email,
+      program,
+      score,
+      level,
+      timestamp: new Date().toISOString(),
+    });
+
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 587,
@@ -92,6 +115,12 @@ export async function POST(req: NextRequest) {
                 <td style="padding:10px 8px;font-size:11px;color:#888;word-break:break-all">${userAgent}</td>
               </tr>
             </table>
+
+            <div style="margin-top:24px;padding:16px 20px;background:#F6E8F0;border-radius:8px;border-left:4px solid #5B1A5D">
+              <p style="font-size:12px;font-weight:700;color:#5B1A5D;text-transform:uppercase;letter-spacing:0.08em;margin:0 0 8px">Applicant Score</p>
+              <p style="font-size:22px;font-weight:700;color:#5B1A5D;margin:0 0 4px">${score} / 15</p>
+              <p style="font-size:13px;color:#777;margin:0">Level: <strong style="color:#121212">${level}</strong></p>
+            </div>
 
             <h3 style="color:#5B1A5D;margin-top:28px;margin-bottom:8px">Message / Motivation</h3>
             <p style="background:#fff;padding:16px;border-left:4px solid #C9A227;border-radius:4px;margin:0;line-height:1.6">
