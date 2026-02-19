@@ -1118,7 +1118,7 @@ export default function Home() {
                 href="/testimonials"
                 className="inline-block bg-plum hover:bg-plum/90 text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
               >
-                Read More Testimonials
+                View All Testimonials
               </a>
             </div>
           </div>

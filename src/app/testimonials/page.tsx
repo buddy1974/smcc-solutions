@@ -41,9 +41,9 @@ const testimonials = [
 ];
 
 const stats = [
-  { stat: "5+ Countries", label: "Represented" },
-  { stat: "Faith +", label: "Practical Tools" },
-  { stat: "12-Week", label: "Cohort Training" },
+  { stat: "5+", label: "Countries Represented" },
+  { stat: "12-Week", label: "Structured Cohort" },
+  { stat: "Faith +", label: "Practical Framework" },
   { stat: "Certified", label: "Completion" },
 ];
 
@@ -122,20 +122,20 @@ export default function TestimonialsPage() {
           </div>
         </section>
 
-        {/* Share Your Story CTA */}
+        {/* Closing CTA */}
         <section className="py-20 px-4 bg-gradient-to-br from-plum to-plum/90 text-white">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-              Share Your Story
+              Ready to Begin Your Transformation?
             </h2>
             <p className="text-xl text-blush/90 mb-10 max-w-2xl mx-auto">
-              Has SMCC impacted your marriage, ministry, or community? We would love to hear from you.
+              Join leaders from across the globe who are building stronger marriages and transforming communities.
             </p>
             <a
-              href="/#contact"
+              href="/cohort-1"
               className="inline-block bg-gold hover:bg-gold/90 text-charcoal font-semibold px-10 py-5 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-xl"
             >
-              Contact Us
+              Join Cohort I
             </a>
           </div>
         </section>
