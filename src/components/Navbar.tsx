@@ -20,6 +20,7 @@ export default function Navbar() {
     { href: "#crisis", label: "Marriage Crisis" },
     { href: "#program", label: "Program" },
     { href: "#founders", label: "Founders" },
+    { href: "/testimonials", label: "Testimonials" },
     { href: "#admissions", label: "Admissions" },
     { href: "#contact", label: "Contact" },
   ];

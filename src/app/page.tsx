@@ -1034,6 +1034,64 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Testimonials Preview */}
+        <section className="py-20 px-4 bg-white">
+          <div className="max-w-6xl mx-auto">
+            <p className="text-xs font-bold tracking-[0.25em] uppercase mb-3 text-center" style={{ color: "#C9A227" }}>
+              Student Stories
+            </p>
+            <h2 className="font-playfair text-4xl md:text-5xl font-bold text-plum text-center mb-4 leading-tight">
+              What People Are Saying
+            </h2>
+            <p className="text-charcoal/60 text-center mb-14 max-w-xl mx-auto">
+              Voices from across the globe — real transformation through faith and practical tools.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+              {/* Card 1 */}
+              <div className="bg-blush/30 rounded-xl p-8 flex flex-col hover:shadow-lg transition-shadow duration-300">
+                <div className="text-4xl font-bold text-gold/30 leading-none mb-3 font-playfair">&ldquo;</div>
+                <blockquote className="flex-1 text-charcoal/80 leading-relaxed mb-6">
+                  SMCC gave me tools I had never received in church or school. My communication with my husband shifted within weeks. The structure, the faith integration, and the coaching clarity were powerful.
+                </blockquote>
+                <div className="border-t border-charcoal/10 pt-4">
+                  <p className="font-bold text-plum">Angela M.</p>
+                  <p className="text-charcoal/50 text-sm">Canada</p>
+                </div>
+              </div>
+              {/* Card 2 */}
+              <div className="bg-blush/30 rounded-xl p-8 flex flex-col hover:shadow-lg transition-shadow duration-300">
+                <div className="text-4xl font-bold text-gold/30 leading-none mb-3 font-playfair">&ldquo;</div>
+                <blockquote className="flex-1 text-charcoal/80 leading-relaxed mb-6">
+                  I came into the program broken and unsure about my marriage. Today, I lead small groups helping other women rebuild their homes. This was more than a course &mdash; it was restoration.
+                </blockquote>
+                <div className="border-t border-charcoal/10 pt-4">
+                  <p className="font-bold text-plum">Judith N.</p>
+                  <p className="text-charcoal/50 text-sm">Yaound&eacute;</p>
+                </div>
+              </div>
+              {/* Card 3 */}
+              <div className="bg-blush/30 rounded-xl p-8 flex flex-col hover:shadow-lg transition-shadow duration-300">
+                <div className="text-4xl font-bold text-gold/30 leading-none mb-3 font-playfair">&ldquo;</div>
+                <blockquote className="flex-1 text-charcoal/80 leading-relaxed mb-6">
+                  As a coach, I thought I knew relationship dynamics. SMCC expanded my framework and strengthened my spiritual leadership. I now integrate what I learned into my own consulting.
+                </blockquote>
+                <div className="border-t border-charcoal/10 pt-4">
+                  <p className="font-bold text-plum">Grace T.</p>
+                  <p className="text-charcoal/50 text-sm">Atlanta</p>
+                </div>
+              </div>
+            </div>
+            <div className="text-center">
+              <a
+                href="/testimonials"
+                className="inline-block bg-plum hover:bg-plum/90 text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
+              >
+                Read More Testimonials
+              </a>
+            </div>
+          </div>
+        </section>
+
         {/* CTA Component */}
         <CTA />
       </main>
