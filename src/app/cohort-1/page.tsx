@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { ManualPaymentBlock } from "@/components/ApplicationForm";
 
 export const metadata: Metadata = {
   title: "Cohort I — SMCC | Foundations for Faith-Based Family Restoration",
@@ -447,6 +448,11 @@ export default function CohortOnePage() {
                 >
                   Enroll Now via WhatsApp
                 </a>
+
+                {/* Manual payment option — always visible */}
+                <div className="mt-6">
+                  <ManualPaymentBlock />
+                </div>
               </div>
 
               {/* Journey context */}

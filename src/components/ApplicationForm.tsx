@@ -10,14 +10,103 @@
  *   4. User completes payment on PayUnit hosted page
  *   5. PayUnit redirects to /enrolled (return_url)
  *
- * No Stripe. No /thank-you direct link. Payment required before enrollment confirmation.
+ * On PayUnit failure: manual payment block is revealed with MTN/Orange USSD codes.
+ * Form data is preserved — user is never left at a dead end.
  */
 
 import { useState } from "react";
 
+// ── Manual Payment Block ─────────────────────────────────────────────────────
+// Shared between ApplicationForm (on error) and cohort-1 page (always visible).
+// EXACT codes as specified — do not edit without confirming with admissions.
+export const MANUAL_PAYMENT_CODES = {
+  mtn: {
+    name: "MTN MoMo",
+    holder: "Delphine Nforgwei",
+    ussd: "*126*4*926667*AMOUNT#",
+  },
+  orange: {
+    name: "Orange Money",
+    holder: "Mah epse Nforgwei",
+    ussd: "#150*47*890422*AMOUNT#",
+  },
+  afterPayment: "After payment, send your name + proof of payment to: +237 681 255 891 / +237 671 652 744",
+};
+
+export function ManualPaymentBlock({ className = "" }: { className?: string }) {
+  const [copiedMtn, setCopiedMtn] = useState(false);
+  const [copiedOrange, setCopiedOrange] = useState(false);
+
+  function copy(text: string, which: "mtn" | "orange") {
+    navigator.clipboard.writeText(text).then(() => {
+      if (which === "mtn") {
+        setCopiedMtn(true);
+        setTimeout(() => setCopiedMtn(false), 2000);
+      } else {
+        setCopiedOrange(true);
+        setTimeout(() => setCopiedOrange(false), 2000);
+      }
+    });
+  }
+
+  return (
+    <div className={`rounded-xl border border-gold/40 bg-gold/5 p-6 ${className}`}>
+      <p className="text-xs font-bold tracking-[0.2em] uppercase text-gold mb-4">
+        Manual Payment Option
+      </p>
+
+      <div className="space-y-4 mb-5">
+        {/* MTN MoMo */}
+        <div className="bg-white rounded-lg border border-charcoal/10 p-4">
+          <div className="flex items-center justify-between mb-1">
+            <span className="font-semibold text-charcoal text-sm">{MANUAL_PAYMENT_CODES.mtn.name}</span>
+            <button
+              type="button"
+              onClick={() => copy(MANUAL_PAYMENT_CODES.mtn.ussd, "mtn")}
+              className="text-xs text-plum font-semibold hover:text-gold transition-colors px-2 py-1 rounded hover:bg-plum/5"
+            >
+              {copiedMtn ? "Copied ✓" : "Copy"}
+            </button>
+          </div>
+          <p className="text-xs text-charcoal/50 mb-2">{MANUAL_PAYMENT_CODES.mtn.holder}</p>
+          <code className="block text-sm font-mono font-bold text-plum bg-blush/50 rounded px-3 py-2 select-all">
+            {MANUAL_PAYMENT_CODES.mtn.ussd}
+          </code>
+        </div>
+
+        {/* Orange Money */}
+        <div className="bg-white rounded-lg border border-charcoal/10 p-4">
+          <div className="flex items-center justify-between mb-1">
+            <span className="font-semibold text-charcoal text-sm">{MANUAL_PAYMENT_CODES.orange.name}</span>
+            <button
+              type="button"
+              onClick={() => copy(MANUAL_PAYMENT_CODES.orange.ussd, "orange")}
+              className="text-xs text-plum font-semibold hover:text-gold transition-colors px-2 py-1 rounded hover:bg-plum/5"
+            >
+              {copiedOrange ? "Copied ✓" : "Copy"}
+            </button>
+          </div>
+          <p className="text-xs text-charcoal/50 mb-2">{MANUAL_PAYMENT_CODES.orange.holder}</p>
+          <code className="block text-sm font-mono font-bold text-plum bg-blush/50 rounded px-3 py-2 select-all">
+            {MANUAL_PAYMENT_CODES.orange.ussd}
+          </code>
+        </div>
+      </div>
+
+      <p className="text-xs text-charcoal/70 leading-relaxed border-t border-charcoal/10 pt-4">
+        <span className="font-semibold">Replace AMOUNT with 50000.</span>{" "}
+        {MANUAL_PAYMENT_CODES.afterPayment}
+      </p>
+    </div>
+  );
+}
+
+// ── Main Form ────────────────────────────────────────────────────────────────
+
 export default function ApplicationForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showManualPayment, setShowManualPayment] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -36,13 +125,15 @@ export default function ApplicationForm() {
       const json = await res.json().catch(() => ({}));
 
       if (!res.ok) {
-        setError(json.error ?? "Something went wrong. Please try WhatsApp.");
+        setError(json.error ?? "Payment gateway is being activated. Use the manual payment option below.");
+        setShowManualPayment(true);
         setLoading(false);
         return;
       }
 
       if (!json.checkoutUrl) {
-        setError("Payment URL not received. Please try WhatsApp.");
+        setError("Payment gateway is being activated. Use the manual payment option below.");
+        setShowManualPayment(true);
         setLoading(false);
         return;
       }
@@ -50,7 +141,8 @@ export default function ApplicationForm() {
       // Redirect to PayUnit hosted payment page
       window.location.href = json.checkoutUrl;
     } catch {
-      setError("Network error. Please try WhatsApp directly.");
+      setError("Payment gateway is being activated. Use the manual payment option below.");
+      setShowManualPayment(true);
       setLoading(false);
     }
   }
@@ -164,21 +256,20 @@ export default function ApplicationForm() {
 
       <hr className="border-charcoal/10" />
 
-      {/* Error message */}
+      {/* Error message — improved UX: no dead end, no WhatsApp wording */}
       {error && (
-        <div className="text-red-700 text-sm bg-red-50 border border-red-200 rounded-lg px-4 py-3 flex items-start gap-2">
-          <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span>
-            {error}{" "}
-            <a href="https://wa.me/237671652144" target="_blank" rel="noopener noreferrer"
-              className="underline font-semibold">
-              Contact us on WhatsApp
-            </a>
-          </span>
+        <div className="rounded-xl border border-amber-200 bg-amber-50 p-5">
+          <p className="font-bold text-amber-900 mb-1">Payment gateway is being activated</p>
+          <p className="text-amber-800 text-sm leading-relaxed">
+            You can complete your enrollment using the manual payment option below
+            while PayUnit activation is finalized.
+          </p>
         </div>
+      )}
+
+      {/* Manual payment block — revealed on error */}
+      {showManualPayment && (
+        <ManualPaymentBlock />
       )}
 
       {/* Submit */}
