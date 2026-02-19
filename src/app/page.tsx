@@ -149,84 +149,116 @@ export default function Home() {
         </section>
 
         {/* Our Founders Section */}
-        <section id="founders" className="py-20 px-4 bg-white">
+        <section id="founders" className="py-24 px-4 bg-white">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-5xl md:text-6xl font-bold text-center text-plum tracking-tight mb-6">
-              Our Founders
-            </h2>
-            <p className="text-lg md:text-xl text-center text-charcoal/70 max-w-3xl mx-auto mb-16">
-              SMCC is led by visionary leaders whose work bridges ministry, education, and global leadership.
-            </p>
 
-            <div className="grid md:grid-cols-2 gap-12 items-start mb-12">
-              {/* LEFT COLUMN - Image */}
-              <div>
-                <Image
-                  src="/founders.jpg"
-                  alt="Founders of SMCC"
-                  width={600}
-                  height={400}
-                  className="rounded-xl shadow-lg w-full object-cover"
-                />
+            {/* Section header */}
+            <div className="text-center mb-16">
+              <p className="text-xs font-bold tracking-[0.25em] uppercase mb-3" style={{ color: "#C9A227" }}>
+                Leadership
+              </p>
+              <h2 className="font-playfair text-4xl md:text-5xl lg:text-6xl font-bold text-plum mb-5 leading-tight">
+                Visionary Leadership.<br className="hidden sm:block" /> Proven Impact.
+              </h2>
+              <p className="text-lg md:text-xl text-charcoal/65 max-w-2xl mx-auto">
+                SMCC is led by leaders who bridge ministry, education, and global transformation.
+              </p>
+              <div className="h-0.5 w-10 mx-auto mt-6" style={{ backgroundColor: "#C9A227" }} />
+            </div>
+
+            {/* Founders photo */}
+            <div className="mb-16">
+              <Image
+                src="/founders.jpg"
+                alt="Founders of SMCC — Delphine and Rogers Nforgwei"
+                width={1200}
+                height={600}
+                className="rounded-2xl shadow-xl w-full object-cover max-h-[480px]"
+              />
+            </div>
+
+            {/* Founder profiles grid */}
+            <div className="grid md:grid-cols-2 gap-10 mb-16">
+
+              {/* Delphine */}
+              <div className="bg-blush/20 rounded-2xl p-8 border border-plum/10">
+                <h3 className="font-playfair text-2xl md:text-3xl font-bold text-plum mb-1">
+                  Delphine Nforgwei
+                </h3>
+                <p className="text-sm font-semibold mb-5" style={{ color: "#C9A227" }}>
+                  Pastor &nbsp;·&nbsp; Women&apos;s Impact Coach &nbsp;·&nbsp; Relationship Educator
+                </p>
+                <p className="text-charcoal/75 leading-relaxed mb-6">
+                  Founder of SMCC and Blossom Life Academy, Delphine is a passionate leader of
+                  the E-Woman Conference and a dedicated advocate for women&apos;s leadership and
+                  marital transformation. She hosts international Zoom cohorts, empowering women
+                  across continents to lead with purpose and build thriving marriages.
+                </p>
+                <ul className="space-y-2">
+                  {[
+                    "Founder, SMCC & Blossom Life Academy",
+                    "International cohort host (Zoom-based global programs)",
+                    "Women\u2019s leadership mentor",
+                    "Marriage transformation advocate",
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-3 text-sm text-charcoal/70">
+                      <span className="flex-shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full" style={{ backgroundColor: "#C9A227" }} />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
               </div>
 
-              {/* RIGHT COLUMN - Profiles */}
-              <div className="space-y-8">
-                {/* Profile 1 */}
-                <div>
-                  <h3 className="text-3xl font-bold text-plum mb-2">
-                    Delphine Nforgwei
-                  </h3>
-                  <p className="text-lg italic text-charcoal/60 mb-4">
-                    Pastor • Women&apos;s Impact Coach • Relationship Educator
-                  </p>
-                  <p className="text-charcoal/80 leading-relaxed">
-                    Founder of SMCC and Blossom Life Academy, Delphine is a passionate leader of the E-Woman Conference and a dedicated advocate for women&apos;s leadership and marital transformation. She hosts international Zoom cohorts, empowering women across continents to lead with purpose and build thriving marriages.
-                  </p>
-                </div>
-
-                {/* Divider */}
-                <div className="border-t border-charcoal/10 my-6"></div>
-
-                {/* Profile 2 */}
-                <div>
-                  <h3 className="text-3xl font-bold text-plum mb-2">
-                    Rogers Nforgwei
-                  </h3>
-                  <p className="text-lg italic text-charcoal/60 mb-4">
-                    Pastor • Education Strategist • Business Development Leader
-                  </p>
-                  <p className="text-charcoal/80 leading-relaxed">
-                    With executive education from Harvard Business School Online and a distinguished career as former Business Development Manager (Africa) at Cambridge University Press, Rogers brings academic rigor to ministry. As Founder of NMI Education and President of DRIMP Foundation, he integrates strategic excellence with spiritual depth.
-                  </p>
-                </div>
+              {/* Rogers */}
+              <div className="bg-blush/20 rounded-2xl p-8 border border-plum/10">
+                <h3 className="font-playfair text-2xl md:text-3xl font-bold text-plum mb-1">
+                  Rogers Nforgwei
+                </h3>
+                <p className="text-sm font-semibold mb-5" style={{ color: "#C9A227" }}>
+                  Pastor &nbsp;·&nbsp; Education Strategist &nbsp;·&nbsp; Business Development Leader
+                </p>
+                <p className="text-charcoal/75 leading-relaxed mb-6">
+                  With executive education from Harvard Business School Online and a distinguished
+                  career as former Business Development Manager (Africa) at Cambridge University
+                  Press, Rogers brings academic rigor to ministry. As Founder of NMI Education and
+                  President of DRIMP Foundation, he integrates strategic excellence with spiritual depth.
+                </p>
+                <ul className="space-y-2">
+                  {[
+                    "Education strategist",
+                    "Executive education background (Harvard Business School Online)",
+                    "Ministry & leadership development mentor",
+                    "Founder, NMI Education",
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-3 text-sm text-charcoal/70">
+                      <span className="flex-shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full" style={{ backgroundColor: "#C9A227" }} />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
 
             {/* Shared Vision Block */}
-            <div className="bg-blush/30 rounded-xl p-8 md:p-10 mt-12">
-              <h3 className="text-2xl md:text-3xl font-bold text-plum text-center mb-6">
+            <div className="bg-gradient-to-br from-plum/5 to-blush/30 rounded-2xl p-8 md:p-10 border border-plum/10">
+              <h3 className="font-playfair text-2xl md:text-3xl font-bold text-plum text-center mb-8">
                 Our Shared Vision
               </h3>
-              <ul className="space-y-3 max-w-2xl mx-auto">
-                <li className="flex items-start">
-                  <span className="text-gold font-bold mr-3">•</span>
-                  <span className="text-charcoal/80 text-lg">Impacted Marriages. Flourishing Nations.</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-gold font-bold mr-3">•</span>
-                  <span className="text-charcoal/80 text-lg">Academic Rigor Meets Ministry</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-gold font-bold mr-3">•</span>
-                  <span className="text-charcoal/80 text-lg">Spiritual & Practical Empowerment</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-gold font-bold mr-3">•</span>
-                  <span className="text-charcoal/80 text-lg">Global Digital Accessibility</span>
-                </li>
-              </ul>
+              <div className="grid sm:grid-cols-2 gap-4 max-w-3xl mx-auto">
+                {[
+                  "Impacted Marriages. Flourishing Nations.",
+                  "Academic Rigor Meets Ministry",
+                  "Spiritual & Practical Empowerment",
+                  "Global Digital Accessibility",
+                ].map((item) => (
+                  <div key={item} className="flex items-start gap-3 bg-white/70 rounded-lg px-5 py-4">
+                    <span className="flex-shrink-0 mt-1 w-2 h-2 rounded-full" style={{ backgroundColor: "#C9A227" }} />
+                    <span className="text-charcoal/80 font-medium text-sm leading-relaxed">{item}</span>
+                  </div>
+                ))}
+              </div>
             </div>
+
           </div>
         </section>
 
@@ -1088,6 +1120,81 @@ export default function Home() {
               >
                 Read More Testimonials
               </a>
+            </div>
+          </div>
+        </section>
+
+        {/* Why SMCC Is Different */}
+        <section className="py-20 px-4 bg-charcoal/[0.03]">
+          <div className="max-w-6xl mx-auto">
+            <p className="text-xs font-bold tracking-[0.25em] uppercase mb-3 text-center" style={{ color: "#C9A227" }}>
+              Our Difference
+            </p>
+            <h2 className="font-playfair text-4xl md:text-5xl font-bold text-plum text-center mb-4 leading-tight">
+              Why SMCC Is Different
+            </h2>
+            <div className="h-0.5 w-10 mx-auto mb-14" style={{ backgroundColor: "#C9A227" }} />
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {/* 1 */}
+              <div className="bg-white rounded-xl p-7 border border-charcoal/8 shadow-sm hover:shadow-md transition-shadow duration-300">
+                <div className="w-11 h-11 rounded-lg flex items-center justify-center mb-5" style={{ backgroundColor: "#F6E8F0" }}>
+                  <svg className="w-6 h-6" fill="none" stroke="#5B1A5D" strokeWidth={1.8} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                  </svg>
+                </div>
+                <h3 className="font-playfair text-lg font-bold text-plum mb-3">
+                  Faith + Practical Framework
+                </h3>
+                <p className="text-charcoal/65 text-sm leading-relaxed">
+                  Biblical principles combined with structured relationship tools.
+                </p>
+              </div>
+
+              {/* 2 */}
+              <div className="bg-white rounded-xl p-7 border border-charcoal/8 shadow-sm hover:shadow-md transition-shadow duration-300">
+                <div className="w-11 h-11 rounded-lg flex items-center justify-center mb-5" style={{ backgroundColor: "#F6E8F0" }}>
+                  <svg className="w-6 h-6" fill="none" stroke="#5B1A5D" strokeWidth={1.8} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <h3 className="font-playfair text-lg font-bold text-plum mb-3">
+                  Global Cohort Model
+                </h3>
+                <p className="text-charcoal/65 text-sm leading-relaxed">
+                  Participants join from multiple countries, creating diverse learning perspectives.
+                </p>
+              </div>
+
+              {/* 3 */}
+              <div className="bg-white rounded-xl p-7 border border-charcoal/8 shadow-sm hover:shadow-md transition-shadow duration-300">
+                <div className="w-11 h-11 rounded-lg flex items-center justify-center mb-5" style={{ backgroundColor: "#F6E8F0" }}>
+                  <svg className="w-6 h-6" fill="none" stroke="#5B1A5D" strokeWidth={1.8} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                  </svg>
+                </div>
+                <h3 className="font-playfair text-lg font-bold text-plum mb-3">
+                  Structured 12-Week Curriculum
+                </h3>
+                <p className="text-charcoal/65 text-sm leading-relaxed">
+                  Step-by-step transformation pathway &mdash; not motivational talks.
+                </p>
+              </div>
+
+              {/* 4 */}
+              <div className="bg-white rounded-xl p-7 border border-charcoal/8 shadow-sm hover:shadow-md transition-shadow duration-300">
+                <div className="w-11 h-11 rounded-lg flex items-center justify-center mb-5" style={{ backgroundColor: "#F6E8F0" }}>
+                  <svg className="w-6 h-6" fill="none" stroke="#5B1A5D" strokeWidth={1.8} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </div>
+                <h3 className="font-playfair text-lg font-bold text-plum mb-3">
+                  Leadership Development Focus
+                </h3>
+                <p className="text-charcoal/65 text-sm leading-relaxed">
+                  Graduates are equipped to mentor and support others.
+                </p>
+              </div>
             </div>
           </div>
         </section>
