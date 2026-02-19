@@ -5,19 +5,17 @@
  *
  * Flow:
  *   1. User fills form and submits
- *   2. Prevent default → POST JSON to /api/submit
- *   3. Await response → check res.ok
- *   4. On success  → router.push("/thank-you")
- *   5. On failure  → show inline error, keep form intact
+ *   2. Prevent default → POST JSON to /api/payunit/initiate
+ *   3. Receive { checkoutUrl } → window.location.href = checkoutUrl
+ *   4. User completes payment on PayUnit hosted page
+ *   5. PayUnit redirects to /enrolled (return_url)
  *
- * No payment processing. No Stripe. No external redirects.
+ * No Stripe. No /thank-you direct link. Payment required before enrollment confirmation.
  */
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 export default function ApplicationForm() {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -29,20 +27,28 @@ export default function ApplicationForm() {
     const data = Object.fromEntries(new FormData(e.currentTarget).entries());
 
     try {
-      const res = await fetch("/api/submit", {
+      const res = await fetch("/api/payunit/initiate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
 
+      const json = await res.json().catch(() => ({}));
+
       if (!res.ok) {
-        const json = await res.json().catch(() => ({}));
         setError(json.error ?? "Something went wrong. Please try WhatsApp.");
         setLoading(false);
         return;
       }
 
-      router.push("/thank-you");
+      if (!json.checkoutUrl) {
+        setError("Payment URL not received. Please try WhatsApp.");
+        setLoading(false);
+        return;
+      }
+
+      // Redirect to PayUnit hosted payment page
+      window.location.href = json.checkoutUrl;
     } catch {
       setError("Network error. Please try WhatsApp directly.");
       setLoading(false);
@@ -145,8 +151,8 @@ export default function ApplicationForm() {
         <input type="checkbox" id="tuitionAck" name="tuitionAck" required
           className="mt-1 w-5 h-5 accent-plum flex-shrink-0" />
         <label htmlFor="tuitionAck" className="text-charcoal/80 text-sm leading-relaxed">
-          I understand that payment instructions will be provided by the SMCC admissions team
-          after my application is reviewed. I am prepared to proceed with enrollment upon confirmation.
+          I understand the program investment is <strong>50,000 FCFA</strong> and I am ready
+          to complete payment to confirm my enrollment in Cohort I.
         </label>
       </div>
 
@@ -190,11 +196,10 @@ export default function ApplicationForm() {
                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
           )}
-          {loading ? "Submitting…" : "Submit Application"}
+          {loading ? "Preparing Payment…" : "Proceed to Payment"}
         </button>
         <p className="text-sm text-charcoal/50 mt-4">
-          Our admissions team will contact you within 24 hours to confirm
-          your spot and provide payment instructions.
+          You will be redirected to a secure payment page to complete your enrollment.
         </p>
       </div>
 
