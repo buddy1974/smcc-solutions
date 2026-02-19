@@ -1,15 +1,21 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { getStep, isEscalationTrigger } from "@/lib/kodeeLogic";
+import {
+  getStep,
+  isEscalationTrigger,
+  isUrgencyTrigger,
+  GOOGLE_CALENDAR_URL,
+} from "@/lib/kodeeLogic";
 import { trackEvent } from "@/lib/track";
-
-const GOOGLE_CALENDAR_URL = "https://calendar.app.google/NpGp4ddC5vYJKm9j6";
 
 type Message = {
   from: "bot" | "user";
   text: string;
 };
+
+// Steps that render the "Schedule My Advisory Session" purple button
+const SCHEDULE_STEPS = new Set(["human_escalation", "urgency_escalation"]);
 
 export default function KodeeChat() {
   const [open, setOpen] = useState(false);
@@ -17,6 +23,7 @@ export default function KodeeChat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [started, setStarted] = useState(false);
   const [inputText, setInputText] = useState("");
+  const [isThinking, setIsThinking] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -24,64 +31,84 @@ export default function KodeeChat() {
     if (open) {
       bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages, open]);
+  }, [messages, open, isThinking]);
 
   function openChat() {
     if (!started) {
       const step = getStep("welcome");
       setMessages([{ from: "bot", text: step.message }]);
       setStarted(true);
-      trackEvent("Kodee_Open");
+      trackEvent("Delphi_Open");
     }
     setOpen(true);
-    setTimeout(() => inputRef.current?.focus(), 100);
+    setTimeout(() => inputRef.current?.focus(), 150);
   }
 
+  // ── Option click with 600ms simulated thinking ────────────────────────────
   function handleOption(label: string, next: string) {
-    trackEvent("Kodee_Option", { choice: label });
-    const step = getStep(next);
-    setMessages((prev) => [
-      ...prev,
-      { from: "user", text: label },
-      { from: "bot", text: step.message },
-    ]);
-    setStepId(next);
+    // User message appears instantly
+    setMessages((prev) => [...prev, { from: "user", text: label }]);
+    setIsThinking(true);
+
+    setTimeout(() => {
+      trackEvent("Delphi_Option", { choice: label });
+      const step = getStep(next);
+      setMessages((prev) => [...prev, { from: "bot", text: step.message }]);
+      setStepId(next);
+      setIsThinking(false);
+    }, 600);
   }
 
   // ── Text input with keyword detection ─────────────────────────────────────
   function handleTextSubmit(e: React.FormEvent) {
     e.preventDefault();
     const text = inputText.trim();
-    if (!text) return;
+    if (!text || isThinking) return;
     setInputText("");
 
-    if (isEscalationTrigger(text)) {
-      // Route to human escalation
-      const step = getStep("human_escalation");
-      setMessages((prev) => [
-        ...prev,
-        { from: "user", text },
-        { from: "bot", text: step.message },
-      ]);
-      setStepId("human_escalation");
-      trackEvent("Kodee_Option", { choice: "human_escalation_keyword" });
-    } else {
-      // Unknown input — gentle fallback, stay on current step
-      setMessages((prev) => [
-        ...prev,
-        { from: "user", text },
-        {
-          from: "bot",
-          text: "I'm best at guiding you through the options below. Type \"human\" anytime to speak with a live advisor.",
-        },
-      ]);
+    // Urgency check first (crisis keywords → special escalation)
+    if (isUrgencyTrigger(text)) {
+      setMessages((prev) => [...prev, { from: "user", text }]);
+      setIsThinking(true);
+      setTimeout(() => {
+        const step = getStep("urgency_escalation");
+        setMessages((prev) => [...prev, { from: "bot", text: step.message }]);
+        setStepId("urgency_escalation");
+        trackEvent("Delphi_Urgency", { trigger: text });
+        setIsThinking(false);
+      }, 600);
+      return;
     }
+
+    // Human escalation check
+    if (isEscalationTrigger(text)) {
+      setMessages((prev) => [...prev, { from: "user", text }]);
+      setIsThinking(true);
+      setTimeout(() => {
+        const step = getStep("human_escalation");
+        setMessages((prev) => [...prev, { from: "bot", text: step.message }]);
+        setStepId("human_escalation");
+        trackEvent("Delphi_Escalation_Keyword");
+        setIsThinking(false);
+      }, 600);
+      return;
+    }
+
+    // Confident fallback — no uncertain language
+    setMessages((prev) => [
+      ...prev,
+      { from: "user", text },
+      {
+        from: "bot",
+        text: "Select one of the options below to continue, or type \"human\" to connect with a live advisor.",
+      },
+    ]);
   }
 
-  // ── Human escalation schedule click ───────────────────────────────────────
+  // ── Schedule button click ──────────────────────────────────────────────────
   function handleScheduleClick() {
     console.log("Human escalation clicked");
-    trackEvent("Human_Escalation_Click");
+    trackEvent("Delphi_Schedule_Click");
     window.open(GOOGLE_CALENDAR_URL, "_blank");
   }
 
@@ -89,28 +116,29 @@ export default function KodeeChat() {
     const step = getStep("welcome");
     setMessages([{ from: "bot", text: step.message }]);
     setStepId("welcome");
+    setIsThinking(false);
   }
 
   const currentStep = getStep(stepId);
-  const isEscalation = currentStep.id === "human_escalation";
+  const isScheduleStep = SCHEDULE_STEPS.has(currentStep.id);
   const isRecommendation = !!currentStep.recommendation;
   const showTextInput = !isRecommendation;
 
   return (
     <>
-      {/* ── Floating trigger button ───────────────────────────────────── */}
+      {/* ── Floating trigger ─────────────────────────────────────────── */}
       {!open && (
         <button
           type="button"
           onClick={openChat}
-          aria-label="Open Kodee enrollment assistant"
+          aria-label="Open Delphi advisory assistant"
           className="fixed bottom-16 left-4 md:left-6 z-40 flex items-center gap-2 text-white text-sm font-semibold px-4 py-3 rounded-full shadow-xl transition-all duration-200 hover:shadow-2xl hover:opacity-90"
           style={{ backgroundColor: "#5B1A5D" }}
         >
           <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" />
           </svg>
-          <span>Kodee</span>
+          <span>Delphi</span>
         </button>
       )}
 
@@ -118,7 +146,7 @@ export default function KodeeChat() {
       {open && (
         <div
           className="fixed bottom-16 left-4 md:left-6 z-40 flex flex-col rounded-2xl shadow-2xl overflow-hidden bg-white"
-          style={{ width: "min(340px, calc(100vw - 2rem))", maxHeight: "520px" }}
+          style={{ width: "min(340px, calc(100vw - 2rem))", maxHeight: "540px" }}
         >
           {/* Header */}
           <div
@@ -126,9 +154,9 @@ export default function KodeeChat() {
             style={{ backgroundColor: "#5B1A5D" }}
           >
             <div>
-              <p className="text-white font-bold text-sm">Kodee</p>
+              <p className="text-white font-bold text-sm">Delphi</p>
               <p className="text-xs" style={{ color: "rgba(246,232,240,0.65)" }}>
-                Intelligent Enrollment Assistant &nbsp;&middot;&nbsp; Guiding you to the right path.
+                SMCC Advisory Assistant &nbsp;&middot;&nbsp; Guiding you to the right path.
               </p>
             </div>
             <button
@@ -143,7 +171,7 @@ export default function KodeeChat() {
             </button>
           </div>
 
-          {/* Messages */}
+          {/* Messages + thinking indicator */}
           <div
             className="flex-1 overflow-y-auto px-4 py-4 space-y-3"
             style={{ minHeight: "160px", backgroundColor: "#fafafa" }}
@@ -165,14 +193,31 @@ export default function KodeeChat() {
                 </div>
               </div>
             ))}
+
+            {/* Thinking dots — shown during 600ms delay */}
+            {isThinking && (
+              <div className="flex justify-start">
+                <div
+                  className="rounded-2xl px-4 py-3"
+                  style={{ backgroundColor: "#fff", border: "1px solid rgba(91,26,93,0.12)", borderBottomLeftRadius: "4px" }}
+                >
+                  <div className="flex gap-1 items-center">
+                    <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: "rgba(91,26,93,0.4)", animationDelay: "0ms" }} />
+                    <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: "rgba(91,26,93,0.4)", animationDelay: "150ms" }} />
+                    <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: "rgba(91,26,93,0.4)", animationDelay: "300ms" }} />
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div ref={bottomRef} />
           </div>
 
-          {/* Options / CTAs / Escalation */}
+          {/* Actions area */}
           <div className="bg-white border-t border-charcoal/10 px-4 py-4 flex-shrink-0">
 
-            {/* ── Human escalation CTA ─────────────────────────────── */}
-            {isEscalation && (
+            {/* ── Schedule button (human/urgency escalation) ────────── */}
+            {isScheduleStep && (
               <div className="space-y-2">
                 <button
                   type="button"
@@ -193,14 +238,15 @@ export default function KodeeChat() {
             )}
 
             {/* ── Branching options ────────────────────────────────── */}
-            {!isEscalation && currentStep.options && (
+            {!isScheduleStep && currentStep.options && (
               <div className="space-y-2">
                 {currentStep.options.map((opt) => (
                   <button
                     key={opt.label}
                     type="button"
+                    disabled={isThinking}
                     onClick={() => handleOption(opt.label, opt.next)}
-                    className="w-full text-left text-sm px-4 py-2.5 rounded-xl border border-plum/20 text-plum hover:bg-plum hover:text-white hover:border-plum transition-all duration-150 font-medium"
+                    className="w-full text-left text-sm px-4 py-2.5 rounded-xl border border-plum/20 text-plum hover:bg-plum hover:text-white hover:border-plum transition-all duration-150 font-medium disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-plum disabled:hover:border-plum/20"
                   >
                     {opt.label}
                   </button>
@@ -211,19 +257,39 @@ export default function KodeeChat() {
             {/* ── Terminal recommendation CTAs ─────────────────────── */}
             {isRecommendation && currentStep.recommendation && (
               <div className="space-y-2">
-                {currentStep.recommendation.ctas.map((cta, i) => (
-                  <a
-                    key={cta.label}
-                    href={cta.href}
-                    onClick={() => trackEvent("Kodee_CTA", { cta: cta.label })}
-                    className={`block w-full text-center text-sm px-4 py-2.5 rounded-xl font-semibold transition-colors ${
-                      i === 0 ? "hover:opacity-90" : "border border-plum/25 text-plum hover:bg-plum/5"
-                    }`}
-                    style={i === 0 ? { backgroundColor: "#C9A227", color: "#121212" } : {}}
-                  >
-                    {cta.label}
-                  </a>
-                ))}
+                {currentStep.recommendation.ctas.map((cta, i) =>
+                  cta.external ? (
+                    // External link (Google Calendar) — opens in new tab
+                    <button
+                      key={cta.label}
+                      type="button"
+                      onClick={() => {
+                        trackEvent("Delphi_CTA", { cta: cta.label });
+                        console.log("Human escalation clicked");
+                        window.open(cta.href, "_blank");
+                      }}
+                      className={`w-full text-center text-sm px-4 py-2.5 rounded-xl font-semibold transition-all duration-200 hover:scale-[1.02] active:scale-100 ${
+                        i === 0 ? "text-white hover:opacity-90" : "border border-plum/25 text-plum hover:bg-plum/5"
+                      }`}
+                      style={i === 0 ? { backgroundColor: "#5B1A5D" } : {}}
+                    >
+                      {cta.label}
+                    </button>
+                  ) : (
+                    // Internal link
+                    <a
+                      key={cta.label}
+                      href={cta.href}
+                      onClick={() => trackEvent("Delphi_CTA", { cta: cta.label })}
+                      className={`block w-full text-center text-sm px-4 py-2.5 rounded-xl font-semibold transition-colors ${
+                        i === 0 ? "hover:opacity-90" : "border border-plum/25 text-plum hover:bg-plum/5"
+                      }`}
+                      style={i === 0 ? { backgroundColor: "#C9A227", color: "#121212" } : {}}
+                    >
+                      {cta.label}
+                    </a>
+                  )
+                )}
                 <button
                   type="button"
                   onClick={reset}
@@ -234,7 +300,7 @@ export default function KodeeChat() {
               </div>
             )}
 
-            {/* ── Free text input (shows on branching steps) ───────── */}
+            {/* ── Free text input ───────────────────────────────────── */}
             {showTextInput && (
               <form onSubmit={handleTextSubmit} className="mt-3 pt-3 border-t border-charcoal/8 flex gap-2">
                 <input
@@ -242,12 +308,14 @@ export default function KodeeChat() {
                   type="text"
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
-                  placeholder='Or type your question… (try "human")'
-                  className="flex-1 text-xs px-3 py-2 rounded-lg border border-charcoal/15 focus:outline-none focus:border-plum/30 bg-white text-charcoal placeholder-charcoal/30"
+                  disabled={isThinking}
+                  placeholder='Or type your question…'
+                  className="flex-1 text-xs px-3 py-2 rounded-lg border border-charcoal/15 focus:outline-none focus:border-plum/30 bg-white text-charcoal placeholder-charcoal/30 disabled:opacity-50"
                 />
                 <button
                   type="submit"
-                  className="text-xs px-3 py-2 rounded-lg font-bold text-white transition-opacity hover:opacity-85 flex-shrink-0"
+                  disabled={isThinking}
+                  className="text-xs px-3 py-2 rounded-lg font-bold text-white transition-opacity hover:opacity-85 flex-shrink-0 disabled:opacity-40"
                   style={{ backgroundColor: "#5B1A5D" }}
                   aria-label="Send message"
                 >
