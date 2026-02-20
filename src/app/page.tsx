@@ -219,6 +219,14 @@ export default function Home() {
                     </li>
                   ))}
                 </ul>
+                <a
+                  href="https://www.delphine-nforgwei.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block mt-5 text-sm font-medium text-plum hover:underline transition-all"
+                >
+                  Visit Personal Website →
+                </a>
               </div>
 
               {/* Rogers */}
@@ -248,6 +256,14 @@ export default function Home() {
                     </li>
                   ))}
                 </ul>
+                <a
+                  href="https://www.rogers-nforgwei.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block mt-5 text-sm font-medium text-plum hover:underline transition-all"
+                >
+                  Visit Personal Website →
+                </a>
               </div>
             </div>
 
