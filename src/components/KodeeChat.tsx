@@ -23,11 +23,12 @@ const CRISIS_KEYWORDS    = ["divorce", "urgent", "separated", "crisis"];
 const LEADERSHIP_KEYWORDS = ["leadership", "growth"];
 
 // ── LocalStorage keys ─────────────────────────────────────────────────────
-const LS_CHAT   = "delphi_chat";
-const LS_LEAD   = "delphi_leadScore";
-const LS_CRISIS = "delphi_crisisScore";
-const LS_STEP   = "delphi_stepId";
-const LS_LANG   = "delphi_lang";
+const LS_CHAT    = "delphi_chat";
+const LS_LEAD    = "delphi_leadScore";
+const LS_CRISIS  = "delphi_crisisScore";
+const LS_STEP    = "delphi_stepId";
+const LS_LANG    = "delphi_lang";
+const LS_SESSION = "delphi_sessionId";
 
 export default function KodeeChat() {
   const [open, setOpen] = useState(false);
@@ -39,6 +40,8 @@ export default function KodeeChat() {
   const [lang, setLang] = useState<Lang>("en");
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef  = useRef<HTMLInputElement>(null);
+
+  const [sessionId, setSessionId] = useState("");
 
   // ── Hidden lead intelligence state ────────────────────────────────────────
   const [leadScore, setLeadScore]       = useState(0);
@@ -65,6 +68,16 @@ export default function KodeeChat() {
     if (savedCrisis) setCrisisScore(Number(savedCrisis));
     if (savedStep)  setStepId(savedStep);
     if (savedLang && (savedLang === "en" || savedLang === "fr")) setLang(savedLang);
+
+    // Restore or generate chat session ID
+    const savedSession = localStorage.getItem(LS_SESSION);
+    if (savedSession) {
+      setSessionId(savedSession);
+    } else {
+      const newId = crypto.randomUUID();
+      setSessionId(newId);
+      localStorage.setItem(LS_SESSION, newId);
+    }
   }, []);
 
   // ── Persist session to localStorage ──────────────────────────────────────
@@ -286,7 +299,14 @@ export default function KodeeChat() {
       const res = await fetch("/api/delphi/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: apiMessages, lang }),
+        body: JSON.stringify({
+          messages: apiMessages,
+          lang,
+          sessionId,
+          leadScore,
+          crisisScore,
+          intent: advisoryIntent ? "advisory" : "info",
+        }),
       });
       const data = await res.json() as { reply: string | null };
       const reply = data.reply ?? t(lang, "errorReply");
@@ -317,6 +337,9 @@ export default function KodeeChat() {
     localStorage.removeItem(LS_LEAD);
     localStorage.removeItem(LS_CRISIS);
     localStorage.removeItem(LS_STEP);
+    const freshSession = crypto.randomUUID();
+    setSessionId(freshSession);
+    localStorage.setItem(LS_SESSION, freshSession);
     leadExportSent.current    = false;
     crmExportSent.current     = false;
     crisisEventSent.current   = false;
