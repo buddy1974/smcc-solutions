@@ -17,6 +17,10 @@ type Message = {
 // Steps that render the "Schedule My Advisory Session" purple button
 const SCHEDULE_STEPS = new Set(["human_escalation", "urgency_escalation"]);
 
+// ── Scoring constants ──────────────────────────────────────────────────────
+const CRISIS_KEYWORDS = ["divorce", "urgent", "separated", "crisis"];
+const LEADERSHIP_KEYWORDS = ["leadership", "growth"];
+
 export default function KodeeChat() {
   const [open, setOpen] = useState(false);
   const [stepId, setStepId] = useState("welcome");
@@ -27,11 +31,56 @@ export default function KodeeChat() {
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // ── Hidden lead intelligence state ────────────────────────────────────────
+  const [leadScore, setLeadScore] = useState(0);
+  const [crisisScore, setCrisisScore] = useState(0);
+  const [advisoryIntent, setAdvisoryIntent] = useState(false);
+  const [interactionCount, setInteractionCount] = useState(0);
+
   useEffect(() => {
     if (open) {
       bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages, open, isThinking]);
+
+  // ── Lead intelligence logging ─────────────────────────────────────────────
+  useEffect(() => {
+    if (interactionCount > 0) {
+      console.log("Lead Score:", leadScore);
+      console.log("Crisis Score:", crisisScore);
+    }
+  }, [leadScore, crisisScore, interactionCount]);
+
+  // ── Engagement bonus: 3+ interactions ─────────────────────────────────────
+  useEffect(() => {
+    if (interactionCount === 3) {
+      setLeadScore((prev) => prev + 10);
+    }
+  }, [interactionCount]);
+
+  // ── Silent threshold: trigger auto-messages when thresholds are crossed ───
+  function checkThresholds(
+    newCrisisScore: number,
+    newLeadScore: number,
+    prevCrisisScore: number,
+    prevLeadScore: number,
+    addBotMessage: (text: string) => void
+  ) {
+    if (newCrisisScore >= 50 && prevCrisisScore < 50) {
+      setTimeout(() => {
+        addBotMessage(
+          "This situation may require personal guidance.\n\nI recommend scheduling a private advisory session."
+        );
+        setStepId("urgency_escalation");
+      }, 700);
+    } else if (newLeadScore >= 50 && prevLeadScore < 50) {
+      setTimeout(() => {
+        addBotMessage(
+          "Based on your interest, Cohort I may be a strong fit for you.\n\nWould you like to begin your enrollment?"
+        );
+      }, 700);
+    }
+  }
 
   function openChat() {
     if (!started) {
@@ -50,12 +99,34 @@ export default function KodeeChat() {
     setMessages((prev) => [...prev, { from: "user", text: label }]);
     setIsThinking(true);
 
+    // ── Score the option click ─────────────────────────────────────────────
+    let scoreDelta = 0;
+    const lowerLabel = label.toLowerCase();
+
+    if (lowerLabel.includes("assess my situation")) scoreDelta = 10;
+    if (lowerLabel.includes("apply")) scoreDelta = 25;
+    if (lowerLabel.includes("human advisor") || lowerLabel.includes("speak to")) {
+      scoreDelta = 40;
+      setAdvisoryIntent(true);
+    }
+    if (LEADERSHIP_KEYWORDS.some((kw) => lowerLabel.includes(kw))) scoreDelta += 15;
+
+    const prevLead = leadScore;
+    const prevCrisis = crisisScore;
+    const newLead = leadScore + scoreDelta;
+    if (scoreDelta > 0) setLeadScore(newLead);
+    setInteractionCount((prev) => prev + 1);
+
     setTimeout(() => {
       trackEvent("Delphi_Option", { choice: label });
       const step = getStep(next);
       setMessages((prev) => [...prev, { from: "bot", text: step.message }]);
       setStepId(next);
       setIsThinking(false);
+
+      checkThresholds(prevCrisis, newLead, prevCrisis, prevLead, (text) => {
+        setMessages((m) => [...m, { from: "bot", text }]);
+      });
     }, 600);
   }
 
@@ -65,6 +136,24 @@ export default function KodeeChat() {
     const text = inputText.trim();
     if (!text || isThinking) return;
     setInputText("");
+
+    const lower = text.toLowerCase();
+
+    // ── Score text keywords ────────────────────────────────────────────────
+    let scoreDelta = 0;
+    let crisisDelta = 0;
+
+    if (CRISIS_KEYWORDS.some((kw) => lower.includes(kw))) crisisDelta = 50;
+    if (LEADERSHIP_KEYWORDS.some((kw) => lower.includes(kw))) scoreDelta += 15;
+
+    const prevLead = leadScore;
+    const prevCrisis = crisisScore;
+    const newCrisis = crisisScore + crisisDelta;
+    const newLead = leadScore + scoreDelta;
+
+    if (crisisDelta > 0) setCrisisScore(newCrisis);
+    if (scoreDelta > 0) setLeadScore(newLead);
+    setInteractionCount((prev) => prev + 1);
 
     // Urgency check first (crisis keywords → special escalation)
     if (isUrgencyTrigger(text)) {
@@ -103,6 +192,11 @@ export default function KodeeChat() {
         text: "Select one of the options below to continue, or type \"human\" to connect with a live advisor.",
       },
     ]);
+
+    // Check thresholds after fallback
+    checkThresholds(newCrisis, newLead, prevCrisis, prevLead, (botText) => {
+      setMessages((m) => [...m, { from: "bot", text: botText }]);
+    });
   }
 
   // ── Schedule button click ──────────────────────────────────────────────────
@@ -117,6 +211,10 @@ export default function KodeeChat() {
     setMessages([{ from: "bot", text: step.message }]);
     setStepId("welcome");
     setIsThinking(false);
+    setLeadScore(0);
+    setCrisisScore(0);
+    setAdvisoryIntent(false);
+    setInteractionCount(0);
   }
 
   const currentStep = getStep(stepId);
