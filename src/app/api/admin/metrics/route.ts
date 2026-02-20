@@ -1,7 +1,13 @@
 import { NextResponse } from "next/server";
 import { getSupabase } from "@/lib/supabase";
 
-export async function GET() {
+export async function GET(request: Request) {
+  const authHeader = request.headers.get("authorization");
+
+  if (authHeader !== `Bearer ${process.env.ADMIN_SECRET}`) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
   try {
     const supabase = getSupabase();
 
