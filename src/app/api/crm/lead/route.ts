@@ -10,12 +10,13 @@
  * Payload:
  *   { source, name, email, phone, country, intent, leadScore, crisisScore, lang, timestamp }
  *
- * Current: console.log + nodemailer notification to admissions.
+ * Storage: Supabase `leads` table (persistent).
  * Upgrade path: add CRM webhook, Meta Conversions API, or WhatsApp trigger.
  */
 
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { getSupabase } from "@/lib/supabase";
 
 type LeadPayload = {
   source: string;
@@ -30,11 +31,30 @@ type LeadPayload = {
   timestamp: string;
 };
 
-// ── In-memory lead store (resets on deploy — MVP only) ────────────────────────
-// Upgrade path: replace with database write (Supabase, PlanetScale, etc.)
-const leads: LeadPayload[] = [];
-
 export async function GET() {
+  const { data, error } = await getSupabase()
+    .from("leads")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("[crm/lead] GET error:", error);
+    return NextResponse.json([], { status: 500 });
+  }
+
+  const leads = (data ?? []).map((row) => ({
+    source:      row.source,
+    name:        row.name,
+    email:       row.email,
+    phone:       row.phone,
+    country:     row.country,
+    intent:      row.intent,
+    leadScore:   row.lead_score,
+    crisisScore: row.crisis_score,
+    lang:        row.lang,
+    timestamp:   row.created_at,
+  }));
+
   return NextResponse.json(leads);
 }
 
@@ -46,8 +66,19 @@ export async function POST(req: NextRequest) {
       intent, leadScore, crisisScore, lang, timestamp,
     } = data;
 
-    // Store in memory for dashboard
-    leads.push(data);
+    // ── Persist to Supabase (non-fatal) ───────────────────────────────────────
+    const { error: dbError } = await getSupabase().from("leads").insert([{
+      source,
+      name,
+      email,
+      phone,
+      country,
+      intent,
+      lead_score:   leadScore,
+      crisis_score: crisisScore,
+      lang,
+    }]);
+    if (dbError) console.error("[crm/lead] DB insert error:", dbError);
 
     console.log("[CRM Lead]", {
       source, name, email, phone, country,

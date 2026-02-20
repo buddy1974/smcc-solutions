@@ -18,7 +18,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
-import { pushEvent } from "@/lib/eventStore";
+import { getSupabase } from "@/lib/supabase";
 
 export async function POST(req: NextRequest) {
   try {
@@ -59,8 +59,13 @@ export async function POST(req: NextRequest) {
       timestamp: new Date().toISOString(),
     });
 
-    // Track application submission event
-    pushEvent("application_submitted", { program: program ?? "N/A", score, level });
+    // Track application submission event (non-fatal)
+    getSupabase().from("events").insert([{
+      event: "application_submitted",
+      meta:  { program: program ?? "N/A", score, level },
+    }]).then(({ error }) => {
+      if (error) console.error("[submit] event insert error:", error);
+    });
 
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
