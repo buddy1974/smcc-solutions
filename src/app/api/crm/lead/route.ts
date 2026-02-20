@@ -30,6 +30,14 @@ type LeadPayload = {
   timestamp: string;
 };
 
+// ── In-memory lead store (resets on deploy — MVP only) ────────────────────────
+// Upgrade path: replace with database write (Supabase, PlanetScale, etc.)
+const leads: LeadPayload[] = [];
+
+export async function GET() {
+  return NextResponse.json(leads);
+}
+
 export async function POST(req: NextRequest) {
   try {
     const data: LeadPayload = await req.json();
@@ -37,6 +45,9 @@ export async function POST(req: NextRequest) {
       source, name, email, phone, country,
       intent, leadScore, crisisScore, lang, timestamp,
     } = data;
+
+    // Store in memory for dashboard
+    leads.push(data);
 
     console.log("[CRM Lead]", {
       source, name, email, phone, country,
