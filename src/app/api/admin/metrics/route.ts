@@ -16,13 +16,15 @@ export async function GET(request: Request) {
       { data: crisisDistribution },
       { data: languageDistribution },
       { data: escalationRate },
-      { data: conversionMetrics },
+      { data: funnelOverview },
+      { data: averageCrisis },
     ] = await Promise.all([
       supabase.from("leads_per_day").select("*"),
       supabase.from("crisis_distribution").select("*"),
       supabase.from("language_distribution").select("*"),
       supabase.from("escalation_rate").select("*"),
-      supabase.from("conversion_metrics").select("*"),
+      supabase.from("funnel_overview").select("*"),
+      supabase.from("avg_crisis_score").select("*"),
     ]);
 
     return NextResponse.json({
@@ -30,9 +32,10 @@ export async function GET(request: Request) {
       crisisDistribution,
       languageDistribution,
       escalationRate,
-      conversionMetrics,
+      funnelOverview,
+      averageCrisis,
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: "Failed to fetch metrics" },
       { status: 500 }
