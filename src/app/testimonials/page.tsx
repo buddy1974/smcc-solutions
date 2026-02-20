@@ -2,51 +2,13 @@ import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import TrackedLink from "@/components/TrackedLink";
+import { testimonials } from "@/lib/testimonials";
 
 export const metadata: Metadata = {
   title: "Testimonials — SMCC",
   description:
     "Real transformation stories from SMCC participants across multiple countries. Marriage restoration, leadership growth, and purpose alignment.",
 };
-
-const testimonials = [
-  {
-    name: "Angela M.",
-    location: "Canada",
-    quote:
-      "SMCC gave me tools I had never received in church or school. My communication with my husband shifted within weeks. The structure, the faith integration, and the coaching clarity were powerful.",
-  },
-  {
-    name: "Judith N.",
-    location: "Yaoundé",
-    quote:
-      "I came into the program broken and unsure about my marriage. Today, I lead small groups helping other women rebuild their homes. This was more than a course — it was restoration.",
-  },
-  {
-    name: "Grace T.",
-    location: "Atlanta",
-    quote:
-      "As a coach, I thought I knew relationship dynamics. SMCC expanded my framework and strengthened my spiritual leadership. I now integrate what I learned into my own consulting.",
-  },
-  {
-    name: "Samuel & Ruth",
-    location: "Lagos",
-    quote:
-      "We almost separated. The mentorship and practical tools helped us rebuild trust. We now serve couples in our local church.",
-  },
-  {
-    name: "Patience A.",
-    location: "Douala",
-    quote:
-      "The conflict resolution tools alone changed our home. But the spiritual clarity gave me the strength to lead with wisdom instead of emotion.",
-  },
-  {
-    name: "Nadine K.",
-    location: "Paris",
-    quote:
-      "This was the first program that connected faith, emotional healing, and practical steps in a way I could apply immediately.",
-  },
-];
 
 const stats = [
   { stat: "5+", label: "Countries Represented" },
@@ -113,17 +75,30 @@ export default function TestimonialsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {testimonials.map((t) => (
                 <div
-                  key={t.name}
+                  key={t.slug}
                   className="bg-white rounded-xl p-8 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col"
                 >
                   {/* Quote mark */}
                   <div className="text-4xl font-bold text-gold/30 leading-none mb-3 font-playfair">&ldquo;</div>
-                  <blockquote className="flex-1 text-charcoal/80 leading-relaxed mb-6">
-                    {t.quote}
+
+                  {/* Excerpt */}
+                  <blockquote className="flex-1 text-charcoal/80 leading-relaxed mb-6 text-sm">
+                    {t.excerpt}
                   </blockquote>
+
+                  {/* Read full story */}
+                  <a
+                    href={`/testimonials/${t.slug}`}
+                    className="text-sm font-semibold mb-5 text-plum hover:text-gold transition-colors"
+                  >
+                    Read Full Story →
+                  </a>
+
+                  {/* Attribution */}
                   <div className="border-t border-charcoal/10 pt-4">
                     <p className="font-bold text-plum">{t.name}</p>
-                    <p className="text-charcoal/50 text-sm">{t.location}</p>
+                    <p className="text-charcoal/50 text-sm">{t.title}</p>
+                    <p className="text-charcoal/40 text-xs mt-0.5">{t.location}</p>
                   </div>
                 </div>
               ))}
