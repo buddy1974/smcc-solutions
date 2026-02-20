@@ -80,12 +80,12 @@ export default function KodeeChat() {
     if (open) bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, open, isThinking]);
 
-  // ── Lead intelligence logging ─────────────────────────────────────────────
+  // ── Lead intelligence — scores tracked silently, exported to backend ───────
   useEffect(() => {
-    if (interactionCount > 0) {
-      console.log("Lead Score:", leadScore);
-      console.log("Crisis Score:", crisisScore);
-    }
+    // Scores are exported via /api/delphi-lead and /api/crm/lead
+    void leadScore;
+    void crisisScore;
+    void interactionCount;
   }, [leadScore, crisisScore, interactionCount]);
 
   // ── Engagement bonus: 3+ interactions ─────────────────────────────────────
@@ -411,21 +411,25 @@ export default function KodeeChat() {
               </div>
             ))}
 
-            {/* Thinking indicator */}
+            {/* Thinking skeleton — animated placeholder bubble */}
             {isThinking && (
               <div className="flex justify-start">
                 <div
-                  className="rounded-2xl px-4 py-3"
+                  className="rounded-2xl px-4 py-4 min-w-[180px] max-w-[75%]"
                   style={{ backgroundColor: "#fff", border: "1px solid rgba(91,26,93,0.12)", borderBottomLeftRadius: "4px" }}
                 >
-                  <div className="flex gap-1 items-center">
-                    <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: "rgba(91,26,93,0.4)", animationDelay: "0ms" }} />
-                    <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: "rgba(91,26,93,0.4)", animationDelay: "150ms" }} />
-                    <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: "rgba(91,26,93,0.4)", animationDelay: "300ms" }} />
+                  {/* Skeleton shimmer lines */}
+                  <div className="space-y-2 animate-pulse">
+                    <div className="h-2 rounded-full w-4/5"  style={{ backgroundColor: "rgba(91,26,93,0.09)" }} />
+                    <div className="h-2 rounded-full w-full"  style={{ backgroundColor: "rgba(91,26,93,0.07)" }} />
+                    <div className="h-2 rounded-full w-3/5"  style={{ backgroundColor: "rgba(91,26,93,0.09)" }} />
                   </div>
-                  <p className="text-[10px] mt-1.5" style={{ color: "rgba(91,26,93,0.35)" }}>
-                    {t(lang, "thinking")}
-                  </p>
+                  {/* Typing dots */}
+                  <div className="flex gap-1 items-center mt-3">
+                    <span className="w-1 h-1 rounded-full animate-bounce" style={{ backgroundColor: "rgba(91,26,93,0.3)", animationDelay: "0ms" }} />
+                    <span className="w-1 h-1 rounded-full animate-bounce" style={{ backgroundColor: "rgba(91,26,93,0.3)", animationDelay: "150ms" }} />
+                    <span className="w-1 h-1 rounded-full animate-bounce" style={{ backgroundColor: "rgba(91,26,93,0.3)", animationDelay: "300ms" }} />
+                  </div>
                 </div>
               </div>
             )}

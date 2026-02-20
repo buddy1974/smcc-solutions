@@ -8,7 +8,8 @@ interface PageViewLoggerProps {
 
 export default function PageViewLogger({ page }: PageViewLoggerProps) {
   useEffect(() => {
-    console.log("[SMCC Track] Page viewed:", page);
+    // Future: wire into analytics provider
+    void page;
   }, [page]);
 
   return null;

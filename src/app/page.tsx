@@ -185,6 +185,7 @@ export default function Home() {
                 alt="Founders of SMCC — Delphine and Rogers Nforgwei"
                 width={1200}
                 height={600}
+                priority
                 className="rounded-2xl shadow-xl w-full object-cover max-h-[480px]"
               />
             </div>
