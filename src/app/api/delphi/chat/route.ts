@@ -63,6 +63,16 @@ function calculateCrisisScore(message: string): number {
   return Math.min(score, 10);
 }
 
+// ── WhatsApp escalation stub ──────────────────────────────────────────────────
+async function triggerWhatsAppEscalation(lead: Record<string, unknown>) {
+  console.log("🚨 WhatsApp escalation triggered for lead:", lead.id);
+
+  // Future Meta Cloud API call goes here
+  // await fetch("https://graph.facebook.com/v18.0/...", { ... })
+
+  return true;
+}
+
 // ── Route handler ─────────────────────────────────────────────────────────────
 export async function POST(req: NextRequest) {
   try {
@@ -128,20 +138,28 @@ export async function POST(req: NextRequest) {
       if (crisisScore >= 6) {
         const priority = crisisScore >= 8 ? "urgent" : "normal";
 
-        db.from("leads").insert({
-          full_name:            "Chat Lead",
-          email:                null,
-          phone:                null,
-          language:             resolvedLang,
-          interest_type:        "crisis",
-          crisis_score:         crisisScore,
-          source:               "chatbot",
-          priority,
-          followup_language:    resolvedLang,
-          flagged_for_whatsapp: crisisScore >= 8,
-        }).then(({ error }) => {
-          if (error) console.error("[delphi/chat] lead insert:", error);
-        });
+        const { data: newLead, error: leadErr } = await db
+          .from("leads")
+          .insert({
+            full_name:            "Chat Lead",
+            email:                null,
+            phone:                null,
+            language:             resolvedLang,
+            interest_type:        "crisis",
+            crisis_score:         crisisScore,
+            source:               "chatbot",
+            priority,
+            followup_language:    resolvedLang,
+            flagged_for_whatsapp: crisisScore >= 8,
+          })
+          .select()
+          .single();
+
+        if (leadErr) console.error("[delphi/chat] lead insert:", leadErr);
+
+        if (crisisScore >= 8 && newLead) {
+          await triggerWhatsAppEscalation(newLead);
+        }
       }
     }
 
