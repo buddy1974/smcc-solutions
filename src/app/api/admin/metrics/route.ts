@@ -18,6 +18,7 @@ export async function GET(request: Request) {
       { data: escalationRate },
       { data: funnelOverview },
       { data: averageCrisis },
+      { data: leadSourceDistribution },
     ] = await Promise.all([
       supabase.from("leads_per_day").select("*"),
       supabase.from("crisis_distribution").select("*"),
@@ -25,6 +26,7 @@ export async function GET(request: Request) {
       supabase.from("escalation_rate").select("*"),
       supabase.from("funnel_overview").select("*"),
       supabase.from("avg_crisis_score").select("*"),
+      supabase.from("lead_source_distribution").select("*"),
     ]);
 
     return NextResponse.json({
@@ -34,6 +36,7 @@ export async function GET(request: Request) {
       escalationRate,
       funnelOverview,
       averageCrisis,
+      leadSourceDistribution,
     });
   } catch {
     return NextResponse.json(

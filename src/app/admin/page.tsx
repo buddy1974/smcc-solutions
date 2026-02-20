@@ -12,8 +12,9 @@ type Metrics = {
   crisisDistribution:   { crisis_score: number; count: number }[];
   languageDistribution: { language: string; total: number }[];
   escalationRate:       { escalated: number; not_escalated: number; total: number; escalation_percentage: number }[];
-  funnelOverview:       { total_leads: number; total_appointments: number; conversion_rate: number }[];
-  averageCrisis:        { average_crisis: number }[];
+  funnelOverview:          { total_leads: number; total_appointments: number; conversion_rate: number }[];
+  averageCrisis:           { average_crisis: number }[];
+  leadSourceDistribution:  { source: string; total: number }[];
 };
 
 const PIE_COLORS = ["#6B21A8", "#9333EA", "#C084FC", "#E9D5FF"];
@@ -129,6 +130,28 @@ export default function AdminDashboard() {
                 >
                   {data.languageDistribution.map((_, i) => (
                     <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          ) : <p className="text-gray-400 text-sm">No data yet.</p>}
+        </div>
+
+        {/* ── Lead Source Distribution ──────────────────────────────────────── */}
+        <div className="bg-white rounded-xl shadow-md p-6">
+          <p className="font-semibold text-purple-800 mb-5">Lead Source Distribution</p>
+          {data.leadSourceDistribution?.length > 0 ? (
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={data.leadSourceDistribution}
+                  dataKey="total"
+                  nameKey="source"
+                  outerRadius={100}
+                >
+                  {data.leadSourceDistribution.map((_: any, index: number) => (
+                    <Cell key={index} fill={PIE_COLORS[index % PIE_COLORS.length]} />
                   ))}
                 </Pie>
                 <Tooltip />
