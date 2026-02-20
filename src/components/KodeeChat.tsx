@@ -21,6 +21,12 @@ const SCHEDULE_STEPS = new Set(["human_escalation", "urgency_escalation"]);
 const CRISIS_KEYWORDS = ["divorce", "urgent", "separated", "crisis"];
 const LEADERSHIP_KEYWORDS = ["leadership", "growth"];
 
+// ── LocalStorage keys ─────────────────────────────────────────────────────
+const LS_CHAT        = "delphi_chat";
+const LS_LEAD        = "delphi_leadScore";
+const LS_CRISIS      = "delphi_crisisScore";
+const LS_STEP        = "delphi_stepId";
+
 export default function KodeeChat() {
   const [open, setOpen] = useState(false);
   const [stepId, setStepId] = useState("welcome");
@@ -37,6 +43,39 @@ export default function KodeeChat() {
   const [advisoryIntent, setAdvisoryIntent] = useState(false);
   const [interactionCount, setInteractionCount] = useState(0);
 
+  // Prevent firing the lead export more than once per session
+  const leadExportSent = useRef(false);
+
+  // ── Restore session from localStorage on mount ────────────────────────────
+  useEffect(() => {
+    const savedChat   = localStorage.getItem(LS_CHAT);
+    const savedLead   = localStorage.getItem(LS_LEAD);
+    const savedCrisis = localStorage.getItem(LS_CRISIS);
+    const savedStep   = localStorage.getItem(LS_STEP);
+
+    if (savedChat) {
+      setMessages(JSON.parse(savedChat));
+      setStarted(true);
+    }
+    if (savedLead)   setLeadScore(Number(savedLead));
+    if (savedCrisis) setCrisisScore(Number(savedCrisis));
+    if (savedStep)   setStepId(savedStep);
+  }, []);
+
+  // ── Persist session to localStorage on every relevant state change ─────────
+  useEffect(() => {
+    if (messages.length > 0) {
+      localStorage.setItem(LS_CHAT, JSON.stringify(messages));
+    }
+    localStorage.setItem(LS_LEAD,   leadScore.toString());
+    localStorage.setItem(LS_CRISIS, crisisScore.toString());
+  }, [messages, leadScore, crisisScore]);
+
+  useEffect(() => {
+    localStorage.setItem(LS_STEP, stepId);
+  }, [stepId]);
+
+  // ── Scroll to bottom ──────────────────────────────────────────────────────
   useEffect(() => {
     if (open) {
       bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -58,7 +97,24 @@ export default function KodeeChat() {
     }
   }, [interactionCount]);
 
-  // ── Silent threshold: trigger auto-messages when thresholds are crossed ───
+  // ── Silent lead export when threshold crossed ─────────────────────────────
+  useEffect(() => {
+    if ((leadScore > 50 || advisoryIntent) && !leadExportSent.current) {
+      leadExportSent.current = true;
+      fetch("/api/delphi-lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          leadScore,
+          crisisScore,
+          advisoryIntent,
+          timestamp: new Date().toISOString(),
+        }),
+      }).catch(() => { /* silent — non-blocking */ });
+    }
+  }, [leadScore, crisisScore, advisoryIntent]);
+
+  // ── Silent threshold: trigger auto-messages when thresholds are crossed ────
   function checkThresholds(
     newCrisisScore: number,
     newLeadScore: number,
@@ -95,11 +151,9 @@ export default function KodeeChat() {
 
   // ── Option click with 600ms simulated thinking ────────────────────────────
   function handleOption(label: string, next: string) {
-    // User message appears instantly
     setMessages((prev) => [...prev, { from: "user", text: label }]);
     setIsThinking(true);
 
-    // ── Score the option click ─────────────────────────────────────────────
     let scoreDelta = 0;
     const lowerLabel = label.toLowerCase();
 
@@ -111,9 +165,9 @@ export default function KodeeChat() {
     }
     if (LEADERSHIP_KEYWORDS.some((kw) => lowerLabel.includes(kw))) scoreDelta += 15;
 
-    const prevLead = leadScore;
+    const prevLead   = leadScore;
     const prevCrisis = crisisScore;
-    const newLead = leadScore + scoreDelta;
+    const newLead    = leadScore + scoreDelta;
     if (scoreDelta > 0) setLeadScore(newLead);
     setInteractionCount((prev) => prev + 1);
 
@@ -139,23 +193,21 @@ export default function KodeeChat() {
 
     const lower = text.toLowerCase();
 
-    // ── Score text keywords ────────────────────────────────────────────────
-    let scoreDelta = 0;
+    let scoreDelta  = 0;
     let crisisDelta = 0;
 
     if (CRISIS_KEYWORDS.some((kw) => lower.includes(kw))) crisisDelta = 50;
     if (LEADERSHIP_KEYWORDS.some((kw) => lower.includes(kw))) scoreDelta += 15;
 
-    const prevLead = leadScore;
+    const prevLead   = leadScore;
     const prevCrisis = crisisScore;
-    const newCrisis = crisisScore + crisisDelta;
-    const newLead = leadScore + scoreDelta;
+    const newCrisis  = crisisScore + crisisDelta;
+    const newLead    = leadScore + scoreDelta;
 
     if (crisisDelta > 0) setCrisisScore(newCrisis);
-    if (scoreDelta > 0) setLeadScore(newLead);
+    if (scoreDelta > 0)  setLeadScore(newLead);
     setInteractionCount((prev) => prev + 1);
 
-    // Urgency check first (crisis keywords → special escalation)
     if (isUrgencyTrigger(text)) {
       setMessages((prev) => [...prev, { from: "user", text }]);
       setIsThinking(true);
@@ -169,7 +221,6 @@ export default function KodeeChat() {
       return;
     }
 
-    // Human escalation check
     if (isEscalationTrigger(text)) {
       setMessages((prev) => [...prev, { from: "user", text }]);
       setIsThinking(true);
@@ -183,7 +234,6 @@ export default function KodeeChat() {
       return;
     }
 
-    // Confident fallback — no uncertain language
     setMessages((prev) => [
       ...prev,
       { from: "user", text },
@@ -193,7 +243,6 @@ export default function KodeeChat() {
       },
     ]);
 
-    // Check thresholds after fallback
     checkThresholds(newCrisis, newLead, prevCrisis, prevLead, (botText) => {
       setMessages((m) => [...m, { from: "bot", text: botText }]);
     });
@@ -206,7 +255,14 @@ export default function KodeeChat() {
     window.open(GOOGLE_CALENDAR_URL, "_blank");
   }
 
+  // ── Reset: clears localStorage + all state ────────────────────────────────
   function reset() {
+    localStorage.removeItem(LS_CHAT);
+    localStorage.removeItem(LS_LEAD);
+    localStorage.removeItem(LS_CRISIS);
+    localStorage.removeItem(LS_STEP);
+    leadExportSent.current = false;
+
     const step = getStep("welcome");
     setMessages([{ from: "bot", text: step.message }]);
     setStepId("welcome");
@@ -217,10 +273,10 @@ export default function KodeeChat() {
     setInteractionCount(0);
   }
 
-  const currentStep = getStep(stepId);
+  const currentStep    = getStep(stepId);
   const isScheduleStep = SCHEDULE_STEPS.has(currentStep.id);
   const isRecommendation = !!currentStep.recommendation;
-  const showTextInput = !isRecommendation;
+  const showTextInput  = !isRecommendation;
 
   return (
     <>
@@ -257,16 +313,28 @@ export default function KodeeChat() {
                 SMCC Advisory Assistant &nbsp;&middot;&nbsp; Guiding you to the right path.
               </p>
             </div>
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              aria-label="Close chat"
-              className="text-white/40 hover:text-white transition-colors ml-4 mt-0.5 flex-shrink-0"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+            <div className="flex items-center gap-3 ml-4 mt-0.5 flex-shrink-0">
+              {/* Start New Conversation */}
+              <button
+                type="button"
+                onClick={reset}
+                aria-label="Start new conversation"
+                className="text-white/35 hover:text-white/70 transition-colors text-[10px] leading-tight text-right"
+              >
+                New chat
+              </button>
+              {/* Close */}
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label="Close chat"
+                className="text-white/40 hover:text-white transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
           </div>
 
           {/* Messages + thinking indicator */}
@@ -292,7 +360,7 @@ export default function KodeeChat() {
               </div>
             ))}
 
-            {/* Thinking dots — shown during 600ms delay */}
+            {/* Thinking dots */}
             {isThinking && (
               <div className="flex justify-start">
                 <div
@@ -357,7 +425,6 @@ export default function KodeeChat() {
               <div className="space-y-2">
                 {currentStep.recommendation.ctas.map((cta, i) =>
                   cta.external ? (
-                    // External link (Google Calendar) — opens in new tab
                     <button
                       key={cta.label}
                       type="button"
@@ -374,7 +441,6 @@ export default function KodeeChat() {
                       {cta.label}
                     </button>
                   ) : (
-                    // Internal link
                     <a
                       key={cta.label}
                       href={cta.href}
@@ -407,7 +473,7 @@ export default function KodeeChat() {
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                   disabled={isThinking}
-                  placeholder='Or type your question…'
+                  placeholder="Or type your question…"
                   className="flex-1 text-xs px-3 py-2 rounded-lg border border-charcoal/15 focus:outline-none focus:border-plum/30 bg-white text-charcoal placeholder-charcoal/30 disabled:opacity-50"
                 />
                 <button
