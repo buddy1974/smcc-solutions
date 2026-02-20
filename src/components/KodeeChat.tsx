@@ -47,8 +47,10 @@ export default function KodeeChat() {
   const [interactionCount, setInteractionCount] = useState(0);
 
   // Prevent duplicate exports per session
-  const leadExportSent = useRef(false);
-  const crmExportSent  = useRef(false);
+  const leadExportSent     = useRef(false);
+  const crmExportSent      = useRef(false);
+  const crisisEventSent    = useRef(false);
+  const leadScoreHighSent  = useRef(false);
 
   // ── Restore session from localStorage on mount ────────────────────────────
   useEffect(() => {
@@ -105,13 +107,26 @@ export default function KodeeChat() {
     }
   }, [leadScore, crisisScore, advisoryIntent]);
 
-  // ── CRM export at leadScore >= 50 ─────────────────────────────────────────
+  // ── CRM export + lead_score_high event at leadScore >= 50 ────────────────
   useEffect(() => {
-    if (leadScore >= 50 && !crmExportSent.current) {
-      sendCrmLead("apply");
+    if (leadScore >= 50) {
+      if (!crmExportSent.current) sendCrmLead("apply");
+      if (!leadScoreHighSent.current) {
+        leadScoreHighSent.current = true;
+        trackDelphiEvent("lead_score_high", { leadScore });
+      }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [leadScore]);
+
+  // ── crisis_detected event at crisisScore >= 50 ────────────────────────────
+  useEffect(() => {
+    if (crisisScore >= 50 && !crisisEventSent.current) {
+      crisisEventSent.current = true;
+      trackDelphiEvent("crisis_detected", { crisisScore });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [crisisScore]);
 
   // ── CRM export helper ─────────────────────────────────────────────────────
   function sendCrmLead(intent: "apply" | "advisor" | "info") {
@@ -129,6 +144,15 @@ export default function KodeeChat() {
         lang,
         timestamp: new Date().toISOString(),
       }),
+    }).catch(() => {});
+  }
+
+  // ── Structured event tracking — fire-and-forget to /api/track-event ──────
+  function trackDelphiEvent(name: string, meta: Record<string, unknown> = {}) {
+    fetch("/api/track-event", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, meta }),
     }).catch(() => {});
   }
 
@@ -156,6 +180,7 @@ export default function KodeeChat() {
       setMessages([{ from: "bot", text: t(lang, "welcome") }]);
       setStarted(true);
       trackEvent("Delphi_Open");
+      trackDelphiEvent("delphi_opened", { lang });
     }
     setOpen(true);
     setTimeout(() => inputRef.current?.focus(), 150);
@@ -168,11 +193,18 @@ export default function KodeeChat() {
 
     // Score by destination step
     let scoreDelta = 0;
-    if (next === "assess_situation") scoreDelta = 10;
+    if (next === "assess_situation") {
+      scoreDelta = 10;
+      trackDelphiEvent("assessment_started", { lang });
+    }
+    if (["assess_a", "assess_b", "assess_c", "assess_d"].includes(next)) {
+      trackDelphiEvent("assessment_completed", { choice: label, lang });
+    }
     if (next === "human_escalation") {
       scoreDelta = 40;
       setAdvisoryIntent(true);
       sendCrmLead("advisor");
+      trackDelphiEvent("advisory_clicked", { lang });
     }
     if (LEADERSHIP_KEYWORDS.some((kw) => next.toLowerCase().includes(kw))) scoreDelta += 15;
 
@@ -275,6 +307,7 @@ export default function KodeeChat() {
   function handleScheduleClick() {
     trackEvent("Delphi_Schedule_Click");
     sendCrmLead("advisor");
+    trackDelphiEvent("advisory_booked", { lang });
     window.open(GOOGLE_CALENDAR_URL, "_blank");
   }
 
@@ -284,8 +317,10 @@ export default function KodeeChat() {
     localStorage.removeItem(LS_LEAD);
     localStorage.removeItem(LS_CRISIS);
     localStorage.removeItem(LS_STEP);
-    leadExportSent.current = false;
-    crmExportSent.current  = false;
+    leadExportSent.current    = false;
+    crmExportSent.current     = false;
+    crisisEventSent.current   = false;
+    leadScoreHighSent.current = false;
 
     setMessages([{ from: "bot", text: t(lang, "welcome") }]);
     setStepId("welcome");
@@ -502,7 +537,10 @@ export default function KodeeChat() {
                     <a
                       key={cta.label}
                       href={cta.href}
-                      onClick={() => trackEvent("Delphi_CTA", { cta: cta.label })}
+                      onClick={() => {
+                        trackEvent("Delphi_CTA", { cta: cta.label });
+                        trackDelphiEvent("apply_clicked", { cta: cta.label, lang });
+                      }}
                       className={`block w-full text-center text-sm px-4 py-2.5 rounded-xl font-semibold transition-colors ${
                         i === 0 ? "hover:opacity-90" : "border border-plum/25 text-plum hover:bg-plum/5"
                       }`}

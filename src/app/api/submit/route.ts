@@ -18,6 +18,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { pushEvent } from "@/lib/eventStore";
 
 export async function POST(req: NextRequest) {
   try {
@@ -57,6 +58,9 @@ export async function POST(req: NextRequest) {
       level,
       timestamp: new Date().toISOString(),
     });
+
+    // Track application submission event
+    pushEvent("application_submitted", { program: program ?? "N/A", score, level });
 
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
