@@ -16,11 +16,13 @@ export async function GET(request: Request) {
       { data: crisisDistribution },
       { data: languageDistribution },
       { data: escalationRate },
+      { data: conversionMetrics },
     ] = await Promise.all([
       supabase.from("leads_per_day").select("*"),
       supabase.from("crisis_distribution").select("*"),
       supabase.from("language_distribution").select("*"),
       supabase.from("escalation_rate").select("*"),
+      supabase.from("conversion_metrics").select("*"),
     ]);
 
     return NextResponse.json({
@@ -28,6 +30,7 @@ export async function GET(request: Request) {
       crisisDistribution,
       languageDistribution,
       escalationRate,
+      conversionMetrics,
     });
   } catch (error) {
     return NextResponse.json(

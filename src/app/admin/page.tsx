@@ -33,11 +33,36 @@ export default function AdminDashboard() {
 
   const COLORS = ["#6B21A8", "#9333EA", "#C084FC", "#E9D5FF"];
 
+  const cm = data.conversionMetrics?.[0];
+
+  // Compute avg crisis score from distribution data
+  const crisisAvg = (() => {
+    const dist: { crisis_score: number; count: number }[] = data.crisisDistribution ?? [];
+    const total  = dist.reduce((s, r) => s + r.count, 0);
+    const weighted = dist.reduce((s, r) => s + r.crisis_score * r.count, 0);
+    return total > 0 ? (weighted / total).toFixed(1) : "—";
+  })();
+
   return (
     <div className="p-10 space-y-16">
       <h1 className="text-3xl font-bold">
         SMCC Intelligence Dashboard
       </h1>
+
+      {/* Conversion performance cards */}
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+        {[
+          { label: "Total Leads",     value: cm?.total_leads      ?? "—" },
+          { label: "Converted Leads", value: cm?.converted_leads  ?? "—" },
+          { label: "Conversion %",    value: cm ? `${cm.conversion_rate ?? 0}%` : "—" },
+          { label: "Crisis Avg Score",value: crisisAvg },
+        ].map((card) => (
+          <div key={card.label} className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+            <p className="text-2xl font-bold text-purple-800">{card.value}</p>
+            <p className="mt-1 text-xs text-gray-500">{card.label}</p>
+          </div>
+        ))}
+      </div>
 
       {/* Leads Per Day */}
       <div>
