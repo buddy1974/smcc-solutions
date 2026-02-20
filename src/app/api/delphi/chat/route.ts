@@ -126,14 +126,19 @@ export async function POST(req: NextRequest) {
 
       // 3. Create lead record when crisis threshold is met
       if (crisisScore >= 6) {
+        const priority = crisisScore >= 8 ? "urgent" : "normal";
+
         db.from("leads").insert({
-          full_name:     "Chat Lead",
-          email:         null,
-          phone:         null,
-          language:      resolvedLang,
-          interest_type: "crisis",
-          crisis_score:  crisisScore,
-          source:        "chatbot",
+          full_name:            "Chat Lead",
+          email:                null,
+          phone:                null,
+          language:             resolvedLang,
+          interest_type:        "crisis",
+          crisis_score:         crisisScore,
+          source:               "chatbot",
+          priority,
+          followup_language:    resolvedLang,
+          flagged_for_whatsapp: crisisScore >= 8,
         }).then(({ error }) => {
           if (error) console.error("[delphi/chat] lead insert:", error);
         });
