@@ -8,6 +8,7 @@ import {
   GOOGLE_CALENDAR_URL,
 } from "@/lib/kodeeLogic";
 import { trackEvent } from "@/lib/track";
+import { type Lang, t, tOption } from "@/lib/delphiCopy";
 
 type Message = {
   from: "bot" | "user";
@@ -18,14 +19,15 @@ type Message = {
 const SCHEDULE_STEPS = new Set(["human_escalation", "urgency_escalation"]);
 
 // ── Scoring constants ──────────────────────────────────────────────────────
-const CRISIS_KEYWORDS = ["divorce", "urgent", "separated", "crisis"];
+const CRISIS_KEYWORDS    = ["divorce", "urgent", "separated", "crisis"];
 const LEADERSHIP_KEYWORDS = ["leadership", "growth"];
 
 // ── LocalStorage keys ─────────────────────────────────────────────────────
-const LS_CHAT        = "delphi_chat";
-const LS_LEAD        = "delphi_leadScore";
-const LS_CRISIS      = "delphi_crisisScore";
-const LS_STEP        = "delphi_stepId";
+const LS_CHAT   = "delphi_chat";
+const LS_LEAD   = "delphi_leadScore";
+const LS_CRISIS = "delphi_crisisScore";
+const LS_STEP   = "delphi_stepId";
+const LS_LANG   = "delphi_lang";
 
 export default function KodeeChat() {
   const [open, setOpen] = useState(false);
@@ -34,17 +36,19 @@ export default function KodeeChat() {
   const [started, setStarted] = useState(false);
   const [inputText, setInputText] = useState("");
   const [isThinking, setIsThinking] = useState(false);
+  const [lang, setLang] = useState<Lang>("en");
   const bottomRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef  = useRef<HTMLInputElement>(null);
 
   // ── Hidden lead intelligence state ────────────────────────────────────────
-  const [leadScore, setLeadScore] = useState(0);
-  const [crisisScore, setCrisisScore] = useState(0);
+  const [leadScore, setLeadScore]       = useState(0);
+  const [crisisScore, setCrisisScore]   = useState(0);
   const [advisoryIntent, setAdvisoryIntent] = useState(false);
   const [interactionCount, setInteractionCount] = useState(0);
 
-  // Prevent firing the lead export more than once per session
+  // Prevent duplicate exports per session
   const leadExportSent = useRef(false);
+  const crmExportSent  = useRef(false);
 
   // ── Restore session from localStorage on mount ────────────────────────────
   useEffect(() => {
@@ -52,34 +56,28 @@ export default function KodeeChat() {
     const savedLead   = localStorage.getItem(LS_LEAD);
     const savedCrisis = localStorage.getItem(LS_CRISIS);
     const savedStep   = localStorage.getItem(LS_STEP);
+    const savedLang   = localStorage.getItem(LS_LANG) as Lang | null;
 
-    if (savedChat) {
-      setMessages(JSON.parse(savedChat));
-      setStarted(true);
-    }
-    if (savedLead)   setLeadScore(Number(savedLead));
+    if (savedChat)  { setMessages(JSON.parse(savedChat)); setStarted(true); }
+    if (savedLead)  setLeadScore(Number(savedLead));
     if (savedCrisis) setCrisisScore(Number(savedCrisis));
-    if (savedStep)   setStepId(savedStep);
+    if (savedStep)  setStepId(savedStep);
+    if (savedLang && (savedLang === "en" || savedLang === "fr")) setLang(savedLang);
   }, []);
 
-  // ── Persist session to localStorage on every relevant state change ─────────
+  // ── Persist session to localStorage ──────────────────────────────────────
   useEffect(() => {
-    if (messages.length > 0) {
-      localStorage.setItem(LS_CHAT, JSON.stringify(messages));
-    }
+    if (messages.length > 0) localStorage.setItem(LS_CHAT, JSON.stringify(messages));
     localStorage.setItem(LS_LEAD,   leadScore.toString());
     localStorage.setItem(LS_CRISIS, crisisScore.toString());
   }, [messages, leadScore, crisisScore]);
 
-  useEffect(() => {
-    localStorage.setItem(LS_STEP, stepId);
-  }, [stepId]);
+  useEffect(() => { localStorage.setItem(LS_STEP, stepId); }, [stepId]);
+  useEffect(() => { localStorage.setItem(LS_LANG, lang);   }, [lang]);
 
   // ── Scroll to bottom ──────────────────────────────────────────────────────
   useEffect(() => {
-    if (open) {
-      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    }
+    if (open) bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, open, isThinking]);
 
   // ── Lead intelligence logging ─────────────────────────────────────────────
@@ -92,56 +90,70 @@ export default function KodeeChat() {
 
   // ── Engagement bonus: 3+ interactions ─────────────────────────────────────
   useEffect(() => {
-    if (interactionCount === 3) {
-      setLeadScore((prev) => prev + 10);
-    }
+    if (interactionCount === 3) setLeadScore((prev) => prev + 10);
   }, [interactionCount]);
 
-  // ── Silent lead export when threshold crossed ─────────────────────────────
+  // ── Silent lead export to /api/delphi-lead ────────────────────────────────
   useEffect(() => {
     if ((leadScore > 50 || advisoryIntent) && !leadExportSent.current) {
       leadExportSent.current = true;
       fetch("/api/delphi-lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          leadScore,
-          crisisScore,
-          advisoryIntent,
-          timestamp: new Date().toISOString(),
-        }),
-      }).catch(() => { /* silent — non-blocking */ });
+        body: JSON.stringify({ leadScore, crisisScore, advisoryIntent, timestamp: new Date().toISOString() }),
+      }).catch(() => {});
     }
   }, [leadScore, crisisScore, advisoryIntent]);
 
-  // ── Silent threshold: trigger auto-messages when thresholds are crossed ────
-  function checkThresholds(
-    newCrisisScore: number,
-    newLeadScore: number,
-    prevCrisisScore: number,
-    prevLeadScore: number,
-    addBotMessage: (text: string) => void
-  ) {
-    if (newCrisisScore >= 50 && prevCrisisScore < 50) {
-      setTimeout(() => {
-        addBotMessage(
-          "This situation may require personal guidance.\n\nI recommend scheduling a private advisory session."
-        );
-        setStepId("urgency_escalation");
-      }, 700);
-    } else if (newLeadScore >= 50 && prevLeadScore < 50) {
-      setTimeout(() => {
-        addBotMessage(
-          "Based on your interest, Cohort I may be a strong fit for you.\n\nWould you like to begin your enrollment?"
-        );
-      }, 700);
+  // ── CRM export at leadScore >= 50 ─────────────────────────────────────────
+  useEffect(() => {
+    if (leadScore >= 50 && !crmExportSent.current) {
+      sendCrmLead("apply");
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [leadScore]);
+
+  // ── CRM export helper ─────────────────────────────────────────────────────
+  function sendCrmLead(intent: "apply" | "advisor" | "info") {
+    if (crmExportSent.current) return;
+    crmExportSent.current = true;
+    fetch("/api/crm/lead", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        source: "delphi",
+        name: "", email: "", phone: "", country: "",
+        intent,
+        leadScore,
+        crisisScore,
+        lang,
+        timestamp: new Date().toISOString(),
+      }),
+    }).catch(() => {});
+  }
+
+  // ── Silent threshold: inject auto-messages when thresholds are crossed ────
+  function checkThresholds(
+    newCrisis: number, newLead: number,
+    prevCrisis: number, prevLead: number,
+    addBot: (text: string) => void
+  ) {
+    if (newCrisis >= 50 && prevCrisis < 50) {
+      setTimeout(() => { addBot(t(lang, "crisisNudge")); setStepId("urgency_escalation"); }, 700);
+    } else if (newLead >= 50 && prevLead < 50) {
+      setTimeout(() => { addBot(t(lang, "enrollNudge")); }, 700);
+    }
+  }
+
+  // ── Language toggle ───────────────────────────────────────────────────────
+  function switchLang(next: Lang) {
+    setLang(next);
+    trackEvent("Delphi_Lang", { lang: next });
   }
 
   function openChat() {
     if (!started) {
-      const step = getStep("welcome");
-      setMessages([{ from: "bot", text: step.message }]);
+      setMessages([{ from: "bot", text: t(lang, "welcome") }]);
       setStarted(true);
       trackEvent("Delphi_Open");
     }
@@ -149,25 +161,23 @@ export default function KodeeChat() {
     setTimeout(() => inputRef.current?.focus(), 150);
   }
 
-  // ── Option click with 600ms simulated thinking ────────────────────────────
+  // ── Option click — deterministic, 600ms thinking ──────────────────────────
   function handleOption(label: string, next: string) {
     setMessages((prev) => [...prev, { from: "user", text: label }]);
     setIsThinking(true);
 
+    // Score by destination step
     let scoreDelta = 0;
-    const lowerLabel = label.toLowerCase();
-
-    if (lowerLabel.includes("assess my situation")) scoreDelta = 10;
-    if (lowerLabel.includes("apply")) scoreDelta = 25;
-    if (lowerLabel.includes("human advisor") || lowerLabel.includes("speak to")) {
+    if (next === "assess_situation") scoreDelta = 10;
+    if (next === "human_escalation") {
       scoreDelta = 40;
       setAdvisoryIntent(true);
+      sendCrmLead("advisor");
     }
-    if (LEADERSHIP_KEYWORDS.some((kw) => lowerLabel.includes(kw))) scoreDelta += 15;
+    if (LEADERSHIP_KEYWORDS.some((kw) => next.toLowerCase().includes(kw))) scoreDelta += 15;
 
-    const prevLead   = leadScore;
-    const prevCrisis = crisisScore;
-    const newLead    = leadScore + scoreDelta;
+    const prevLead = leadScore, prevCrisis = crisisScore;
+    const newLead  = leadScore + scoreDelta;
     if (scoreDelta > 0) setLeadScore(newLead);
     setInteractionCount((prev) => prev + 1);
 
@@ -177,15 +187,14 @@ export default function KodeeChat() {
       setMessages((prev) => [...prev, { from: "bot", text: step.message }]);
       setStepId(next);
       setIsThinking(false);
-
       checkThresholds(prevCrisis, newLead, prevCrisis, prevLead, (text) => {
         setMessages((m) => [...m, { from: "bot", text }]);
       });
     }, 600);
   }
 
-  // ── Text input with keyword detection ─────────────────────────────────────
-  function handleTextSubmit(e: React.FormEvent) {
+  // ── Free text — deterministic for urgency/escalation, GPT for everything else
+  async function handleTextSubmit(e: React.FormEvent) {
     e.preventDefault();
     const text = inputText.trim();
     if (!text || isThinking) return;
@@ -193,27 +202,25 @@ export default function KodeeChat() {
 
     const lower = text.toLowerCase();
 
-    let scoreDelta  = 0;
-    let crisisDelta = 0;
-
+    // Score keywords
+    let scoreDelta = 0, crisisDelta = 0;
     if (CRISIS_KEYWORDS.some((kw) => lower.includes(kw))) crisisDelta = 50;
     if (LEADERSHIP_KEYWORDS.some((kw) => lower.includes(kw))) scoreDelta += 15;
 
-    const prevLead   = leadScore;
-    const prevCrisis = crisisScore;
-    const newCrisis  = crisisScore + crisisDelta;
-    const newLead    = leadScore + scoreDelta;
-
+    const prevLead = leadScore, prevCrisis = crisisScore;
+    const newCrisis = crisisScore + crisisDelta, newLead = leadScore + scoreDelta;
     if (crisisDelta > 0) setCrisisScore(newCrisis);
     if (scoreDelta > 0)  setLeadScore(newLead);
     setInteractionCount((prev) => prev + 1);
 
+    // Push user message immediately
+    setMessages((prev) => [...prev, { from: "user", text }]);
+
+    // Deterministic: urgency escalation
     if (isUrgencyTrigger(text)) {
-      setMessages((prev) => [...prev, { from: "user", text }]);
       setIsThinking(true);
       setTimeout(() => {
-        const step = getStep("urgency_escalation");
-        setMessages((prev) => [...prev, { from: "bot", text: step.message }]);
+        setMessages((prev) => [...prev, { from: "bot", text: t(lang, "urgencyMsg") }]);
         setStepId("urgency_escalation");
         trackEvent("Delphi_Urgency", { trigger: text });
         setIsThinking(false);
@@ -221,12 +228,11 @@ export default function KodeeChat() {
       return;
     }
 
+    // Deterministic: human escalation
     if (isEscalationTrigger(text)) {
-      setMessages((prev) => [...prev, { from: "user", text }]);
       setIsThinking(true);
       setTimeout(() => {
-        const step = getStep("human_escalation");
-        setMessages((prev) => [...prev, { from: "bot", text: step.message }]);
+        setMessages((prev) => [...prev, { from: "bot", text: t(lang, "escalationMsg") }]);
         setStepId("human_escalation");
         trackEvent("Delphi_Escalation_Keyword");
         setIsThinking(false);
@@ -234,14 +240,31 @@ export default function KodeeChat() {
       return;
     }
 
-    setMessages((prev) => [
-      ...prev,
-      { from: "user", text },
-      {
-        from: "bot",
-        text: "Select one of the options below to continue, or type \"human\" to connect with a live advisor.",
-      },
-    ]);
+    // GPT reply — build history from current messages + new user turn
+    const apiMessages = [
+      ...messages.slice(-10),
+      { from: "user" as const, text },
+    ].map((m) => ({
+      role: m.from === "user" ? "user" : "assistant",
+      content: m.text,
+    }));
+
+    setIsThinking(true);
+    try {
+      const res = await fetch("/api/delphi/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: apiMessages, lang }),
+      });
+      const data = await res.json() as { reply: string | null };
+      const reply = data.reply ?? t(lang, "errorReply");
+      setMessages((prev) => [...prev, { from: "bot", text: reply }]);
+      trackEvent("Delphi_GPT_Reply");
+    } catch {
+      setMessages((prev) => [...prev, { from: "bot", text: t(lang, "errorReply") }]);
+    } finally {
+      setIsThinking(false);
+    }
 
     checkThresholds(newCrisis, newLead, prevCrisis, prevLead, (botText) => {
       setMessages((m) => [...m, { from: "bot", text: botText }]);
@@ -250,21 +273,21 @@ export default function KodeeChat() {
 
   // ── Schedule button click ──────────────────────────────────────────────────
   function handleScheduleClick() {
-    console.log("Human escalation clicked");
     trackEvent("Delphi_Schedule_Click");
+    sendCrmLead("advisor");
     window.open(GOOGLE_CALENDAR_URL, "_blank");
   }
 
-  // ── Reset: clears localStorage + all state ────────────────────────────────
+  // ── Reset: clear localStorage + all state ────────────────────────────────
   function reset() {
     localStorage.removeItem(LS_CHAT);
     localStorage.removeItem(LS_LEAD);
     localStorage.removeItem(LS_CRISIS);
     localStorage.removeItem(LS_STEP);
     leadExportSent.current = false;
+    crmExportSent.current  = false;
 
-    const step = getStep("welcome");
-    setMessages([{ from: "bot", text: step.message }]);
+    setMessages([{ from: "bot", text: t(lang, "welcome") }]);
     setStepId("welcome");
     setIsThinking(false);
     setLeadScore(0);
@@ -273,10 +296,10 @@ export default function KodeeChat() {
     setInteractionCount(0);
   }
 
-  const currentStep    = getStep(stepId);
-  const isScheduleStep = SCHEDULE_STEPS.has(currentStep.id);
+  const currentStep      = getStep(stepId);
+  const isScheduleStep   = SCHEDULE_STEPS.has(currentStep.id);
   const isRecommendation = !!currentStep.recommendation;
-  const showTextInput  = !isRecommendation;
+  const showTextInput    = !isRecommendation;
 
   return (
     <>
@@ -310,19 +333,47 @@ export default function KodeeChat() {
             <div>
               <p className="text-white font-bold text-sm">Delphi</p>
               <p className="text-xs" style={{ color: "rgba(246,232,240,0.65)" }}>
-                SMCC Advisory Assistant &nbsp;&middot;&nbsp; Guiding you to the right path.
+                {t(lang, "headerSubtitle")}
               </p>
             </div>
+
             <div className="flex items-center gap-3 ml-4 mt-0.5 flex-shrink-0">
-              {/* Start New Conversation */}
+              {/* ── EN | FR toggle ──────────────────────────────────── */}
+              <div className="flex items-center gap-1 text-[11px] font-semibold">
+                <button
+                  type="button"
+                  onClick={() => switchLang("en")}
+                  className="transition-colors"
+                  style={{ color: lang === "en" ? "#C9A227" : "rgba(246,232,240,0.4)" }}
+                  aria-label="Switch to English"
+                >
+                  EN
+                </button>
+                <span style={{ color: "rgba(246,232,240,0.25)" }}>|</span>
+                <button
+                  type="button"
+                  onClick={() => switchLang("fr")}
+                  className="transition-colors"
+                  style={{ color: lang === "fr" ? "#C9A227" : "rgba(246,232,240,0.4)" }}
+                  aria-label="Passer en français"
+                >
+                  FR
+                </button>
+              </div>
+
+              {/* New chat */}
               <button
                 type="button"
                 onClick={reset}
                 aria-label="Start new conversation"
-                className="text-white/35 hover:text-white/70 transition-colors text-[10px] leading-tight text-right"
+                className="text-[10px] transition-colors"
+                style={{ color: "rgba(246,232,240,0.35)" }}
+                onMouseOver={(e) => (e.currentTarget.style.color = "rgba(246,232,240,0.7)")}
+                onMouseOut={(e)  => (e.currentTarget.style.color = "rgba(246,232,240,0.35)")}
               >
-                New chat
+                {t(lang, "newChat")}
               </button>
+
               {/* Close */}
               <button
                 type="button"
@@ -360,7 +411,7 @@ export default function KodeeChat() {
               </div>
             ))}
 
-            {/* Thinking dots */}
+            {/* Thinking indicator */}
             {isThinking && (
               <div className="flex justify-start">
                 <div
@@ -372,6 +423,9 @@ export default function KodeeChat() {
                     <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: "rgba(91,26,93,0.4)", animationDelay: "150ms" }} />
                     <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: "rgba(91,26,93,0.4)", animationDelay: "300ms" }} />
                   </div>
+                  <p className="text-[10px] mt-1.5" style={{ color: "rgba(91,26,93,0.35)" }}>
+                    {t(lang, "thinking")}
+                  </p>
                 </div>
               </div>
             )}
@@ -382,7 +436,7 @@ export default function KodeeChat() {
           {/* Actions area */}
           <div className="bg-white border-t border-charcoal/10 px-4 py-4 flex-shrink-0">
 
-            {/* ── Schedule button (human/urgency escalation) ────────── */}
+            {/* ── Schedule button (escalation steps) ────────────────── */}
             {isScheduleStep && (
               <div className="space-y-2">
                 <button
@@ -391,14 +445,14 @@ export default function KodeeChat() {
                   className="w-full text-center text-sm px-4 py-3 rounded-xl font-semibold text-white transition-all duration-200 hover:scale-[1.02] active:scale-100"
                   style={{ backgroundColor: "#5B1A5D" }}
                 >
-                  Schedule My Advisory Session
+                  {t(lang, "scheduleBtn")}
                 </button>
                 <button
                   type="button"
                   onClick={reset}
                   className="w-full text-center text-xs pt-1 text-charcoal/35 hover:text-charcoal/60 transition-colors"
                 >
-                  Start over
+                  {t(lang, "startOver")}
                 </button>
               </div>
             )}
@@ -414,7 +468,7 @@ export default function KodeeChat() {
                     onClick={() => handleOption(opt.label, opt.next)}
                     className="w-full text-left text-sm px-4 py-2.5 rounded-xl border border-plum/20 text-plum hover:bg-plum hover:text-white hover:border-plum transition-all duration-150 font-medium disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-plum disabled:hover:border-plum/20"
                   >
-                    {opt.label}
+                    {tOption(lang, opt.label)}
                   </button>
                 ))}
               </div>
@@ -430,7 +484,7 @@ export default function KodeeChat() {
                       type="button"
                       onClick={() => {
                         trackEvent("Delphi_CTA", { cta: cta.label });
-                        console.log("Human escalation clicked");
+                        sendCrmLead("advisor");
                         window.open(cta.href, "_blank");
                       }}
                       className={`w-full text-center text-sm px-4 py-2.5 rounded-xl font-semibold transition-all duration-200 hover:scale-[1.02] active:scale-100 ${
@@ -438,7 +492,7 @@ export default function KodeeChat() {
                       }`}
                       style={i === 0 ? { backgroundColor: "#5B1A5D" } : {}}
                     >
-                      {cta.label}
+                      {i === 0 ? t(lang, "scheduleBtn") : cta.label}
                     </button>
                   ) : (
                     <a
@@ -459,7 +513,7 @@ export default function KodeeChat() {
                   onClick={reset}
                   className="w-full text-center text-xs pt-1 text-charcoal/35 hover:text-charcoal/60 transition-colors"
                 >
-                  Start over
+                  {t(lang, "startOver")}
                 </button>
               </div>
             )}
@@ -473,7 +527,7 @@ export default function KodeeChat() {
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                   disabled={isThinking}
-                  placeholder="Or type your question…"
+                  placeholder={t(lang, "placeholder")}
                   className="flex-1 text-xs px-3 py-2 rounded-lg border border-charcoal/15 focus:outline-none focus:border-plum/30 bg-white text-charcoal placeholder-charcoal/30 disabled:opacity-50"
                 />
                 <button
