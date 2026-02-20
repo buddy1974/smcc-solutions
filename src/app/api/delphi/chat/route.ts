@@ -22,6 +22,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { getSupabase } from "@/lib/supabase";
+import { processLeadFollowup } from "@/lib/followup";
 
 // ── System prompts ────────────────────────────────────────────────────────────
 const SYSTEM: Record<"en" | "fr", string> = {
@@ -157,8 +158,15 @@ export async function POST(req: NextRequest) {
 
         if (leadErr) console.error("[delphi/chat] lead insert:", leadErr);
 
-        if (crisisScore >= 8 && newLead) {
-          await triggerWhatsAppEscalation(newLead);
+        if (newLead) {
+          // Fire-and-forget: follow-up email + mark followup_sent
+          processLeadFollowup(newLead).catch((e) =>
+            console.error("[delphi/chat] followup:", e)
+          );
+
+          if (crisisScore >= 8) {
+            await triggerWhatsAppEscalation(newLead);
+          }
         }
       }
     }
