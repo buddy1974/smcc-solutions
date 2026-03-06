@@ -30,7 +30,7 @@ export const MANUAL_PAYMENT_CODES = {
     holder: "Mah epse Nforgwei",
     ussd: "#150*47*890422*AMOUNT#",
   },
-  afterPayment: "After payment, send your name + proof of payment to: +237 681 255 891 / +237 671 652 744",
+  afterPayment: "After payment, send your name + proof of payment via WhatsApp: wa.me/237683493220",
 };
 
 export function ManualPaymentBlock({ className = "" }: { className?: string }) {

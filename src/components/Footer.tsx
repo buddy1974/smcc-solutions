@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { SMCC_PHONE_DISPLAY, SMCC_PHONE_WA } from "@/data/programs";
+
+
 
 export default function Footer() {
   return (
@@ -16,12 +17,12 @@ export default function Footer() {
             </h3>
             <p className="text-white/50 text-sm mb-4">Yaound&eacute;, Cameroon</p>
             <a
-              href={`https://wa.me/${SMCC_PHONE_WA}`}
+              href="https://wa.me/237683493220"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white/70 hover:text-gold transition-colors text-sm"
             >
-              {SMCC_PHONE_DISPLAY}
+              Chat on WhatsApp
             </a>
           </div>
 
@@ -38,8 +39,22 @@ export default function Footer() {
 
         </div>
 
+        {/* Resources links */}
+        <div className="border-t border-white/10 mt-10 pt-8 pb-4">
+          <p className="text-white/40 text-xs uppercase tracking-widest mb-4 text-center md:text-left">Resources</p>
+          <div className="flex flex-wrap gap-x-6 gap-y-2 justify-center md:justify-start">
+            <a href="/marriage-restoration" className="text-white/50 hover:text-gold transition-colors text-sm">Marriage Restoration</a>
+            <a href="/how-to-restore-a-broken-marriage" className="text-white/50 hover:text-gold transition-colors text-sm">How to Restore a Broken Marriage</a>
+            <a href="/biblical-marriage-counseling" className="text-white/50 hover:text-gold transition-colors text-sm">Biblical Marriage Counseling</a>
+            <a href="/christian-counseling-training" className="text-white/50 hover:text-gold transition-colors text-sm">Christian Counseling Training</a>
+            <a href="/marriage-health-test" className="text-white/50 hover:text-gold transition-colors text-sm">Marriage Health Test</a>
+            <a href="/assessment" className="text-white/50 hover:text-gold transition-colors text-sm">Marriage Assessment</a>
+            <a href="/cohort-1" className="text-white/50 hover:text-gold transition-colors text-sm">SMCC Certification Program</a>
+          </div>
+        </div>
+
         {/* Bottom bar */}
-        <div className="border-t border-white/10 mt-10 pt-6 text-center text-white/35 text-xs space-y-3">
+        <div className="border-t border-white/10 mt-4 pt-6 text-center text-white/35 text-xs space-y-3">
           <p>&copy; 2026 SMCC. All rights reserved.</p>
           <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
             <a href="/privacy-policy" className="hover:text-white/60 transition-colors">Privacy Policy</a>

@@ -4,11 +4,9 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 // ── CONTACT CONSTANTS ─────────────────────────────────────────────────────────
-export const SMCC_PHONE_DISPLAY  = "+237 671 652 144";
-export const SMCC_PHONE_WA       = "237671652144";   // digits only — wa.me link
+export const SMCC_WA_NUMBER = "237683493220";   // digits only — wa.me link
 
-export const PILLARS_PHONE_DISPLAY = "+237 677 938 198";
-export const PILLARS_PHONE_WA      = "237677938198";
+export const PILLARS_WA_NUMBER = "237683493220";
 
 // ── INVESTMENT CONSTANTS ──────────────────────────────────────────────────────
 export const COHORT_INVESTMENT_FCFA = 50_000;
@@ -36,8 +34,6 @@ export interface CohortProgram {
   modules: CohortModule[];
   structureNote: string;
   investmentFcfa: number;
-  phoneDisplay: string;
-  phoneWa: string;
   image: string;
   imageAlt: string;
   ctaLabel: string;
@@ -97,8 +93,6 @@ export const COHORTS: CohortProgram[] = [
     structureNote:
       "Cohorts 1\u20133 progress from Foundation \u2192 Intermediate \u2192 Advanced Certification.",
     investmentFcfa: COHORT_INVESTMENT_FCFA,
-    phoneDisplay: SMCC_PHONE_DISPLAY,
-    phoneWa: SMCC_PHONE_WA,
     image: "/img-1.jpg",
     imageAlt: "SMCC Cohort 1 April 2026",
     ctaLabel: "Enroll Now",
@@ -121,8 +115,6 @@ export const COHORTS: CohortProgram[] = [
     structureNote:
       "Cohorts 1\u20133 progress from Foundation \u2192 Intermediate \u2192 Advanced Certification.",
     investmentFcfa: COHORT_INVESTMENT_FCFA,
-    phoneDisplay: SMCC_PHONE_DISPLAY,
-    phoneWa: SMCC_PHONE_WA,
     image: "/img-1.jpg",
     imageAlt: "SMCC Cohort 2",
     ctaLabel: "Join Waitlist",
@@ -145,8 +137,6 @@ export const COHORTS: CohortProgram[] = [
     structureNote:
       "Cohorts 1\u20133 progress from Foundation \u2192 Intermediate \u2192 Advanced Certification.",
     investmentFcfa: COHORT_INVESTMENT_FCFA,
-    phoneDisplay: SMCC_PHONE_DISPLAY,
-    phoneWa: SMCC_PHONE_WA,
     image: "/img-1.jpg",
     imageAlt: "SMCC Cohort 3",
     ctaLabel: "Join Waitlist",
@@ -170,8 +160,6 @@ export const PILLARS_PROGRAM = {
   tagline: "Executive Leadership & Identity Intensive",
   heading: "The 7 Pillars of Elevation",
   subheading: "14-Week Holistic Transformation Experience",
-  phoneDisplay: PILLARS_PHONE_DISPLAY,
-  phoneWa: PILLARS_PHONE_WA,
   image: "/THE SEVEN PILLARS APV.png",
   imageAlt: "The 7 Pillars of Elevation Program",
   ctaLabel: "Start Your Elevation",

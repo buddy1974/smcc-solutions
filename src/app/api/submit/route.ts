@@ -210,9 +210,8 @@ export async function POST(req: NextRequest) {
                 </tr>
               </table>
               <p style="font-size:12px;color:#888;line-height:1.6;margin:8px 0 28px">
-                After payment, send your name and proof of payment to:
-                <strong style="color:#121212">+237 681 255 891</strong> or
-                <strong style="color:#121212">+237 671 652 744</strong>
+                After payment, send your name and proof of payment via WhatsApp:
+                <a href="https://wa.me/237683493220" style="color:#5B1A5D;font-weight:600">wa.me/237683493220</a>
               </p>
 
               <!-- Next steps -->

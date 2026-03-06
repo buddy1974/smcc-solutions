@@ -163,7 +163,7 @@ export default function Home() {
                   <p className="text-charcoal/55 text-xs leading-relaxed">{c.subheading}</p>
                   {c.status === "enrolling" && (
                     <p className="text-xs font-semibold mt-3" style={{ color: "#C9A227" }}>
-                      {c.date} &middot; {c.phoneDisplay}
+                      {c.date}
                     </p>
                   )}
                 </div>
