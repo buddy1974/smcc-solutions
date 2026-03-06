@@ -172,7 +172,7 @@ export const PILLARS_PROGRAM = {
   subheading: "14-Week Holistic Transformation Experience",
   phoneDisplay: PILLARS_PHONE_DISPLAY,
   phoneWa: PILLARS_PHONE_WA,
-  image: "/img-2.jpg",
+  image: "/THE SEVEN PILLARS APV.png",
   imageAlt: "The 7 Pillars of Elevation Program",
   ctaLabel: "Start Your Elevation",
   includes: [
