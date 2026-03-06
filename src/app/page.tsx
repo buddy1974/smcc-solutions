@@ -1,13 +1,25 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CTA from "@/components/CTA";
 import CohortSection from "@/components/CohortSection";
 import PillarsSection from "@/components/PillarsSection";
-import ApplicationForm from "@/components/ApplicationForm";
 import TrackedLink from "@/components/TrackedLink";
 import PageViewLogger from "@/components/PageViewLogger";
 import { COHORTS } from "@/data/programs";
+
+export const metadata: Metadata = {
+  title: "Christian Marriage Counseling Training | SMCC",
+  description:
+    "SMCC offers biblical counseling training and marriage restoration programs designed to equip leaders, counselors, and mentors to restore relationships.",
+  openGraph: {
+    title: "Christian Marriage Counseling Training | SMCC",
+    description:
+      "SMCC offers biblical counseling training and marriage restoration programs designed to equip leaders, counselors, and mentors to restore relationships.",
+    images: [{ url: "/founders.jpg", width: 1200, height: 630, alt: "SMCC Founders" }],
+  },
+};
 
 export default function Home() {
   return (
@@ -34,7 +46,7 @@ export default function Home() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <TrackedLink
-                href="#admissions"
+                href="/payment?source=homepage"
                 event="Apply_Click"
                 className="inline-block bg-gold hover:bg-gold/90 text-charcoal font-semibold px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-xl"
               >
@@ -182,7 +194,7 @@ export default function Home() {
             <div className="mb-16">
               <Image
                 src="/founders.jpg"
-                alt="Founders of SMCC — Delphine and Rogers Nforgwei"
+                alt="SMCC Founders — Apst. Rogers & Pst. Delphine Nforgwei"
                 width={1200}
                 height={600}
                 priority
@@ -196,7 +208,7 @@ export default function Home() {
               {/* Delphine */}
               <div className="bg-blush/20 rounded-2xl p-8 border border-plum/10">
                 <h3 className="font-playfair text-2xl md:text-3xl font-bold text-plum mb-1">
-                  Delphine Nforgwei
+                  Pst. Delphine Nforgwei
                 </h3>
                 <p className="text-sm font-semibold mb-5" style={{ color: "#C9A227" }}>
                   Pastor &nbsp;·&nbsp; Women&apos;s Impact Coach &nbsp;·&nbsp; Relationship Educator
@@ -233,10 +245,10 @@ export default function Home() {
               {/* Rogers */}
               <div className="bg-blush/20 rounded-2xl p-8 border border-plum/10">
                 <h3 className="font-playfair text-2xl md:text-3xl font-bold text-plum mb-1">
-                  Rogers Nforgwei
+                  Apst. Rogers Nforgwei
                 </h3>
                 <p className="text-sm font-semibold mb-5" style={{ color: "#C9A227" }}>
-                  Pastor &nbsp;·&nbsp; Education Strategist &nbsp;·&nbsp; Business Development Leader
+                  Apostle &nbsp;·&nbsp; Education Strategist &nbsp;·&nbsp; Business Development Leader
                 </p>
                 <p className="text-charcoal/75 leading-relaxed mb-6">
                   With executive education from Harvard Business School Online and a distinguished
@@ -647,7 +659,7 @@ export default function Home() {
                   What is the registration fee?
                 </h3>
                 <p className="text-charcoal/70 leading-relaxed">
-                  The investment for Cohort I is 50,000 FCFA per cohort. Payment instructions are provided by the admissions team after your application is reviewed.
+                  The investment for Cohort I is 50,000 FCFA per cohort. Secure payment is processed via PayUnit at enrollment.
                 </p>
               </div>
 
@@ -867,7 +879,7 @@ export default function Home() {
                 Enrollment is now open. Apply today to secure your place in the inaugural cohort.
               </p>
               <a
-                href="#admissions"
+                href="/payment?source=homepage"
                 className="inline-block bg-gold hover:bg-gold/90 text-charcoal font-semibold px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105"
               >
                 Apply Now
@@ -888,7 +900,7 @@ export default function Home() {
                   50,000 FCFA
                 </p>
                 <p className="text-charcoal/70 text-sm">
-                  Investment per cohort. Payment instructions provided after application review.
+                  Investment per cohort. Secure payment powered by PayUnit.
                 </p>
 
                 <div className="my-6 border-t border-charcoal/20"></div>
@@ -900,7 +912,7 @@ export default function Home() {
                 </ul>
 
                 <a
-                  href="#admissions"
+                  href="/payment?source=homepage"
                   className="inline-block bg-gold hover:bg-gold/90 text-charcoal font-semibold px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-xl"
                 >
                   Secure Your Seat
@@ -1018,7 +1030,7 @@ export default function Home() {
                 50,000 FCFA
               </p>
               <p className="text-charcoal/70">
-                Investment per cohort. Payment instructions provided after application review.
+                Investment per cohort. Secure payment powered by PayUnit.
               </p>
             </div>
 
@@ -1027,7 +1039,7 @@ export default function Home() {
             </p>
 
             <a
-              href="#admissions"
+              href="/payment?source=homepage"
               className="inline-block bg-gold hover:bg-gold/90 text-charcoal font-semibold px-10 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-xl"
             >
               Apply Now — Cohort I
@@ -1067,7 +1079,7 @@ export default function Home() {
               </ul>
 
               <a
-                href="#admissions"
+                href="/payment?source=homepage"
                 className="inline-block bg-gold hover:bg-gold/90 text-charcoal font-semibold px-10 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg mt-8"
               >
                 Secure Your Seat
@@ -1080,18 +1092,29 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Application Form */}
+        {/* Enrollment CTA */}
         <section id="admissions" className="py-28 px-4 bg-white">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-bold text-plum text-center mb-8">
-              Start Your Application
-            </h2>
-
-            <p className="text-charcoal/80 text-center mb-16">
-              Complete the form below. Our admissions team will review your application and contact you via WhatsApp.
+          <div className="max-w-2xl mx-auto text-center">
+            <p className="text-xs font-bold tracking-[0.25em] uppercase mb-4" style={{ color: "#C9A227" }}>
+              Enrollment Open
             </p>
-
-            <ApplicationForm />
+            <h2 className="font-playfair text-4xl md:text-5xl font-bold text-plum mb-6 leading-tight">
+              Ready to Begin?
+            </h2>
+            <p className="text-charcoal/70 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
+              Select your program and complete secure payment to confirm your place in the cohort.
+              PayUnit handles enrollment — no forms, no waiting.
+            </p>
+            <a
+              href="/payment?source=homepage"
+              className="inline-block font-bold px-12 py-5 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-xl text-lg mb-6"
+              style={{ backgroundColor: "#C9A227", color: "#121212" }}
+            >
+              Select Your Program &amp; Enroll
+            </a>
+            <p className="text-xs text-charcoal/40 mt-4">
+              Need help? <a href="https://wa.me/237683493220" target="_blank" rel="noopener noreferrer" className="underline hover:text-charcoal/70 transition-colors">Contact SMCC Admissions on WhatsApp</a>
+            </p>
           </div>
         </section>
 
@@ -1256,7 +1279,7 @@ export default function Home() {
 
       {/* WhatsApp Floating Button */}
       <a
-        href="https://wa.me/237671652144"
+        href="https://wa.me/237683493220"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-16 right-4 md:right-8 z-40 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-110"
