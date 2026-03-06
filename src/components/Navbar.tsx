@@ -1,11 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const isHome = pathname === "/";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,15 +18,20 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Hash links must be absolute when not on the home page
+  function h(hash: string) {
+    return isHome ? hash : `/${hash}`;
+  }
+
   const navLinks = [
-    { href: "#home", label: "Home" },
-    { href: "#crisis", label: "Marriage Crisis" },
-    { href: "#program", label: "Program" },
-    { href: "#founders", label: "Founders" },
+    { href: h("#home"), label: "Home" },
+    { href: h("#crisis"), label: "Marriage Crisis" },
+    { href: h("#program"), label: "Program" },
+    { href: h("#founders"), label: "Founders" },
     { href: "/testimonials", label: "Testimonials" },
     { href: "/assessment", label: "Assessment" },
-    { href: "#admissions", label: "Admissions" },
-    { href: "#contact", label: "Contact" },
+    { href: h("#admissions"), label: "Admissions" },
+    { href: h("#contact"), label: "Contact" },
   ];
 
   return (
@@ -37,7 +45,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <a href="#home" className="flex items-center">
+          <a href={isHome ? "#home" : "/"} className="flex items-center">
             <Image
               src="/logo.png"
               alt="SMCC"
@@ -62,7 +70,7 @@ export default function Navbar() {
               </a>
             ))}
             <a
-              href="#admissions"
+              href="/payment?source=navbar"
               className="bg-gold hover:bg-gold/90 text-charcoal font-semibold px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105"
             >
               Cohort I — Apply Now
@@ -104,7 +112,7 @@ export default function Navbar() {
                 </a>
               ))}
               <a
-                href="#admissions"
+                href="/payment?source=navbar"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="bg-gold hover:bg-gold/90 text-charcoal font-semibold px-6 py-3 rounded-lg text-center transition-colors mt-2"
               >
