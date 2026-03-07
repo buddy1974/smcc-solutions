@@ -4,9 +4,9 @@ import Footer from "@/components/Footer";
 import AssessmentForm from "./AssessmentForm";
 
 export const metadata: Metadata = {
-  title: "Marriage Readiness Assessment — SMCC",
+  title: "Marriage Health Assessment – Discover the Strength of Your Relationship",
   description:
-    "Take SMCC's free marriage readiness assessment and receive a personalised report with coaching recommendations tailored to your relationship.",
+    "Take SMCC's free marriage health assessment. Understand your relationship patterns and get personalised guidance rooted in biblical principles.",
 };
 
 export default function AssessmentPage() {

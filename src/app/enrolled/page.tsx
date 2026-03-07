@@ -1,4 +1,5 @@
 import Link from "next/link";
+import EnrolledClient from "@/components/EnrolledClient";
 
 export default function Enrolled() {
   return (
@@ -17,13 +18,13 @@ export default function Enrolled() {
 
         {/* Headline */}
         <h1 className="text-4xl md:text-5xl font-bold text-plum mb-6">
-          Your Application Has Been Received.
+          Payment Received. Welcome to SMCC.
         </h1>
 
         {/* Next Step */}
         <p className="text-lg md:text-xl text-charcoal/80 mb-10 leading-relaxed max-w-xl mx-auto">
-          We will contact you within 24 hours via email or WhatsApp to provide payment
-          instructions and confirm your enrollment.
+          Your enrollment is confirmed. You will receive a confirmation email and WhatsApp
+          message with your onboarding details and cohort orientation information.
         </p>
 
         {/* Action Buttons */}
@@ -39,7 +40,7 @@ export default function Enrolled() {
 
           {/* WhatsApp */}
           <a
-            href="https://wa.me/237671652144?text=Hello%20SMCC%20Admissions%2C%20I%20just%20submitted%20my%20application."
+            href="https://wa.me/237683493220?text=Hello%20SMCC%20Admissions%2C%20I%20just%20completed%20my%20enrollment%20payment."
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold px-10 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
@@ -51,6 +52,9 @@ export default function Enrolled() {
           </a>
 
         </div>
+
+        {/* Enrollment receipt link */}
+        <EnrolledClient />
 
         {/* Footer note */}
         <p className="text-sm text-charcoal/40 mt-10">

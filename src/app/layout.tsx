@@ -4,6 +4,7 @@ import "./globals.css";
 import StickyBar from "@/components/StickyBar";
 import KodeeChat from "@/components/KodeeChat";
 import { Analytics } from "@vercel/analytics/react";
+import JsonLd from "@/components/JsonLd";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -26,14 +27,14 @@ export const metadata: Metadata = {
   description:
     "Faith-based marriage counseling and leadership training program. 12-week structured cohort designed to restore families and equip leaders globally.",
   keywords: [
-    "Marriage Counseling Cameroon",
-    "Faith-based coaching",
-    "Marriage restoration program",
-    "Leadership training Africa",
-    "SMCC Cohort",
-    "marriage counseling training",
-    "Christian marriage coaching",
-    "Yaoundé Cameroon",
+    "Christian marriage counseling training",
+    "Christian counseling certification",
+    "marriage restoration program",
+    "biblical relationship counseling",
+    "Christian counseling course",
+    "how to become a Christian marriage counselor",
+    "marriage restoration training",
+    "SMCC",
   ],
   authors: [{ name: "SMCC" }],
   openGraph: {
@@ -63,6 +64,14 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
       <body className="antialiased">
+        <JsonLd data={{
+          "@context": "https://schema.org",
+          "@type": "EducationalOrganization",
+          "name": "School of Marriage Counseling & Coaching",
+          "url": "https://smcc.solutions",
+          "description": "Faith-based marriage counseling and coaching training program",
+          "address": { "@type": "PostalAddress", "addressCountry": "CM" },
+        }} />
         {children}
         <StickyBar />
         <KodeeChat />

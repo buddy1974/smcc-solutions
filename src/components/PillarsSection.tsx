@@ -82,20 +82,14 @@ export default function PillarsSection() {
       </div>
 
       {/* CTA */}
-      <div className="flex flex-wrap items-center gap-4 pt-2">
+      <div className="pt-2">
         <a
-          href={`https://wa.me/${program.phoneWa}`}
-          target="_blank"
-          rel="noopener noreferrer"
+          href="/payment?source=homepage"
           className="inline-block font-semibold px-8 py-3.5 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-xl text-sm"
           style={{ backgroundColor: "#C9A227", color: "#121212" }}
         >
           {program.ctaLabel}
         </a>
-        <div>
-          <p className="text-[10px] text-white/30 uppercase tracking-widest mb-0.5">Call</p>
-          <p className="text-white/60 text-sm font-medium">{program.phoneDisplay}</p>
-        </div>
       </div>
     </div>
   );

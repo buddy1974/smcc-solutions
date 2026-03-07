@@ -63,15 +63,12 @@ function ComingSoonCard({ program }: { program: CohortProgram }) {
         <p className="text-charcoal/70 text-sm leading-relaxed mb-6">{program.description[0]}</p>
         <div className="flex flex-wrap items-center gap-4">
           <a
-            href={`https://wa.me/${program.phoneWa}`}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/payment?source=homepage"
             className="inline-block text-sm font-semibold px-6 py-2.5 rounded-lg transition-all duration-300 hover:scale-105"
             style={{ backgroundColor: "#5B1A5D", color: "#fff" }}
           >
             {program.ctaLabel}
           </a>
-          <p className="text-xs text-charcoal/40">Call: {program.phoneDisplay}</p>
         </div>
       </div>
     </div>
@@ -183,20 +180,13 @@ export default function CohortSection({ program, bg = "white" }: Props) {
             {formatFcfa(program.investmentFcfa)}
           </p>
         </div>
-        <div className="flex flex-col gap-2">
-          <a
-            href={`https://wa.me/${program.phoneWa}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block font-semibold px-8 py-3.5 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg text-sm text-center"
-            style={{ backgroundColor: "#C9A227", color: "#121212" }}
-          >
-            {program.ctaLabel}
-          </a>
-          <p className="text-xs text-charcoal/40 text-center">
-            Call: {program.phoneDisplay}
-          </p>
-        </div>
+        <a
+          href="/payment?source=homepage"
+          className="inline-block font-semibold px-8 py-3.5 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg text-sm text-center"
+          style={{ backgroundColor: "#C9A227", color: "#121212" }}
+        >
+          {program.ctaLabel}
+        </a>
       </div>
     </div>
   );

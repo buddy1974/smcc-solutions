@@ -1,17 +1,21 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SourceLogger from "@/components/SourceLogger";
+import EnrollButton from "@/components/EnrollButton";
 
 export const metadata: Metadata = {
-  title: "Enroll — Select Your Program | SMCC",
+  title: "Enroll in SMCC Programs | Christian Counseling Training",
   description:
-    "Choose your SMCC program and secure your enrollment. SMCC Certification Cohort I or The 7 Pillars of Elevation. Secure payment powered by PayUnit.",
+    "Select your SMCC program and complete secure enrollment. SMCC Certification Cohort I (50,000 XAF) or The 7 Pillars of Elevation (150,000 XAF).",
 };
 
 const WA_URL = "https://wa.me/237683493220";
 
 const programs = [
   {
+    programKey: "cohort1",
     eyebrow: "Certification Program",
     title: "SMCC Certification Program",
     subtitle: "Cohort Enrollment",
@@ -25,10 +29,10 @@ const programs = [
       "Access to the SMCC leader community",
     ],
     buttonText: "Enroll in Cohort I",
-    payunitUrl: "https://lk.payunit.net/pay/22d2bb47-1c2f-44dd-94e2-b83550dd0d49",
     highlight: false,
   },
   {
+    programKey: "7pillars",
     eyebrow: "Leadership & Identity Intensive",
     title: "The 7 Pillars of Elevation Program",
     subtitle: "14-Week Holistic Transformation",
@@ -42,14 +46,19 @@ const programs = [
       "Implementation-focused transformation",
     ],
     buttonText: "Start the 7 Pillars Program",
-    payunitUrl: "https://lk.payunit.net/pay/f4521947-6e69-4d64-bf4d-d2bda32cf6c4",
     highlight: true,
   },
 ];
 
-export default function PaymentPage() {
+type Props = { searchParams: { source?: string } };
+
+export default function PaymentPage({ searchParams }: Props) {
+  const source = searchParams?.source ?? null;
   return (
     <>
+      <Suspense fallback={null}>
+        <SourceLogger />
+      </Suspense>
       <Navbar />
       <main>
 
@@ -181,18 +190,17 @@ export default function PaymentPage() {
 
                     {/* CTA */}
                     <div className="space-y-3">
-                      <a
-                        href={program.payunitUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block w-full text-center font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg text-base"
+                      <EnrollButton
+                        programKey={program.programKey}
+                        source={source}
+                        className="block w-full text-center font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg text-base disabled:opacity-80 disabled:cursor-not-allowed"
                         style={{
                           backgroundColor: "#C9A227",
                           color: "#121212",
                         }}
                       >
                         {program.buttonText}
-                      </a>
+                      </EnrollButton>
 
                       {/* Trust line */}
                       <p
@@ -219,6 +227,116 @@ export default function PaymentPage() {
                     </div>
 
                   </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── ENROLLMENT PROCESS ───────────────────────────────────── */}
+        <section
+          className="py-20 px-4 border-t"
+          style={{ backgroundColor: "#0d0010", borderColor: "rgba(255,255,255,0.06)" }}
+        >
+          <div className="max-w-3xl mx-auto">
+            <div className="text-center mb-12">
+              <p className="text-xs font-semibold tracking-[0.25em] uppercase mb-4" style={{ color: "#C9A227" }}>
+                How It Works
+              </p>
+              <h2 className="font-playfair text-3xl md:text-4xl font-bold text-white mb-3 leading-tight">
+                Enrollment Process
+              </h2>
+              <div className="h-px w-10 mx-auto" style={{ backgroundColor: "#C9A227" }} />
+            </div>
+
+            <ol className="space-y-5 max-w-xl mx-auto">
+              {[
+                { step: 1, text: "Select your program" },
+                { step: 2, text: "Secure payment via PayUnit" },
+                { step: 3, text: "Receive confirmation email and WhatsApp" },
+                { step: 4, text: "Receive onboarding details" },
+                { step: 5, text: "Join cohort orientation" },
+              ].map(({ step, text }) => (
+                <li key={step} className="flex items-center gap-5">
+                  <span
+                    className="flex-shrink-0 w-9 h-9 rounded-full font-bold text-sm flex items-center justify-center"
+                    style={{ backgroundColor: "#5B1A5D", color: "#C9A227", border: "1px solid rgba(201,162,39,0.3)" }}
+                  >
+                    {step}
+                  </span>
+                  <span className="text-base" style={{ color: "rgba(232,213,234,0.85)" }}>{text}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+
+        {/* ── COHORT JOURNEY ────────────────────────────────────────── */}
+        <section
+          className="py-20 px-4 border-t"
+          style={{ backgroundColor: "#0d0010", borderColor: "rgba(255,255,255,0.06)" }}
+        >
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <p className="text-xs font-semibold tracking-[0.25em] uppercase mb-4" style={{ color: "#C9A227" }}>
+                Certification Path
+              </p>
+              <h2 className="font-playfair text-3xl md:text-4xl font-bold text-white mb-3 leading-tight">
+                A Three-Cohort Certification Journey
+              </h2>
+              <div className="h-px w-10 mx-auto mb-6" style={{ backgroundColor: "#C9A227" }} />
+              <p className="text-sm" style={{ color: "rgba(232,213,234,0.50)" }}>
+                Registration currently begins with Cohort I.
+              </p>
+            </div>
+
+            <div className="grid sm:grid-cols-3 gap-6">
+              {[
+                {
+                  cohort: "Cohort I",
+                  label: "Foundations",
+                  desc: "Biblical roots, counseling fundamentals, and restoration frameworks.",
+                  active: true,
+                },
+                {
+                  cohort: "Cohort II",
+                  label: "Methodology",
+                  desc: "Advanced case work, specialized interventions, and supervised practice.",
+                  active: false,
+                },
+                {
+                  cohort: "Cohort III",
+                  label: "Mastery",
+                  desc: "Full certification, practicum completion, and professional positioning.",
+                  active: false,
+                },
+              ].map(({ cohort, label, desc, active }) => (
+                <div
+                  key={cohort}
+                  className="rounded-xl p-7 flex flex-col gap-3"
+                  style={{
+                    border: active ? "1px solid rgba(201,162,39,0.4)" : "1px solid rgba(255,255,255,0.07)",
+                    backgroundColor: active ? "rgba(201,162,39,0.06)" : "rgba(255,255,255,0.02)",
+                  }}
+                >
+                  <div className="flex items-center gap-3">
+                    <span
+                      className="text-xs font-bold tracking-widest uppercase"
+                      style={{ color: active ? "#C9A227" : "rgba(201,162,39,0.4)" }}
+                    >
+                      {cohort}
+                    </span>
+                    {active && (
+                      <span
+                        className="text-[10px] font-bold tracking-widest uppercase px-2 py-0.5 rounded-full"
+                        style={{ backgroundColor: "rgba(201,162,39,0.15)", color: "#C9A227" }}
+                      >
+                        Open
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="font-playfair text-lg font-bold text-white">{label}</h3>
+                  <p className="text-sm leading-relaxed" style={{ color: "rgba(232,213,234,0.55)" }}>{desc}</p>
                 </div>
               ))}
             </div>

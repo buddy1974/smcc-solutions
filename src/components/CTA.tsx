@@ -11,18 +11,18 @@ export default function CTA() {
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
           <a
-            href="#admissions"
+            href="/payment?source=homepage"
             className="inline-block bg-gold hover:bg-gold/90 text-charcoal font-semibold px-10 py-5 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-xl"
           >
-            Start Your Application
+            Enroll Now
           </a>
           <a
-            href="https://wa.me/237671652144"
+            href="https://wa.me/237683493220"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block bg-transparent hover:bg-white/10 text-white font-semibold px-10 py-5 rounded-lg transition-all duration-300 border-2 border-white/30 hover:border-white/50"
           >
-            Speak With Admissions
+            Contact Admissions
           </a>
         </div>
 

@@ -146,11 +146,11 @@ export default function AssessmentForm() {
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a
-            href="/cohort-1"
+            href="/payment?source=assessment"
             onClick={() => trackEvent("Apply_Click", { source: "assessment_result" })}
             className="w-full sm:w-auto bg-gold hover:bg-gold/90 text-charcoal font-semibold px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg text-center"
           >
-            Apply to Cohort I
+            Start Your Training
           </a>
           <button
             type="button"
