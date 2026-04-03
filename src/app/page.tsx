@@ -98,6 +98,63 @@ export default function Home() {
           </p>
         </div>
 
+        {/* Graduation Section */}
+        <section id="graduation" className="py-20 px-4 bg-white">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <p className="text-xs font-bold tracking-[0.25em] uppercase mb-3" style={{ color: "#C9A227" }}>
+                Our Graduates
+              </p>
+              <h2 className="font-playfair text-4xl md:text-5xl font-bold text-plum mb-4 leading-tight">
+                Celebrating Our First Graduates
+              </h2>
+              <p className="text-lg text-charcoal/65 max-w-2xl mx-auto">
+                Equipped, commissioned, and sent — these are the lives transformed through SMCC&apos;s biblical counseling training.
+              </p>
+              <div className="h-0.5 w-10 mx-auto mt-6" style={{ backgroundColor: "#C9A227" }} />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+              <div className="overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300">
+                <Image
+                  src="/GRADUATION/659069014_18089186174463845_2117990003803082261_n.jpg"
+                  alt="SMCC Graduation Ceremony"
+                  width={800}
+                  height={600}
+                  className="w-full h-72 md:h-80 object-cover hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300">
+                <Image
+                  src="/GRADUATION/657753679_18089186192463845_1779472280229245014_n.jpg"
+                  alt="SMCC Graduation Ceremony"
+                  width={800}
+                  height={600}
+                  className="w-full h-72 md:h-80 object-cover hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300">
+                <Image
+                  src="/GRADUATION/657324770_18089186171463845_1090673474371214076_n.jpg"
+                  alt="SMCC Graduation Ceremony"
+                  width={800}
+                  height={600}
+                  className="w-full h-72 md:h-80 object-cover hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300">
+                <Image
+                  src="/GRADUATION/659597895_18089186189463845_893251316219152340_n.jpg"
+                  alt="SMCC Graduation Ceremony"
+                  width={800}
+                  height={600}
+                  className="w-full h-72 md:h-80 object-cover hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* ── Programs ─────────────────────────────────────────────────── */}
         {/* Section header */}
         <div className="bg-white pt-20 px-4">
