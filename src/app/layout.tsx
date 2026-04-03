@@ -19,40 +19,50 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://smcc.solutions"),
+  metadataBase: new URL("https://www.smcc.solutions"),
   title: {
-    default: "School of Marriage Counseling & Coaching (SMCC)",
-    template: "%s — SMCC",
+    default: "SMCC — Marriage Coaching Certification School | Cameroon",
+    template: "%s | SMCC — School of Marriage & Christian Coaching",
   },
   description:
-    "Faith-based marriage counseling and leadership training program. 12-week structured cohort designed to restore families and equip leaders globally.",
+    "SMCC trains Christian coaches to transform marriages and lives. Join Cohort 1 — April 2026. Certification program in Cameroon under DRIMP Foundation.",
   keywords: [
+    "marriage coaching certification Cameroon",
+    "SMCC marriage school",
+    "formation coaching conjugal Cameroun",
+    "Christian life coaching certification Africa",
+    "école coaching mariage Cameroun",
+    "DRIMP Foundation SMCC",
+    "how to become a marriage coach in Cameroon",
+    "certification coaching chrétien Afrique",
     "Christian marriage counseling training",
     "Christian counseling certification",
     "marriage restoration program",
     "biblical relationship counseling",
-    "Christian counseling course",
-    "how to become a Christian marriage counselor",
-    "marriage restoration training",
-    "SMCC",
   ],
-  authors: [{ name: "SMCC" }],
+  authors: [{ name: "SMCC — DRIMP Foundation" }],
   openGraph: {
-    title: "School of Marriage Counseling & Coaching",
+    title: "SMCC — Marriage Coaching Certification School | Cameroon",
     description:
-      "Structured 12-week global marriage counseling training program. Restore families. Equip leaders.",
+      "SMCC trains Christian coaches to transform marriages and lives. Join Cohort 1 — April 2026. Certification program in Cameroon under DRIMP Foundation.",
+    url: "https://www.smcc.solutions",
+    siteName: "SMCC — School of Marriage & Christian Coaching",
     type: "website",
-    locale: "en_US",
-    images: [{ url: "/founders.jpg", width: 1200, height: 630, alt: "SMCC Founders" }],
+    locale: "en_CM",
+    images: [{ url: "/founders.jpg", width: 1200, height: 630, alt: "SMCC Founders — Marriage Coaching Certification Cameroon" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "School of Marriage Counseling & Coaching (SMCC)",
-    description: "Faith-based 12-week marriage counseling training. Global cohort.",
+    title: "SMCC — Marriage Coaching Certification | Cameroon",
+    description: "Christian marriage coaching certification. Cohort 1 — April 2026. DRIMP Foundation, Cameroon.",
     images: ["/founders.jpg"],
   },
   alternates: {
-    canonical: "https://smcc.solutions",
+    canonical: "https://www.smcc.solutions",
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
@@ -67,10 +77,36 @@ export default function RootLayout({
         <JsonLd data={{
           "@context": "https://schema.org",
           "@type": "EducationalOrganization",
-          "name": "School of Marriage Counseling & Coaching",
-          "url": "https://smcc.solutions",
-          "description": "Faith-based marriage counseling and coaching training program",
+          "name": "SMCC — School of Marriage & Christian Coaching",
+          "url": "https://www.smcc.solutions",
+          "logo": "https://www.smcc.solutions/logo.png",
+          "description": "Christian marriage and life coaching certification school in Cameroon",
           "address": { "@type": "PostalAddress", "addressCountry": "CM" },
+          "parentOrganization": {
+            "@type": "Organization",
+            "name": "DRIMP Foundation",
+            "url": "https://www.drimpfoundation.org"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "admissions",
+            "url": "https://wa.me/237683493220"
+          },
+        }} />
+        <JsonLd data={{
+          "@context": "https://schema.org",
+          "@type": "Course",
+          "name": "Marriage & Christian Coaching Certification — Cohort 1",
+          "description": "Comprehensive certification program to become a Christian marriage and life coach in Cameroon",
+          "provider": {
+            "@type": "Organization",
+            "name": "SMCC",
+            "url": "https://www.smcc.solutions"
+          },
+          "startDate": "2026-04",
+          "courseMode": "blended",
+          "inLanguage": ["en", "fr"],
+          "url": "https://www.smcc.solutions/cohort-1",
         }} />
         {children}
         <StickyBar />

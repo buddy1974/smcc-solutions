@@ -10,14 +10,14 @@ import PageViewLogger from "@/components/PageViewLogger";
 import { COHORTS } from "@/data/programs";
 
 export const metadata: Metadata = {
-  title: "Christian Marriage Counseling Training | SMCC",
+  title: "Marriage Coaching Certification in Cameroon | SMCC Cohort 1 — April 2026",
   description:
-    "SMCC offers biblical counseling training and marriage restoration programs designed to equip leaders, counselors, and mentors to restore relationships.",
+    "Transform marriages and lives with SMCC's Christian coaching certification. Cohort 1 starts April 2026 in Cameroon. Register now — limited seats.",
   openGraph: {
-    title: "Christian Marriage Counseling Training | SMCC",
+    title: "Marriage Coaching Certification in Cameroon | SMCC Cohort 1 — April 2026",
     description:
-      "SMCC offers biblical counseling training and marriage restoration programs designed to equip leaders, counselors, and mentors to restore relationships.",
-    images: [{ url: "/founders.jpg", width: 1200, height: 630, alt: "SMCC Founders" }],
+      "Transform marriages and lives with SMCC's Christian coaching certification. Cohort 1 starts April 2026 in Cameroon. Register now — limited seats.",
+    images: [{ url: "/founders.jpg", width: 1200, height: 630, alt: "SMCC Founders — Marriage Coaching Certification Cameroon" }],
   },
 };
 
@@ -36,7 +36,7 @@ export default function Home() {
               </span>
             </div>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-              THE SCHOOL OF MARRIAGE COUNSELING &amp; COACHING
+              SMCC — SCHOOL OF MARRIAGE COUNSELING &amp; COACHING
             </h1>
             <p className="text-xl md:text-2xl mb-4 text-blush/90 max-w-3xl mx-auto font-semibold">
               Thriving Marriages. Rising Families. Peaceful Nations.
@@ -118,7 +118,7 @@ export default function Home() {
               <div className="overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300">
                 <Image
                   src="/GRADUATION/659069014_18089186174463845_2117990003803082261_n.jpg"
-                  alt="SMCC Graduation Ceremony"
+                  alt="SMCC Marriage Coaching Certification Graduation Ceremony — Cameroon"
                   width={800}
                   height={600}
                   className="w-full h-72 md:h-80 object-cover hover:scale-105 transition-transform duration-500"
@@ -127,7 +127,7 @@ export default function Home() {
               <div className="overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300">
                 <Image
                   src="/GRADUATION/657753679_18089186192463845_1779472280229245014_n.jpg"
-                  alt="SMCC Graduation Ceremony"
+                  alt="SMCC Cohort Graduates — Certified Christian Marriage Coaches, Cameroon"
                   width={800}
                   height={600}
                   className="w-full h-72 md:h-80 object-cover hover:scale-105 transition-transform duration-500"
@@ -136,7 +136,7 @@ export default function Home() {
               <div className="overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300">
                 <Image
                   src="/GRADUATION/657324770_18089186171463845_1090673474371214076_n.jpg"
-                  alt="SMCC Graduation Ceremony"
+                  alt="SMCC Graduates Receiving Christian Coaching Certification — DRIMP Foundation Cameroon"
                   width={800}
                   height={600}
                   className="w-full h-72 md:h-80 object-cover hover:scale-105 transition-transform duration-500"
@@ -145,7 +145,7 @@ export default function Home() {
               <div className="overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300">
                 <Image
                   src="/GRADUATION/659597895_18089186189463845_893251316219152340_n.jpg"
-                  alt="SMCC Graduation Ceremony"
+                  alt="SMCC Marriage Counseling Certification Graduation — School of Marriage Coaching Cameroon"
                   width={800}
                   height={600}
                   className="w-full h-72 md:h-80 object-cover hover:scale-105 transition-transform duration-500"
